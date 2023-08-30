@@ -266,6 +266,11 @@ html, body {
     /* opacity: 0.5; */
 }
 
+/* buttonをクリックしたときのみopacityを変更する */
+.board button:active{
+    opacity: 0.5;
+}
+
 .active{
     opacity: 1;
 }
