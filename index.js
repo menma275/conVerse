@@ -11,7 +11,7 @@ const PORT = 8080;
 
 var users = [];
 
-app.use(express.static("src"));
+app.use(express.static("docs"));
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
