@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header>
+        <div class="header">
+            <h1>conVerse</h1>
+            <div class="user">
+                <button 
+                    onclick="location.href='demoNFT/index.html'">
+                    <p>mint</p>
+                </button>
+                <!-- <button id="rinji-button">
+                    <p>Connect Wallet</p>
+                </button> -->
+                <img src="public/icon1.jpg" alt="icon" class="user-icon">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="sidebar">
+            <div>
+                <h1>Rooms</h1>
+                <div class="room here">
+                    <p class="icon">😀</p>
+                    <p>emoji Room</p>
+                </div>
+                <div class="room">
+                    <p class="icon">📝</p>
+                    <p>Kanji Room</p>
+                </div>
+                <div class="room">
+                    <p class="icon">🔊</p>
+                    <p>Sound Room</p>
+                </div>
+                <div class="room">
+                    <p class="icon">📸</p>
+                    <p>Picture Room</p>
+                </div>
+            </div>
+            <button id="createRoomButton" class="room createRoom">
+                <i class="fa fa-cube" aria-hidden="true"></i>
+                <p>Create Room</p>
+            </button>
+        </div>
+        <div class="board">
+            <h1>😀 emoji Room</h1>
+            <!-- <ul id="message-list"/> -->
+            <div class="post-set">
+                <input id="input-post" type="text" placeholder="Input your message.">
+                <button id="add-post">
+                    <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                    <span>Post</span>
+                </button>
+                </div>
+            <div id="container">
+            </div>
+        </div>
+    </main>
+    <dialog id="createRoomDialog">
+        <h1>Create New Room</h1>
+        <form>
+            <label for="roomIcon">Choose Emoji</label>
+            <input type="text" id="roomIcon" name="roomIcon" placeholder="😀">
+            <label for="roomName">Name</label>
+            <input type="text" id="roomName" name="roomName" placeholder="emoji Room">
+            <label for="roomDescription">Rule & Description</label>
+            <input type="text" id="roomDescription" name="roomDescription" placeholder="You can only use Emoji in this room.">
+            <div class="dialog-button">
+                <button id="closeDialog">Close</button>
+                <button id="createRoom">Create</button>
+            </div>
+            </form>
+    </dialog>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        let x = 0;
+        let y = 0;
+        let cardId = 0;
+        let id = "";
+
+        let cardList = [];
+        let card;
+        let userList = [];
+
+        function crearText(){
+            document.getElementById("add-post").previousElementSibling.value = "";
+        }
+
+        // サーバー接続周り
+        const addMessageList = (message) => {
+            // const messageList = document.getElementById("message-list");
+            // const messageItem = document.createElement("li");
+            // messageItem.textContent = message;
+            // messageList.appendChild(messageItem);
+            const messageArray = message.split(",");
+            const user = messageArray[0];
+            const text = messageArray[1];
+            const x = messageArray[2];
+            const y = messageArray[3];
+            const color = messageArray[4];
+            cardList.push({user, text, x, y, color});
+            console.log(cardList);
+            addOtherUserCard();
+        };
+
+        function addOtherUserCard(){
+            console.log("cardList" + userList);
+            cardList.forEach((cardInfo) => {
+                if (cardInfo.user !== id) {
+                    // card.xをintにする
+                    const card = document.createElement("div");
+                    card.className = "card";
+                    card.style.left = parseInt(cardInfo.x) + "px";
+                    card.style.top = parseInt(cardInfo.y) + "px";
+                    userList.forEach((user) => {
+                        if (user.userId === id) {
+                            card.style.borderColor = user.color;
+                        }
+                    });
+                    card.textContent = cardInfo.text;
+                    card.draggable = false;
+                    document.getElementById("container").appendChild(card);
+                }
+            });
+        }
+
+        // Create Room Dialog
+        var openButton = document.getElementById("createRoomButton");
+        var dialog = document.getElementById("createRoomDialog");
+        var closeButton = document.getElementById("closeDialog");
+        openButton.addEventListener("click", function () {
+            dialog.showModal();
+        }, false);
+        closeButton.addEventListener("click", function () {
+            dialog.close();
+        }, false);
+        
+
+        // Card Click
+        let cardIndex = 0;
+        let isTextAreaFocused = false;
+        let isAddingCard = false;
+
+        document.getElementById("add-post").addEventListener("click", () => {
+            isAddingCard = true;
+        });
+        
+        // add-postの中身が空だったらbuttonのcssを変える
+        document.getElementById("add-post").previousElementSibling.addEventListener("input", (e) => {
+            if(e.target.value === ""){
+                document.getElementById("add-post").classList.remove("active");
+            }else{
+                document.getElementById("add-post").classList.add("active");
+            }
+        });
+
+        function createCard(x, y) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.style.left = x + "px";
+            card.style.top = y + "px";
+            // card.textContent = "Card " + cardIndex;
+            // card.innerHTML = `<textarea>${card.textContent}</textarea>`;
+            card.textContent = document.getElementById("add-post").previousElementSibling.value;
+            card.draggable = false;
+
+            card.addEventListener("dragstart", (e) => {
+                e.dataTransfer.setData("text/plain", cardIndex);
+            });
+
+            document.getElementById("container").appendChild(card);
+            cardIndex++;
+        }
+        
+        function resizeCardHeight(card, textarea) {
+            const lineHeight = 50; // Adjust this value based on your font size and line height
+            const rows = textarea.value.split("\n").length;
+            card.style.height = rows * lineHeight + "px";
+        }
+
+
+        const socket = io();
+        document.getElementById("container").addEventListener("click", (e) => {
+            if(isAddingCard){
+                const containerRect = document.getElementById("container").getBoundingClientRect();
+                x = e.clientX - containerRect.left;
+                y = e.clientY - containerRect.top;
+                createCard(x, y);
+                isAddingCard = false;
+
+                let inputMessage = document.getElementById("input-post").value;
+                if (inputMessage === "") {
+                    return;
+                }
+                // inputmessageとx、yを合体
+                inputMessage = id + "," + inputMessage + "," + x + "," + y + "," + color;
+                socket.emit("sendMessage", inputMessage);
+
+                console.log(inputMessage);
+
+                crearText();
+            }
+        });
+
+        socket.on("user-id", (userId) => {
+            const userIdArray = userId.split(",");
+            id = userIdArray[0];
+            color = userIdArray[1];
+            console.log(userId);
+            if(id == ""){
+                id = userId.toString();
+                console.log(id, color);
+                userList.push({userId: id, color: color});
+            }
+        });
+
+        socket.on("receiveMessage", (message) => {
+            addMessageList(message);
+        });
+
+        document.getElementById("container").addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+
+
+
+        document.getElementById("container").addEventListener("drop", (e) => {
+            e.preventDefault();
+            cardId = e.dataTransfer.getData("text/plain");
+            card = document.querySelector(".card:nth-child(" + (parseInt(cardId) + 1) + ")");
+            if (card) {
+                const containerRect = document.getElementById("container").getBoundingClientRect();
+                const x = e.clientX - containerRect.left;
+                const y = e.clientY - containerRect.top;
+                card.style.left = x + "px";
+                card.style.top = y + "px";
+                userList.forEach((user) => {
+                    if (user.userId === id) {
+                        // cardのborder色ををuserの色にする
+                        card.style.borderColor = user.color;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

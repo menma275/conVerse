@@ -1,0 +1,405 @@
+*{
+    --font-primary: #252525;
+    --font-secondary: #aaaaaa;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --accent: #EBB441;
+    --header-height: 50px;
+    --sidebar-width: 160px;
+}
+
+@font-face {
+    font-family: "cascadia";
+    src: url(../public/CascadiaMono.ttf);
+}
+
+html, body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg-secondary);
+}
+
+.header{
+    margin: 0;
+    padding: 0rem 1.5rem;
+    width: calc(100% - 5rem);
+    height: var(--header-height);
+    position: fixed;
+    top: 0.5rem;
+    left: 1rem;
+    /* right: 0; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--bg-secondary);
+    border-radius: 0.75rem;
+}
+
+.header h1{
+    font-size: large;
+    font-family: "cascadia";
+}
+
+.header button{
+    font-size: smaller;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    background-color: var(--accent);
+    border: none;
+    cursor: pointer;
+    display: flex;
+}
+
+#rinji-button{
+    margin-left: 1rem;
+}
+
+.header button i{
+    margin-right: 0.25rem;
+    font-size: smaller;
+    margin-top: 0.1rem;
+}
+
+.header button:hover{
+    opacity: 0.8;
+}
+
+.header p{
+    margin: 0;
+    padding: 0;
+}
+
+.user{
+    /* 中身を横並びにする */
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-icon{
+    width: calc(var(--header-height)*0.6);
+    margin-left: 1rem;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
+.sidebar {
+    padding: 0.5rem 0.5rem;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 1rem;
+    left: 1rem;
+    width: var(--sidebar-width);
+    height: calc(100% - var(--header-height) - 2rem);
+    box-sizing: border-box;
+    overflow: auto;
+    background-color: var(--bg-primary);
+    border-right: 1px solid var(--bg-secondary);
+    border-radius: 1rem;
+}
+
+.sidebar h1{
+    color: var(--font-secondary);
+    font-size: medium;
+    margin: 0.5rem 1rem;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.room{
+    color: var(--font-secondary);
+    font-size: small;
+    list-style: none;
+    margin: 0.25rem;
+    padding: 0rem 0.5rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+.here{
+    color: var(--accent);
+    background-color: var(--bg-secondary);
+}
+
+.createRoom{
+    font-weight: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: smaller;
+    margin: 0.5rem 0;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    background: var(--accent);
+    border: none;
+    cursor: pointer;
+}
+
+.createRoom:hover{
+    opacity: 0.8;
+}
+
+.createRoom i{
+    margin-right: 0.5rem;
+}
+
+.icon {
+    font-size: larger;
+    margin: 0 0.5rem;
+    padding: 0;
+}
+
+.board{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: calc(100% - var(--sidebar-width) - 2.5rem);
+    height: calc(100% - var(--header-height) - 2rem);
+    border: 1px solid var(--bg-primary);
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+}
+
+#container{
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-secondary);
+    border-radius: 1rem;
+}
+
+.board h1{
+    position: absolute;
+    /* boardの左上に配置 */
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: medium;
+    color: var(--font-secondary);
+    font-weight: bold;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    cursor: default;
+    width: fit-content;
+    z-index: 100;
+}
+
+.board p{
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: larger;
+    font-weight: bold;
+    color: var(--font-secondary);
+}
+
+.post-set{
+    position: absolute;
+    display: flex;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: calc(100% - 2rem);
+}
+
+.board input{
+    position: relative;
+    font-size: medium;
+    color: var(--font-primary);
+    background: var(--bg-secondary);
+    font-size: smaller;
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    width: 100%;
+    z-index: 100;
+    border-radius: 0.5rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0.5rem 0.01rem var(--accent);
+}
+
+.board input::placeholder{
+    color: var(--font-secondary);
+}
+
+.board button{
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    font-size: medium;
+    color: white;
+    background: var(--accent);
+    font-size: smaller;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 100;
+    border: none;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    /* opacity: 0.5; */
+}
+
+.active{
+    opacity: 1;
+}
+
+button i{
+    margin-right: 0.5rem;
+}
+
+.card {
+    width: fit-content;
+    height: auto;
+    min-width: 100px;
+    min-height: 50px;
+    max-width: 300px;
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    /* 上下中央にする */
+    /* border: 1px solid var(--accent); */
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 18px;
+    position: absolute;
+    cursor: pointer;
+    z-index: 100;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+}
+
+.card textarea{
+    resize: none;
+    font-family: sans-serif;
+    width: 100%;
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    border: none;
+    resize: none;
+    font-size: normal;
+    outline: none;
+}
+
+dialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: var(--bg-primary);
+    border-radius: 1rem;
+    border: none;
+    z-index: 100;
+    box-shadow: 0 0 0.5rem 0rem var(--font-secondary);
+    margin: 0;
+    padding: 2rem;
+}
+
+#dialog-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    display: none;
+}
+
+dialog h1{
+    margin: 0;
+    margin-bottom: 1rem;
+    padding: 0;
+    font-size: medium;
+    color: var(--accent);
+}
+
+dialog input{
+    margin: 0.5rem 0;
+    margin-bottom: 0rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--font-secondary);
+    font-weight: lighter;
+}
+
+dialog input::placeholder{
+    opacity: 0.5;
+}
+
+dialog label{
+    margin: 0;
+    margin-top: 1rem;
+    padding: 0;
+    font-size: smaller;
+    color: var(--font-secondary);
+    font-weight: bold;
+}
+
+dialog button{
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: var(--accent);
+}
+
+dialog button:hover{
+    opacity: 0.8;
+}
+
+#closeDialog{
+    background: none;
+    color: var(--font-secondary);
+}
+
+.dialog-button{
+    margin: 0;
+    margin-top: 2rem;
+    padding: 0;
+    border-radius: 0.5rem;
+    margin-left: auto;
+    border: none;
+    cursor: pointer;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+canvas{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    border-radius: 1rem;
+}
