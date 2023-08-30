@@ -127,6 +127,7 @@ html, body {
     text-decoration: none;
     border-radius: 0.5rem;
     font-weight: bold;
+    cursor: default;
 }
 
 .here{
@@ -135,6 +136,8 @@ html, body {
 }
 
 .createRoom{
+    /* buttonを機能させない */
+    pointer-events: none;
     font-weight: normal;
     display: flex;
     justify-content: center;

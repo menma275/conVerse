@@ -6,7 +6,7 @@ const app = express();
 const server = http.Server(app);
 const io = socketIo(server);
 
-const serverIP = "192.168.10.47";
+// const serverIP = "192.168.11.50";
 const PORT = 8080;
 
 var users = [];
@@ -17,10 +17,10 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-server.listen(PORT, serverIP);
-// server.listen(PORT, () => {
-//   console.log(`listening on port ${PORT}`);
-// });
+// server.listen(PORT, serverIP);
+server.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`);
+});
 
 io.on("connection", (socket) => {
   const userId = socket.id;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>conVerse</title>
     <link href="css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
@@ -13,7 +13,7 @@
             <div class="user">
                 <button 
                     onclick="location.href='demoNFT/index.html'">
-                    <p>mint</p>
+                    <p>Generate</p>
                 </button>
                 <!-- <button id="rinji-button">
                     <p>Connect Wallet</p>
@@ -97,10 +97,6 @@
 
         // サーバー接続周り
         const addMessageList = (message) => {
-            // const messageList = document.getElementById("message-list");
-            // const messageItem = document.createElement("li");
-            // messageItem.textContent = message;
-            // messageList.appendChild(messageItem);
             const messageArray = message.split(",");
             const user = messageArray[0];
             const text = messageArray[1];
@@ -152,6 +148,7 @@
 
         document.getElementById("add-post").addEventListener("click", () => {
             isAddingCard = true;
+            console.log("add-post");
         });
         
         // add-postの中身が空だったらbuttonのcssを変える
@@ -231,8 +228,6 @@
             e.preventDefault();
         });
 
-
-
         document.getElementById("container").addEventListener("drop", (e) => {
             e.preventDefault();
             cardId = e.dataTransfer.getData("text/plain");
@@ -245,7 +240,6 @@
                 card.style.top = y + "px";
                 userList.forEach((user) => {
                     if (user.userId === id) {
-                        // cardのborder色ををuserの色にする
                         card.style.borderColor = user.color;
                     }
                 });
