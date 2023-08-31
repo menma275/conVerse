@@ -24,20 +24,8 @@ server.listen(PORT, () => {
 
 io.on("connection", (socket) => {
   const userId = socket.id;
-  // users.push(userId);
-  // console.log("a user connected");
-  // userId.forEach((element) => {
-  //   if (element == userId) {
-  //     console.log("user already exists");
-  //   } else {
-  //     console.log("user id: " + userId);
-  //     socket.emit("user-id", userId);
-  //   }
-  // });
 
-  // ランダムないろを生成
-  const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
-  socket.emit("user-id", userId + "," + color);
+  socket.emit("user-id", userId);
 
   socket.on("sendMessage", (msg) => {
     console.log("message: " + msg);

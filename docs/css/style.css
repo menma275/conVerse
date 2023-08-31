@@ -13,11 +13,20 @@
     src: url(../public/CascadiaMono.ttf);
 }
 
+@font-face {
+    font-family: "noto-emoji";
+    src: url(../public/NotoColorEmoji-Regular.ttf);
+}
+
 html, body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
     background: var(--bg-secondary);
+}
+
+.emoji-span {
+    font-family: "noto-emoji", sans-serif;
 }
 
 .header{
@@ -96,6 +105,7 @@ html, body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    justify-items: center;
     bottom: 1rem;
     left: 1rem;
     width: var(--sidebar-width);
@@ -124,10 +134,15 @@ html, body {
     padding: 0rem 0.5rem;
     display: flex;
     align-items: center;
+    justify-items: left;
     text-decoration: none;
     border-radius: 0.5rem;
     font-weight: bold;
     cursor: default;
+}
+
+.room .emoji-span{
+    font-size: small;
 }
 
 .here{
@@ -161,7 +176,7 @@ html, body {
 }
 
 .icon {
-    font-size: larger;
+    font-size: large;
     margin: 0 0.5rem;
     padding: 0;
 }
@@ -263,10 +278,8 @@ html, body {
     justify-content: center;
     align-items: center;
     opacity: 1;
-    /* opacity: 0.5; */
 }
 
-/* buttonをクリックしたときのみopacityを変更する */
 .board button:active{
     opacity: 0.5;
 }
@@ -280,6 +293,7 @@ button i{
 }
 
 .card {
+    font-family: "noto-emoji", sans-serif;
     width: fit-content;
     height: auto;
     min-width: 100px;
@@ -288,8 +302,7 @@ button i{
     padding: 0.5rem 1rem;
     background-color: var(--bg-primary);
     color: var(--font-primary);
-    /* 上下中央にする */
-    /* border: 1px solid var(--accent); */
+    border: 1px solid black;
     display: flex;
     justify-content: left;
     align-items: center;
