@@ -61,6 +61,7 @@
             </div>
             <div id="container">
             </div>
+            <!-- <div id="follower" class="emoji-span"></div> -->
         </div>
     </main>
     <dialog id="createRoomDialog">
@@ -78,6 +79,7 @@
             </div>
             </form>
     </dialog>
+
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -98,6 +100,7 @@
 
         let jsonString = JSON.stringify(dataList);
         localStorage.setItem("dataList", jsonString);
+
 
 
         let x = 0;
@@ -173,6 +176,20 @@
         document.getElementById("add-post").addEventListener("click", () => {
             isAddingCard = true;
         });
+
+
+        // document.addEventListener("mousemove", (e) => {
+        //     if (isAddingCard) {
+        //         const follower = document.getElementById("follower");
+        //         const x = e.clientX;
+        //         const y = e.clientY;
+        //         follower.style = 0.5;
+        //         follower.style.left = x + "px";
+        //         follower.style.top = y + "px";
+        //     }else{
+        //         follower.style.opacity = 0;
+        //     }
+        // });
 
         // カードを作る
         function createCard(x, y) {

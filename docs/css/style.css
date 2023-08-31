@@ -25,9 +25,14 @@ html, body {
     background: var(--bg-secondary);
 }
 
-.emoji-span {
+/* .emoji-span {
     font-family: "noto-emoji", sans-serif;
+} */
+
+.emoji-span {
+    font-family: "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
+
 
 .header{
     margin: 0;
@@ -292,8 +297,28 @@ button i{
     margin-right: 0.5rem;
 }
 
+#follower{
+    /* visibility: hidden; */
+    width: fit-content;
+    height: auto;
+    min-width: 100px;
+    min-height: 50px;
+    max-width: 300px;
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+    position: absolute;
+    z-index: 999;
+    opacity: 0.5;
+}
+
 .card {
-    font-family: "noto-emoji", sans-serif;
     width: fit-content;
     height: auto;
     min-width: 100px;
@@ -306,7 +331,7 @@ button i{
     display: flex;
     justify-content: left;
     align-items: center;
-    font-size: 18px;
+    font-size: 1rem;
     position: absolute;
     cursor: pointer;
     z-index: 100;
