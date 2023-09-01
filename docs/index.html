@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>conVerse</title>
     <link href="css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -66,8 +67,9 @@
             <div id="tap-anywhere">
                 <p>👇 Tap anywhere to post.</p>
             </div>
-            <div id="container">
-            </div>
+            <div id="container__wrapper">
+                <div id="container"></div>
+              </div>
             <div id="follower" class="emoji-span"></div>
         </div>
     </main>
@@ -379,6 +381,17 @@
             }
         });
     
+         // ZOOM機能
+      let zoom = 1;
+      const container = document.getElementById("container");
+      document.getElementById("zoomin").addEventListener("click", (e) => {
+        zoom += 0.1;
+        container.style.transform = "scale(" + zoom + ")";
+      });
+      document.getElementById("zoomout").addEventListener("click", (e) => {
+        zoom -= 0.1;
+        container.style.transform = "scale(" + zoom + ")";
+      });
         // Create Room Dialog
         // var openButton = document.getElementById("createRoomButton");
         // var dialog = document.getElementById("createRoomDialog");
