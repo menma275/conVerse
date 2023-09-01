@@ -195,6 +195,7 @@ html, body {
     border: 1px solid var(--bg-primary);
     border-radius: 1rem;
     box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
 #container{
@@ -235,11 +236,31 @@ html, body {
 .post-set{
     position: absolute;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
-    width: calc(100% - 2rem);
+    width: calc(100% - 4rem);
+}
+
+#tap-anywhere {
+    visibility: hidden;   
+    font-size: smaller;
+    font-weight: lighter;
+    cursor: default;
+    z-index: 100;
+}
+
+#tap-anywhere p{
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+    color: var(--font-primary);
+    opacity: 0.5;
 }
 
 .board input{
@@ -247,19 +268,18 @@ html, body {
     font-size: medium;
     color: var(--font-primary);
     background: var(--bg-secondary);
+    opacity: 0.9;    
     font-size: smaller;
-    margin-right: 1rem;
     padding: 0.5rem 1rem;
     cursor: pointer;
     width: 100%;
-    z-index: 100;
+    z-index: 999;
     border-radius: 0.5rem;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px solid var(--accent);
-    /* box-shadow: 0 0 0.5rem 0.01rem var(--accent); */
 }
 
 .board input::placeholder{
@@ -334,7 +354,7 @@ button i{
     font-size: 1rem;
     position: absolute;
     cursor: pointer;
-    z-index: 100;
+    /* z-index: 100; */
     border-radius: 0.5rem;
     box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
 }

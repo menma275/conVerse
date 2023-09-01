@@ -54,14 +54,17 @@
             <!-- <ul id="message-list"/> -->
             <div class="post-set">
                 <input id="input-post" type="text" placeholder="Input your message.">
-                <button id="add-post">
+                <!-- <button id="add-post">
                     <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
                     <span>Post</span>
-                </button>
+                </button> -->
+            </div>
+            <div id="tap-anywhere">
+                <p>👇 Tap anywhere to post.</p>
             </div>
             <div id="container">
             </div>
-            <!-- <div id="follower" class="emoji-span"></div> -->
+            <div id="follower" class="emoji-span"></div>
         </div>
     </main>
     <!-- <dialog id="createRoomDialog">
@@ -109,11 +112,10 @@
         let id = "";
         let color;
 
-        // let cardList = [];
 
         // input要素の中身をリセット
         function crearText(){
-            document.getElementById("add-post").previousElementSibling.value = "";
+            document.getElementById("input-post").value = "";
         }
 
         window.onload = function () {
@@ -172,24 +174,30 @@
         let cardIndex = 0;
         let isAddingCard = false;
 
-        // ボタンクリックでカードの追加を許可
-        document.getElementById("add-post").addEventListener("click", () => {
-            isAddingCard = true;
+        // 何かが入力されたらカードを追加できるようにする
+        document.getElementById("input-post").addEventListener("input", (e) => {
+            if (e.target.value !== "") {
+                isAddingCard = true;
+                // tap-anywhereをみえるようにする
+                document.getElementById("tap-anywhere").style.visibility = "visible";
+            }
         });
 
-
-        // document.addEventListener("mousemove", (e) => {
-        //     if (isAddingCard) {
-        //         const follower = document.getElementById("follower");
-        //         const x = e.clientX;
-        //         const y = e.clientY;
-        //         follower.style = 0.5;
-        //         follower.style.left = x + "px";
-        //         follower.style.top = y + "px";
-        //     }else{
-        //         follower.style.opacity = 0;
-        //     }
-        // });
+        document.addEventListener("mousemove", (e) => {
+            if (isAddingCard) {
+                const follower = document.getElementById("follower");
+                const containerRect = document.getElementById("container").getBoundingClientRect();
+                let x = e.clientX;
+                let y = e.clientY;
+                x -= containerRect.left;
+                y -= containerRect.top;
+                follower.style = 0.5;
+                follower.style.left = x + "px";
+                follower.style.top = y + "px";
+            }else{
+                follower.style.opacity = 0;
+            }
+        });
 
         // カードを作る
         function createCard(x, y) {
@@ -197,7 +205,7 @@
             card.className = "card";
             card.style.left = x + "px";
             card.style.top = y + "px";
-            card.textContent = document.getElementById("add-post").previousElementSibling.value;
+            card.textContent = document.getElementById("input-post").value;
             card.draggable = false;
 
             // color = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -222,6 +230,7 @@
                 y = e.clientY - containerRect.top;
                 createCard(x, y);
                 isAddingCard = false;
+                document.getElementById("tap-anywhere").style.visibility = "hidden";
 
                 let inputMessage = document.getElementById("input-post").value;
                 if (inputMessage === "") {
