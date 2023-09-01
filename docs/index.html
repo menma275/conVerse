@@ -7,10 +7,6 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- <script src="demoNFT/p5.min.js"></script>
-    <script src="demoNFT/conVoice_main.js"></script>
-    <script src="demoNFT/conVoice_filter.js"></script> -->
 </head>
 <body>
     <header>
@@ -21,7 +17,7 @@
                     onclick="location.href='demoNFT/index.html'">
                     <p>Generate</p>
                 </button>
-                <!-- <button id="rinji-button">
+                <!-- <button id="connect-button">
                     <p>Connect Wallet</p>
                 </button> -->
                 <img src="public/icon1.jpg" alt="icon" class="user-icon">
@@ -192,6 +188,7 @@
                             dataList.push(JSON.parse(data.message));
                     });
                     console.log(dataList);
+                    localStorage.setItem("dataList", JSON.stringify(dataList));
                     addPastCard();
                 })
                 .catch((error) => {
