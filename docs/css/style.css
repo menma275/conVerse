@@ -1,30 +1,29 @@
-* {
-  --font-primary: #252525;
-  --font-secondary: #aaaaaa;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f5;
-  --accent: #ebb441;
-  --header-height: 50px;
-  --sidebar-width: 160px;
+*{
+    --font-primary: #252525;
+    --font-secondary: #aaaaaa;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --accent: #EBB441;
+    --header-height: 50px;
+    --sidebar-width: 160px;
+    --element-space: 0.75rem;
 }
 
 @font-face {
-  font-family: "cascadia";
-  src: url(../public/CascadiaMono.ttf);
+    font-family: "cascadia";
+    src: url(../public/CascadiaMono.ttf);
 }
 
 @font-face {
-  font-family: "noto-emoji";
-  src: url(../public/NotoColorEmoji-Regular.ttf);
+    font-family: "noto-emoji";
+    src: url(../public/NotoColorEmoji-Regular.ttf);
 }
 
-html,
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background: var(--bg-secondary);
-  height: 100%;
+html, body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg-secondary);
 }
 
 /* .emoji-span {
@@ -32,482 +31,444 @@ body {
 } */
 
 .emoji-span {
-  font-family: "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+    font-family: "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
 
-.header {
-  margin: 0;
-  padding: 0rem 1.5rem;
-  width: calc(100% - 5rem);
-  height: var(--header-height);
-  position: fixed;
-  top: 0.5rem;
-  left: 1rem;
-  /* right: 0; */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--bg-secondary);
-  border-radius: 0.75rem;
+
+.header{
+    margin: 0;
+    padding: 0;
+    width: calc(100% - var(--element-space)*2 );
+    height: var(--header-height);
+    position: fixed;
+    top: var(--element-space);
+    left: var(--element-space);
+    /* right: 0; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--bg-secondary);
+    border-radius: 0.75rem;
 }
 
-.header h1 {
-  font-size: large;
-  font-family: "cascadia";
+.header h1{
+    font-size: large;
+    font-family: "cascadia";
+    margin-left: 1.5rem;
 }
 
-.header button {
-  font-size: smaller;
-  margin: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  color: white;
-  background-color: var(--accent);
-  border: none;
-  cursor: pointer;
-  display: flex;
+.header button{
+    font-size: smaller;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    background-color: var(--accent);
+    border: none;
+    cursor: pointer;
+    display: flex;
 }
 
-#rinji-button {
-  margin-left: 1rem;
+#rinji-button{
+    margin-left: 1rem;
 }
 
-.header button i {
-  margin-right: 0.25rem;
-  font-size: smaller;
-  margin-top: 0.1rem;
+.header button i{
+    margin-right: 0.25rem;
+    font-size: smaller;
+    margin-top: 0.1rem;
 }
 
-.header button:hover {
-  opacity: 0.8;
+.header button:hover{
+    opacity: 0.8;
 }
 
-.header p {
-  margin: 0;
-  padding: 0;
+.header p{
+    margin: 0;
+    padding: 0;
 }
 
-.user {
-  /* 中身を横並びにする */
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  align-items: center;
+.user{
+    /* 中身を横並びにする */
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
 }
 
-.user-icon {
-  width: calc(var(--header-height) * 0.6);
-  height: calc(var(--header-height) * 0.6);
-  margin-left: 1rem;
-  aspect-ratio: 1/1;
-  border-radius: 50%;
+
+.user-icon{
+    width: calc(var(--header-height)*0.6);
+    height: calc(var(--header-height)*0.6);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
 }
 
 .sidebar {
-  padding: 0.5rem 0.5rem;
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  justify-items: center;
-  bottom: 1rem;
-  left: 1rem;
-  width: var(--sidebar-width);
-  height: calc(100% - var(--header-height) - 2rem);
-  box-sizing: border-box;
-  overflow: auto;
-  background-color: var(--bg-primary);
-  border-right: 1px solid var(--bg-secondary);
-  border-radius: 1rem;
-}
-@media screen and (max-width: 760px) {
-  .sidebar {
-    display: none;
-  }
+    padding: 0.5rem 0.5rem;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+    bottom: var(--element-space);
+    left: var(--element-space);
+    width: var(--sidebar-width);
+    height: calc(100% - var(--header-height) - var(--element-space)*3);
+    box-sizing: border-box;
+    overflow: auto;
+    background-color: var(--bg-primary);
+    border-right: 1px solid var(--bg-secondary);
+    border-radius: 1rem;
 }
 
-.sidebar h1 {
-  color: var(--font-secondary);
-  font-size: medium;
-  margin: 0.5rem 1rem;
-  padding: 0;
-  justify-content: center;
-  align-items: center;
+.sidebar h1{
+    color: var(--font-secondary);
+    font-size: medium;
+    margin: 0.5rem 1rem;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
 }
 
-.room {
-  color: var(--font-secondary);
-  font-size: small;
-  list-style: none;
-  margin: 0.25rem;
-  padding: 0rem 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-items: left;
-  text-decoration: none;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  cursor: default;
+.room{
+    color: var(--font-secondary);
+    font-size: small;
+    list-style: none;
+    margin: 0.25rem;
+    padding: 0rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-items: left;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: default;
 }
 
-.room .emoji-span {
-  font-size: small;
+.room .emoji-span{
+    font-size: small;
 }
 
-.here {
-  color: var(--accent);
-  background-color: var(--bg-secondary);
+.here{
+    color: var(--accent);
+    background-color: var(--bg-secondary);
 }
 
-.createRoom {
-  /* buttonを機能させない */
-  pointer-events: none;
-  font-weight: normal;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: smaller;
-  margin: 0.5rem 0;
-  padding: 0 1rem;
-  border-radius: 0.5rem;
-  color: white;
-  background: var(--accent);
-  border: none;
-  cursor: pointer;
+.createRoom{
+    /* buttonを機能させない */
+    pointer-events: none;
+    font-weight: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: smaller;
+    margin: 0.5rem 0;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    background: var(--accent);
+    border: none;
+    cursor: pointer;
 }
 
-.createRoom:hover {
-  opacity: 0.8;
+.createRoom:hover{
+    opacity: 0.8;
 }
 
-.createRoom i {
-  margin-right: 0.5rem;
+.createRoom i{
+    margin-right: 0.5rem;
 }
 
 .icon {
-  font-size: large;
-  margin: 0 0.5rem;
-  padding: 0;
+    font-size: large;
+    margin: 0 0.5rem;
+    padding: 0;
 }
 
-.board {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  width: calc(100% - var(--sidebar-width) - 2.5rem);
-  height: calc(100% - var(--header-height) - 2rem);
-  border: 1px solid var(--bg-primary);
-  border-radius: 1rem;
-  box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-@media screen and (max-width: 760px) {
-  .board {
-    left: 1rem;
-    width: auto;
-    bottom: 1rem;
-  }
-}
-#container__wrapper {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  border-radius: 1rem;
-  overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: auto;
+.board{
+    position: absolute;
+    bottom: var(--element-space);
+    right: var(--element-space);
+    width: calc(100% - var(--sidebar-width) - var(--element-space)*3);
+    height: calc(100% - var(--header-height) - var(--element-space)*3);
+    border: 1px solid var(--bg-primary);
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
-#container {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
-#container__wrapper::-webkit-scrollbar {
-  display: none;
-}
-#manipulate {
-  position: fixed;
-  right: 2rem;
-  bottom: 6rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  z-index: 10;
-}
-#manipulate button {
-  width: 40px;
-  height: 40px;
-  background-color: var(--bg-secondary);
-  color: var(--accent);
-  border: 1px solid var(--accent);
+#container{
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-secondary);
+    border-radius: 1rem;
 }
 
-.board h1 {
-  position: absolute;
-  /* boardの左上に配置 */
-  top: 0.5rem;
-  left: 0.5rem;
-  font-size: medium;
-  color: var(--font-secondary);
-  font-weight: bold;
-  margin-left: 1rem;
-  margin-top: 1rem;
-  cursor: default;
-  width: fit-content;
-  z-index: 100;
+.board h1{
+    position: absolute;
+    /* boardの左上に配置 */
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: medium;
+    color: var(--font-secondary);
+    font-weight: bold;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    cursor: default;
+    width: fit-content;
+    z-index: 100;
 }
 
-.board p {
-  z-index: 10;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: larger;
-  font-weight: bold;
-  color: var(--font-secondary);
+.board p{
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: larger;
+    font-weight: bold;
+    color: var(--font-secondary);
 }
 
-.post-set {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.post-set{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  width: calc(100% - 4rem);
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: calc(100% - 4rem);
 }
 
 #tap-anywhere {
-  visibility: hidden;
-  font-size: smaller;
-  font-weight: lighter;
-  cursor: default;
-  z-index: 100;
+    visibility: hidden;   
+    font-size: smaller;
+    font-weight: lighter;
+    cursor: default;
+    z-index: 100;
 }
 
-#tap-anywhere p {
-  width: fit-content;
-  margin: 0;
-  padding: 0;
-  color: var(--font-primary);
-  opacity: 0.5;
+#tap-anywhere p{
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+    color: var(--font-primary);
+    opacity: 0.5;
 }
 
-.board input {
-  position: relative;
-  font-size: medium;
-  color: var(--font-primary);
-  background: var(--bg-secondary);
-  opacity: 0.9;
-  font-size: smaller;
-  padding: 0.8rem 1rem;
-  cursor: pointer;
-  width: 100%;
-  z-index: 999;
-  border-radius: 0.5rem;
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid var(--accent);
+.board input{
+    position: relative;
+    font-size: medium;
+    color: var(--font-primary);
+    background: var(--bg-secondary);
+    opacity: 0.9;    
+    font-size: smaller;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    width: 100%;
+    z-index: 999;
+    border-radius: 0.5rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--accent);
 }
 
-.board input::placeholder {
-  color: var(--font-secondary);
+.board input::placeholder{
+    color: var(--font-secondary);
 }
 
-.board button {
-  position: relative;
-  width: fit-content;
-  height: fit-content;
-  font-size: medium;
-  color: white;
-  background: var(--accent);
-  font-size: smaller;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  z-index: 100;
-  border: none;
-  border-radius: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
+.board button{
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    font-size: medium;
+    color: white;
+    background: var(--accent);
+    font-size: smaller;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 100;
+    border: none;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
 }
 
-.board button:active {
-  opacity: 0.5;
+.board button:active{
+    opacity: 0.5;
 }
 
-.active {
-  opacity: 1;
+.active{
+    opacity: 1;
 }
 
-button i {
-  margin-right: 0.5rem;
+button i{
+    margin-right: 0.5rem;
 }
 
-#follower {
-  /* visibility: hidden; */
-  width: fit-content;
-  height: auto;
-  min-width: 100px;
-  min-height: 50px;
-  max-width: 300px;
-  padding: 0.5rem 1rem;
-  background-color: var(--bg-primary);
-  color: var(--font-primary);
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
-  position: absolute;
-  z-index: 999;
-  opacity: 0.5;
+#follower{
+    /* visibility: hidden; */
+    width: fit-content;
+    height: auto;
+    min-width: 100px;
+    min-height: 50px;
+    max-width: 300px;
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+    position: absolute;
+    z-index: 999;
+    opacity: 0.5;
 }
 
 .card {
-  width: fit-content;
-  height: auto;
-  min-width: 100px;
-  min-height: 50px;
-  max-width: 300px;
-  padding: 0.5rem 1rem;
-  background-color: var(--bg-primary);
-  color: var(--font-primary);
-  border: 1px solid black;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  font-size: 1rem;
-  position: absolute;
-  cursor: pointer;
-  /* z-index: 100; */
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+    width: fit-content;
+    height: auto;
+    min-width: 100px;
+    min-height: 50px;
+    max-width: 300px;
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    border: 1px solid black;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 1rem;
+    position: absolute;
+    cursor: pointer;
+    /* z-index: 100; */
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
 }
 
-.card textarea {
-  resize: none;
-  font-family: sans-serif;
-  width: 100%;
-  background-color: var(--bg-primary);
-  color: var(--font-primary);
-  border: none;
-  resize: none;
-  font-size: normal;
-  outline: none;
+.card textarea{
+    resize: none;
+    font-family: sans-serif;
+    width: 100%;
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    border: none;
+    resize: none;
+    font-size: normal;
+    outline: none;
 }
 
-dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px;
-  background-color: var(--bg-primary);
-  border-radius: 1rem;
-  border: none;
-  z-index: 100;
-  box-shadow: 0 0 0.5rem 0rem var(--font-secondary);
-  margin: 0;
-  padding: 2rem;
+dialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: var(--bg-primary);
+    border-radius: 1rem;
+    border: none;
+    z-index: 100;
+    box-shadow: 0 0 0.5rem 0rem var(--font-secondary);
+    margin: 0;
+    padding: 2rem;
 }
 
-#dialog-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99;
-  display: none;
+#dialog-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    display: none;
 }
 
-dialog h1 {
-  margin: 0;
-  margin-bottom: 1rem;
-  padding: 0;
-  font-size: medium;
-  color: var(--accent);
+dialog h1{
+    margin: 0;
+    margin-bottom: 1rem;
+    padding: 0;
+    font-size: medium;
+    color: var(--accent);
 }
 
-dialog input {
-  margin: 0.5rem 0;
-  margin-bottom: 0rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--font-secondary);
-  font-weight: lighter;
+dialog input{
+    margin: 0.5rem 0;
+    margin-bottom: 0rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--font-secondary);
+    font-weight: lighter;
 }
 
-dialog input::placeholder {
-  opacity: 0.5;
+dialog input::placeholder{
+    opacity: 0.5;
 }
 
-dialog label {
-  margin: 0;
-  margin-top: 1rem;
-  padding: 0;
-  font-size: smaller;
-  color: var(--font-secondary);
-  font-weight: bold;
+dialog label{
+    margin: 0;
+    margin-top: 1rem;
+    padding: 0;
+    font-size: smaller;
+    color: var(--font-secondary);
+    font-weight: bold;
 }
 
-dialog button {
-  margin: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  color: white;
-  background-color: var(--accent);
+dialog button{
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: var(--accent);
 }
 
-dialog button:hover {
-  opacity: 0.8;
+dialog button:hover{
+    opacity: 0.8;
 }
 
-#closeDialog {
-  background: none;
-  color: var(--font-secondary);
+#closeDialog{
+    background: none;
+    color: var(--font-secondary);
 }
 
-.dialog-button {
-  margin: 0;
-  margin-top: 2rem;
-  padding: 0;
-  border-radius: 0.5rem;
-  margin-left: auto;
-  border: none;
-  cursor: pointer;
+.dialog-button{
+    margin: 0;
+    margin-top: 2rem;
+    padding: 0;
+    border-radius: 0.5rem;
+    margin-left: auto;
+    border: none;
+    cursor: pointer;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+form{
+    display: flex;
+    flex-direction: column;
 }
 
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--bg-primary);
-  border-radius: 1rem;
+canvas{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
