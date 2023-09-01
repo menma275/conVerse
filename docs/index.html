@@ -123,6 +123,8 @@
         let id = "";
         let color;
 
+        let isCursorDevice = false;
+
         // DBからデータを取得
         // これが行われるまで次の処理が行われないようにする
         function fetchMessages(){
@@ -166,7 +168,12 @@
             document.getElementById("input-post").value = "";
         }
 
+        function isCursorDeviceFunc(){
+            return !('ontouchstart' in window || navigator.maxTouchPoints);
+        }
+
         window.addEventListener("DOMContentLoaded", () => {
+            isCursorDevice = isCursorDeviceFunc();
             localStorage.removeItem("dataList");
             fetchMessages()
                 .then((fetchData) => {
@@ -281,7 +288,7 @@
         });
 
         document.addEventListener("mousemove", (e) => {
-            if (isAddingCard) {
+            if (isAddingCard && isCursorDevice) {
                 const follower = document.getElementById("follower");
                 const containerRect = document.getElementById("container").getBoundingClientRect();
                 let x = e.clientX;
