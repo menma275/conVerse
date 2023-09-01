@@ -32,6 +32,18 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/messages", (req, res) => {
+  Message.find()
+    .then((messages) => res.send(messages))
+    .catch((err) => console.error(err));
+});
+
+app.post("/reset", (req, res) => {
+  Message.deleteMany({})
+    .then(() => res.send("Messages deleted..."))
+    .catch((err) => console.error(err));
+});
+
 server.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
@@ -52,6 +64,7 @@ io.on("connection", (socket) => {
       .save()
       .then(() => console.log("Message saved to DB..."))
       .catch((err) => console.error("Could not save message to DB..."));
+
     console.log("message: " + msg);
     io.emit("receiveMessage", msg);
   });

@@ -5,6 +5,11 @@
     <title>conVerse</title>
     <link href="css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- <script src="demoNFT/p5.min.js"></script>
+    <script src="demoNFT/conVoice_main.js"></script>
+    <script src="demoNFT/conVoice_filter.js"></script> -->
 </head>
 <body>
     <header>
@@ -54,10 +59,9 @@
             <!-- <ul id="message-list"/> -->
             <div class="post-set">
                 <input id="input-post" type="text" placeholder="Input your message.">
-                <!-- <button id="add-post">
-                    <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
-                    <span>Post</span>
-                </button> -->
+                <!-- <form id="deleteForm">
+                    <button type="submit">Reset</button>
+                </form> -->
             </div>
             <div id="tap-anywhere">
                 <p>👇 Tap anywhere to post.</p>
@@ -67,6 +71,8 @@
             <div id="follower" class="emoji-span"></div>
         </div>
     </main>
+
+    <!-- <canvas></canvas> -->
     <!-- <dialog id="createRoomDialog">
         <h1>Create New Room</h1>
         <form>
@@ -106,6 +112,8 @@
 
         let lastCardId = 0;
 
+        let fetchData;
+
         let x = 0;
         let y = 0;
         let cardId = 0;
@@ -113,25 +121,106 @@
         let id = "";
         let color;
 
+        // DBからデータを取得
+        // これが行われるまで次の処理が行われないようにする
+        function fetchMessages(){
+            return fetch("/messages")
+                .then((response) => {
+                    if(!response.ok)
+                        throw new Error(`${response.status} ${response.statusText}`);
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    return data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    throw error;
+                });
+        }
+
+        // document.getElementById("deleteForm").addEventListener("submit", (e) => {
+        //     e.preventDefault();
+        //     fetch("/reset", {
+        //         method: "POST",
+        //     })
+        //         .then((response) => {
+        //             return response.json();
+        //         })
+        //         .then((data) => {
+        //             console.log(data);
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        //     location.reload();
+        // });
+
 
         // input要素の中身をリセット
         function crearText(){
             document.getElementById("input-post").value = "";
         }
 
-        window.onload = function () {
-            // データを削除
+        window.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem("dataList");
+            fetchMessages()
+                .then((fetchData) => {
+                    console.log(fetchData);
+                    fetchData.forEach((data) => {
+                        console.log(JSON.parse(data.message));
+                        let date = data.timestamp.split("T")[0];
+                        let time = data.timestamp.split("T")[1].split(".")[0];
+                        let today = new Date();
+                        let todayDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
+                        if(todayDate.split("-")[1].length == 1){
+                            todayDate = todayDate.split("-")[0] + "-0" + todayDate.split("-")[1] + "-" + todayDate.split("-")[2];
+                        }
+                        if(todayDate.split("-")[2].length == 1){
+                            todayDate = todayDate.split("-")[0] + "-" + todayDate.split("-")[1] + "-0" + todayDate.split("-")[2];
+                        }
+                        console.log(date);
+                        console.log(todayDate);
+                        if(date == todayDate)
+                            dataList.push(JSON.parse(data.message));
+                    });
+                    console.log(dataList);
+                    addPastCard();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
+
+        // 過去のカードを追加
+        function addPastCard() {
+            let datas = dataList;
+            if (datas == null) {
+                console.log("null");
+                return;
+            }
+            datas.forEach((cardInfo) => {
+                    const card = document.createElement("div");
+                    card.className = "card";
+                    card.style.left = parseInt(cardInfo.pos.x) + "px";
+                    card.style.top = parseInt(cardInfo.pos.y) + "px";
+                    card.textContent = cardInfo.text;
+                    card.style.borderColor = cardInfo.color;
+                    card.draggable = false;
+                    document.getElementById("container").appendChild(card);
+                    lastCardId = cardInfo.postid;
+            });
         }
 
         // サーバー接続周り
         const addMessageList = (message) => {
-            const messageArray = message.split(",");
-            const user = messageArray[0];
-            const text = messageArray[1];
-            const x = messageArray[2];
-            const y = messageArray[3];
-            const color = messageArray[4];
+            message = JSON.parse(message);
+            const user = message.userid;
+            const text = message.text;
+            const x = message.pos.x;
+            const y = message.pos.y;
+            const color = message.color;
 
             let data = {
                 userid: user,
@@ -147,16 +236,22 @@
             dataList.push(data);
             jsonString = JSON.stringify(dataList);
             localStorage.setItem("dataList", jsonString);
+            console.log(dataList);
 
             addOtherUserCard();
         };
 
         // 他のユーザーが作ったカードを追加
         function addOtherUserCard(){
-            let datas = localStorage.getItem("dataList");
-            datas = JSON.parse(datas);
-            console.log(datas);
-            console.log(lastCardId)
+            // let datas = localStorage.getItem("dataList");
+            let datas = dataList;
+            // datas = JSON.parse(datas);
+            // console.log(datas);
+            // console.log(lastCardId)
+            if(datas == null){
+                console.log("null");
+                return;
+            }
             datas.forEach((cardInfo) => {
                 if (cardInfo.userid !== id && cardInfo.postid > lastCardId) {
                     const card = document.createElement("div");
@@ -178,7 +273,6 @@
         document.getElementById("input-post").addEventListener("input", (e) => {
             if (e.target.value !== "") {
                 isAddingCard = true;
-                // tap-anywhereをみえるようにする
                 document.getElementById("tap-anywhere").style.visibility = "visible";
             }
         });
@@ -208,8 +302,6 @@
             card.textContent = document.getElementById("input-post").value;
             card.draggable = false;
 
-            // color = "#" + Math.floor(Math.random() * 16777215).toString(16);
-
             color = palette[Math.floor(Math.random() * palette.length)];
 
             card.style.borderColor = color;
@@ -236,11 +328,22 @@
                 if (inputMessage === "") {
                     return;
                 }
-                
-                inputMessage = id + "," + inputMessage + "," + x + "," + y + "," + color;
 
-                socket.emit("sendMessage", inputMessage);
-                console.log(inputMessage);
+                let msg = {
+                    userid: id,
+                    postid: dataList.length+1,
+                    text: inputMessage,
+                    pos: {
+                        x: x,
+                        y: y
+                    },
+                    color: color,
+                }
+                
+                msg = JSON.stringify(msg);
+
+                socket.emit("sendMessage", msg);
+                // console.log(msg);
 
                 crearText();
             }
