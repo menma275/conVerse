@@ -125,7 +125,11 @@ html, body {
     border-right: 1px solid var(--bg-secondary);
     border-radius: 1rem;
 }
-
+@media screen and (max-width: 760px) {
+    .sidebar {
+      display: none;
+    }
+  }
 .sidebar h1{
     color: var(--font-secondary);
     font-size: medium;
@@ -201,16 +205,52 @@ html, body {
     box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
     overflow: hidden;
 }
+@media screen and (max-width: 760px) {
+    .board {
+      left: 1rem;
+      width: auto;
+      bottom: 1rem;
+    }
+  }
 
-#container{
+  #container__wrapper {
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: var(--bg-secondary);
+    z-index: 1;
     border-radius: 1rem;
-}
-
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: auto;
+  }
+  
+  #container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+  #container__wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  #manipulate {
+    position: fixed;
+    right: 2rem;
+    bottom: 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 10;
+  }
+  #manipulate button {
+    width: 40px;
+    height: 40px;
+    background-color: var(--bg-secondary);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  
 .board h1{
     position: absolute;
     /* boardの左上に配置 */
