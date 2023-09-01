@@ -140,6 +140,7 @@
                 });
         }
 
+        // リセットボタン
         // document.getElementById("deleteForm").addEventListener("submit", (e) => {
         //     e.preventDefault();
         //     fetch("/reset", {
@@ -170,16 +171,15 @@
                     console.log(fetchData);
                     fetchData.forEach((data) => {
                         console.log(JSON.parse(data.message));
-                        let date = data.timestamp.split("T")[0];
-                        let time = data.timestamp.split("T")[1].split(".")[0];
-                        let today = new Date();
+                        let receiveDate = new Date(data.timestamp.toLocaleString({ timeZone: 'Asia/Tokyo' }));
+                        console.log(receiveDate);
+
+                        let date = receiveDate.getFullYear() + "-" + (receiveDate.getMonth()+1) + "-" + receiveDate.getDate();
+                        
+                        let today = new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }));
                         let todayDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
-                        if(todayDate.split("-")[1].length == 1){
-                            todayDate = todayDate.split("-")[0] + "-0" + todayDate.split("-")[1] + "-" + todayDate.split("-")[2];
-                        }
-                        if(todayDate.split("-")[2].length == 1){
-                            todayDate = todayDate.split("-")[0] + "-" + todayDate.split("-")[1] + "-0" + todayDate.split("-")[2];
-                        }
+
+                        console.log(today);
                         console.log(date);
                         console.log(todayDate);
                         if(date == todayDate)

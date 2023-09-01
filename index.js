@@ -1,3 +1,7 @@
+require("dotenv").config();
+const { format } = require("date-fns");
+const { utcToZonedTime } = require("date-fns-tz");
+
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
@@ -5,12 +9,16 @@ const socketIo = require("socket.io");
 // mongoose
 const mongoose = require("mongoose");
 mongoose
-  .connect("mongodb://localhost/conVerse", {
+  // .connect("mongodb://localhost/conVerse", {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  // })
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log("Connected to MongoDB..."))
-  .catch((err) => console.error("Could not connect to MongoDB..."));
+  .catch((err) => console.error(err));
 
 const messageSchema = new mongoose.Schema({
   message: String,
@@ -23,8 +31,6 @@ const Message = mongoose.model("Message", messageSchema);
 const app = express();
 const server = http.Server(app);
 const io = socketIo(server);
-
-const PORT = 8080;
 
 app.use(express.static("docs"));
 
@@ -44,6 +50,8 @@ app.post("/reset", (req, res) => {
     .catch((err) => console.error(err));
 });
 
+const PORT = process.env.PORT;
+
 server.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
@@ -57,6 +65,7 @@ io.on("connection", (socket) => {
     const newMessage = new Message({
       message: msg,
       userId: userId,
+      // 日本時間を取得
       timestamp: new Date(),
     });
 
