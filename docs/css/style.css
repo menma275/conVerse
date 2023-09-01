@@ -95,10 +95,11 @@ html, body {
     align-items: center;
 }
 
+
 .user-icon{
     width: calc(var(--header-height)*0.6);
+    height: calc(var(--header-height)*0.6);
     margin-left: 1rem;
-    height: auto;
     aspect-ratio: 1/1;
     border-radius: 50%;
 }
