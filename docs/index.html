@@ -104,11 +104,12 @@
         let jsonString = JSON.stringify(dataList);
         localStorage.setItem("dataList", jsonString);
 
-
+        let lastCardId = 0;
 
         let x = 0;
         let y = 0;
         let cardId = 0;
+        let cardIndex = 0;
         let id = "";
         let color;
 
@@ -132,11 +133,9 @@
             const y = messageArray[3];
             const color = messageArray[4];
 
-            // cardList.push({user, text, x, y, color});
-            // console.log(cardList);
-
             let data = {
                 userid: user,
+                postid: dataList.length+1,
                 text: text,
                 pos: {
                     x: x,
@@ -157,8 +156,9 @@
             let datas = localStorage.getItem("dataList");
             datas = JSON.parse(datas);
             console.log(datas);
+            console.log(lastCardId)
             datas.forEach((cardInfo) => {
-                if (cardInfo.userid !== id) {
+                if (cardInfo.userid !== id && cardInfo.postid > lastCardId) {
                     const card = document.createElement("div");
                     card.className = "card";
                     card.style.left = parseInt(cardInfo.pos.x) + "px";
@@ -167,11 +167,11 @@
                     card.style.borderColor = cardInfo.color;
                     card.draggable = false;
                     document.getElementById("container").appendChild(card);
+                    lastCardId = cardInfo.postid;
                 }
             });
         }
 
-        let cardIndex = 0;
         let isAddingCard = false;
 
         // 何かが入力されたらカードを追加できるようにする
@@ -266,11 +266,13 @@
             cardId = e.dataTransfer.getData("text/plain");
             const card = document.querySelector(".card:nth-child(" + (parseInt(cardId) + 1) + ")");
             if (card) {
+                console.log(lastCardId)
                 const containerRect = document.getElementById("container").getBoundingClientRect();
                 const x = e.clientX - containerRect.left;
                 const y = e.clientY - containerRect.top;
                 card.style.left = x + "px";
                 card.style.top = y + "px";
+                lastCardId = parseInt(cardId) + 1;
             }
         });
     
