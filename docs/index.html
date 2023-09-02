@@ -51,7 +51,7 @@
                 <p>Create Room</p>
             </button>
         </div>
-        <div class="board">
+        <div class="board" id="board">
             <h1><span class="emoji-span">😀</span> emoji Room</h1>
             <!-- <ul id="message-list"/> -->
             <div class="post-set">
@@ -298,7 +298,8 @@
         document.addEventListener("mousemove", (e) => {
             if (isAddingCard && isCursorDevice) {
                 const follower = document.getElementById("follower");
-                const containerRect = document.getElementById("container").getBoundingClientRect();
+                const containerRect = document.getElementById("board").getBoundingClientRect();
+                // const containerRect = document.getElementById("container").getBoundingClientRect();
                 let x = e.clientX;
                 let y = e.clientY;
                 x -= containerRect.left;
