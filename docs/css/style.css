@@ -348,6 +348,7 @@ html, body {
     justify-content: center;
     align-items: center;
     opacity: 1;
+    touch-action: manipulation;
 }
 
 .board button:active{
