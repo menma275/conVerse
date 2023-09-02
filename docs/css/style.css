@@ -249,6 +249,7 @@ html, body {
     background-color: var(--bg-secondary);
     color: var(--accent);
     border: 1px solid var(--accent);
+    font-size: medium;
   }
   
 .board h1{
