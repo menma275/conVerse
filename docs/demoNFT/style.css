@@ -21,6 +21,7 @@ canvas {
 }
 
 #BacktoHome {
+  font-size: large;
   text-decoration: none;
   color: #fff;
 }

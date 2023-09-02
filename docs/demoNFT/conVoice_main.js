@@ -13,6 +13,7 @@ let seed = Math.random() * 99999;
 let mySize, margin;
 let tile_x, tile_y;
 let tile_x_size, tile_y_size;
+let boardWidth, boardHeight;
 
 // colors
 let colors_dark = "321E1E-27374D-116D6E-5F264A-2C3639-191A19"
@@ -46,7 +47,12 @@ function preload() {
   // conVerse = loadJSON("data.json");
   let datas = localStorage.getItem("dataList");
   conVerse = JSON.parse(datas);
-  console.log(datas);
+  let boardSize = localStorage.getItem("boardSize");
+  boardSize = JSON.parse(boardSize);
+  boardWidth = boardSize.width;
+  boardHeight = boardSize.height;
+  console.log("boardWidth : " + boardWidth);
+  console.log("boardHeight : " + boardHeight);
 }
 
 function setup() {
@@ -102,10 +108,10 @@ function draw() {
 
 class conVerse_chat {
   constructor(v) {
-    // this.x = v.posX;
-    // this.y = v.posY;
-    this.x = v.pos.x;
-    this.y = v.pos.y;
+    // this.x = v.pos.x;
+    // this.y = v.pos.y;
+    this.x = map(v.pos.x, 0, boardWidth, 0, width);
+    this.y = map(v.pos.y, 0, boardHeight, 0, height);
     this.color = v.color;
     this.date = v.date;
     this.time = v.time;

@@ -74,7 +74,6 @@
         </div>
     </main>
 
-    <!-- <canvas></canvas> -->
     <!-- <dialog id="createRoomDialog">
         <h1>Create New Room</h1>
         <form>
@@ -94,7 +93,6 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
         let palettes = [["#FFE6C7", "#FFA559", "#FF6000", "#454545"],
                         ["#5D9C59", "#C7E8CA", "#DDF7E3", "#DF2E38"],
                         ["#4CACBC", "#6CC4A1", "#A0D995", "#F6E3C5"],
@@ -125,8 +123,9 @@
 
         let isCursorDevice = false;
 
-        // DBからデータを取得
-        // これが行われるまで次の処理が行われないようにする
+        // boardのサイズを取得
+        let board, boardRect, boardWidth, boardHeight;
+
         function fetchMessages(){
             return fetch("/messages")
                 .then((response) => {
@@ -173,6 +172,15 @@
         }
 
         window.addEventListener("DOMContentLoaded", () => {
+            board = document.querySelector(".board");
+            boardRect = board.getBoundingClientRect();
+            let boardSize = {
+                width: boardRect.width,
+                height: boardRect.height
+            }
+            boardSize = JSON.stringify(boardSize);
+            localStorage.setItem("boardSize", boardSize);
+            
             isCursorDevice = isCursorDeviceFunc();
             localStorage.removeItem("dataList");
             fetchMessages()
