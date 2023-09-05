@@ -394,7 +394,7 @@
       const container = document.getElementById("container");
       document.getElementById("zoomin").addEventListener("click", (e) => {
         zoom += 0.1;
-        container.style.transform = "scale(" + zoom + ")";
+        container.style.transform = "translate(-50%,-50%) scale(" + zoom + ")";
       });
       document.getElementById("zoomout").addEventListener("click", (e) => {
         zoom -= 0.1;
