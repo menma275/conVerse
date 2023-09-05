@@ -197,7 +197,7 @@ html, body {
     width: auto;
     bottom: var(--element-space);
     right: var(--element-space);
-    width: calc(100% - var(--sidebar-width) - var(--element-space)*3);
+   /*width: calc(100% - var(--sidebar-width) - var(--element-space)*3);*/
     height: calc(100% - var(--header-height) - var(--element-space)*3);
     border: 1px solid var(--bg-primary);
     border-radius: 1rem;
