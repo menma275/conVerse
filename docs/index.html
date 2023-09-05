@@ -1,79 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>conVerse</title>
-    <link href="css/style.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/hammer.min.js"></script>
-    
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="header">
-            <h1>conVerse</h1>
-            <div class="user">
-                <button 
-                    onclick="location.href='demoNFT/index.html'">
-                    <p>Generate</p>
-                </button>
-                <!-- <button id="connect-button">
+      <div class="header">
+        <h1>conVerse</h1>
+        <div class="user">
+          <button onclick="location.href='demoNFT/index.html'">
+            <p>Generate</p>
+          </button>
+          <!-- <button id="connect-button">
                     <p>Connect Wallet</p>
                 </button> -->
-                <img src="public/icon1.jpg" alt="icon" class="user-icon">
-            </div>
+          <img src="public/icon1.jpg" alt="icon" class="user-icon" />
         </div>
+      </div>
     </header>
 
     <main>
-        <div class="sidebar">
-            <div>
-                <h1>Rooms</h1>
-                <div class="room here">
-                    <p class="icon emoji-span">😀</p>
-                    <p>emoji Room</p>
-                </div>
-                <div class="room">
-                    <p class="icon emoji-span">📝</p>
-                    <p>Kanji Room</p>
-                </div>
-                <div class="room">
-                    <p class="icon emoji-span ">🔊</p>
-                    <p>Sound Room</p>
-                </div>
-                <div class="room ">
-                    <p class="icon emoji-span">📸</p>
-                    <p>Picture Room</p>
-                </div>
-            </div>
-            <button id="createRoomButton" class="room createRoom">
-                <i class="fa fa-cube" aria-hidden="true"></i>
-                <p>Create Room</p>
-            </button>
+      <div class="sidebar">
+        <div>
+          <h1>Rooms</h1>
+          <div class="room here">
+            <p class="icon emoji-span">😀</p>
+            <p>emoji Room</p>
+          </div>
+          <div class="room">
+            <p class="icon emoji-span">📝</p>
+            <p>Kanji Room</p>
+          </div>
+          <div class="room">
+            <p class="icon emoji-span">🔊</p>
+            <p>Sound Room</p>
+          </div>
+          <div class="room">
+            <p class="icon emoji-span">📸</p>
+            <p>Picture Room</p>
+          </div>
         </div>
-        <div class="board">
-            <h1><span class="emoji-span">😀</span> emoji Room</h1>
-            <!-- <ul id="message-list"/> -->
-            <div class="post-set">
-                <input id="input-post" type="text" placeholder="Input your message.">
-                <!-- <form id="deleteForm">
+        <button id="createRoomButton" class="room createRoom">
+          <i class="fa fa-cube" aria-hidden="true"></i>
+          <p>Create Room</p>
+        </button>
+      </div>
+      <div class="board">
+        <h1><span class="emoji-span">😀</span> emoji Room</h1>
+        <!-- <ul id="message-list"/> -->
+        <div class="post-set">
+          <input id="input-post" type="text" placeholder="Input your message." />
+          <!-- <form id="deleteForm">
                     <button type="submit">Reset</button>
                 </form> -->
-            </div>
-            <div id="tap-anywhere">
-                <p>👇 Tap anywhere to post.</p>
-            </div>
-            <div id="container__wrapper">
-                <div id="container"></div>
-              </div>
-            <div id="follower" class="emoji-span"></div>
-            <div id="manipulate">
-                <button id="zoomin">+</button>
-                <button id="zoomout">-</button>
-              </div>
         </div>
+        <div id="tap-anywhere">
+          <p>👇 Tap anywhere to post.</p>
+        </div>
+        <div id="container__wrapper">
+          <div id="container"></div>
+        </div>
+        <div id="follower" class="emoji-span"></div>
+        <div id="manipulate">
+          <button id="zoomin">+</button>
+          <button id="zoomout">-</button>
+        </div>
+      </div>
     </main>
 
     <!-- <canvas></canvas> -->
@@ -93,313 +91,309 @@
             </form>
     </dialog> -->
 
-
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      let palettes = [
+        ["#FFE6C7", "#FFA559", "#FF6000", "#454545"],
+        ["#5D9C59", "#C7E8CA", "#DDF7E3", "#DF2E38"],
+        ["#4CACBC", "#6CC4A1", "#A0D995", "#F6E3C5"],
+        ["#675D50", "#ABC4AA", "#F3DEBA", "#A9907E"],
+        ["#F5F5F5", "#E8E2E2", "#F99417", "#5D3891"],
+        ["#EAE0DA", "#F7F5EB", "#A0C3D2", "#EAC7C7"],
+        ["#82954B", "#BABD42", "#EFD345", "#FFEF82"],
+        ["#146C94", "#19A7CE", "#B0DAFF", "#FEFF86"],
+      ];
 
-        let palettes = [["#FFE6C7", "#FFA559", "#FF6000", "#454545"],
-                        ["#5D9C59", "#C7E8CA", "#DDF7E3", "#DF2E38"],
-                        ["#4CACBC", "#6CC4A1", "#A0D995", "#F6E3C5"],
-                        ["#675D50", "#ABC4AA", "#F3DEBA", "#A9907E"],
-                        ["#F5F5F5", "#E8E2E2", "#F99417", "#5D3891"],
-                        ["#EAE0DA", "#F7F5EB", "#A0C3D2", "#EAC7C7"],
-                        ["#82954B", "#BABD42", "#EFD345", "#FFEF82"],
-                        ["#146C94", "#19A7CE", "#B0DAFF", "#FEFF86"]
-                    ];
-    
-        let palette = palettes[Math.floor(Math.random() * palettes.length)];
-        
-        let dataList = [];
+      let palette = palettes[Math.floor(Math.random() * palettes.length)];
 
-        let jsonString = JSON.stringify(dataList);
-        localStorage.setItem("dataList", jsonString);
+      let dataList = [];
 
-        let lastCardId = 0;
+      let jsonString = JSON.stringify(dataList);
+      localStorage.setItem("dataList", jsonString);
 
-        let fetchData;
+      let lastCardId = 0;
 
-        let x = 0;
-        let y = 0;
-        let cardId = 0;
-        let cardIndex = 0;
-        let id = "";
-        let color;
+      let fetchData;
 
-        let isCursorDevice = false;
+      let x = 0;
+      let y = 0;
+      let cardId = 0;
+      let cardIndex = 0;
+      let id = "";
+      let color;
 
-        // DBからデータを取得
-        // これが行われるまで次の処理が行われないようにする
-        function fetchMessages(){
-            return fetch("/messages")
-                .then((response) => {
-                    if(!response.ok)
-                        throw new Error(`${response.status} ${response.statusText}`);
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    return data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                    throw error;
-                });
-        }
+      let isCursorDevice = false;
 
-        // リセットボタン
-        // document.getElementById("deleteForm").addEventListener("submit", (e) => {
-        //     e.preventDefault();
-        //     fetch("/reset", {
-        //         method: "POST",
-        //     })
-        //         .then((response) => {
-        //             return response.json();
-        //         })
-        //         .then((data) => {
-        //             console.log(data);
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         });
-        //     location.reload();
-        // });
+      // DBからデータを取得
+      // これが行われるまで次の処理が行われないようにする
+      function fetchMessages() {
+        return fetch("/messages")
+          .then((response) => {
+            if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            return data;
+          })
+          .catch((error) => {
+            console.log(error);
+            throw error;
+          });
+      }
 
+      // リセットボタン
+      // document.getElementById("deleteForm").addEventListener("submit", (e) => {
+      //     e.preventDefault();
+      //     fetch("/reset", {
+      //         method: "POST",
+      //     })
+      //         .then((response) => {
+      //             return response.json();
+      //         })
+      //         .then((data) => {
+      //             console.log(data);
+      //         })
+      //         .catch((error) => {
+      //             console.log(error);
+      //         });
+      //     location.reload();
+      // });
 
-        // input要素の中身をリセット
-        function crearText(){
-            document.getElementById("input-post").value = "";
-        }
+      // input要素の中身をリセット
+      function crearText() {
+        document.getElementById("input-post").value = "";
+      }
 
-        function isCursorDeviceFunc(){
-            return !('ontouchstart' in window || navigator.maxTouchPoints);
-        }
+      function isCursorDeviceFunc() {
+        return !("ontouchstart" in window || navigator.maxTouchPoints);
+      }
 
-        window.addEventListener("DOMContentLoaded", () => {
-            isCursorDevice = isCursorDeviceFunc();
-            localStorage.removeItem("dataList");
+      window.addEventListener("DOMContentLoaded", () => {
+        isCursorDevice = isCursorDeviceFunc();
+        localStorage.removeItem("dataList");
 
-            //スクロール位置をセンターに
-            const containerW = document.getElementById("container__wrapper");
-            containerW.scrollTop = 2500;
-            containerW.scrollLeft = 2500;
+        //スクロール位置をセンターに
+        const containerW = document.getElementById("container__wrapper");
+        containerW.scrollTop = 2500;
+        containerW.scrollLeft = 2500;
 
-            fetchMessages()
-                .then((fetchData) => {
-                    console.log(fetchData);
-                    fetchData.forEach((data) => {
-                        console.log(JSON.parse(data.message));
-                        let receiveDate = new Date(data.timestamp.toLocaleString({ timeZone: 'Asia/Tokyo' }));
-                        console.log(receiveDate);
+        fetchMessages()
+          .then((fetchData) => {
+            console.log(fetchData);
+            fetchData.forEach((data) => {
+              console.log(JSON.parse(data.message));
+              let receiveDate = new Date(data.timestamp.toLocaleString({ timeZone: "Asia/Tokyo" }));
+              console.log(receiveDate);
 
-                        let date = receiveDate.getFullYear() + "-" + (receiveDate.getMonth()+1) + "-" + receiveDate.getDate();
-                        
-                        let today = new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }));
-                        let todayDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
+              let date = receiveDate.getFullYear() + "-" + (receiveDate.getMonth() + 1) + "-" + receiveDate.getDate();
 
-                        console.log(today);
-                        console.log(date);
-                        console.log(todayDate);
-                        if(date == todayDate)
-                            dataList.push(JSON.parse(data.message));
-                    });
-                    console.log(dataList);
-                    localStorage.setItem("dataList", JSON.stringify(dataList));
-                    addPastCard();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        });
+              let today = new Date(new Date().toLocaleString({ timeZone: "Asia/Tokyo" }));
+              let todayDate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
 
-        // 過去のカードを追加
-        function addPastCard() {
-            let datas = dataList;
-            if (datas == null) {
-                console.log("null");
-                return;
-            }
-            datas.forEach((cardInfo) => {
-                    const card = document.createElement("div");
-                    card.className = "card";
-                    card.style.left = parseInt(cardInfo.pos.x) + "px";
-                    card.style.top = parseInt(cardInfo.pos.y) + "px";
-                    card.textContent = cardInfo.text;
-                    //card.style.borderColor = cardInfo.color;
-                    card.style.boxShadow = "0 0 1rem 0.1rem " + cardInfo.color;
-                    card.draggable = false;
-                    document.getElementById("container").appendChild(card);
-                    lastCardId = cardInfo.postid;
+              console.log(today);
+              console.log(date);
+              console.log(todayDate);
+              if (date == todayDate) dataList.push(JSON.parse(data.message));
             });
-        }
-
-        // サーバー接続周り
-        const addMessageList = (message) => {
-            message = JSON.parse(message);
-            const user = message.userid;
-            const text = message.text;
-            const x = message.pos.x;
-            const y = message.pos.y;
-            const color = message.color;
-
-            let data = {
-                userid: user,
-                postid: dataList.length+1,
-                text: text,
-                pos: {
-                    x: x,
-                    y: y
-                },
-                color: color,
-            }
-
-            dataList.push(data);
-            jsonString = JSON.stringify(dataList);
-            localStorage.setItem("dataList", jsonString);
             console.log(dataList);
+            localStorage.setItem("dataList", JSON.stringify(dataList));
+            addPastCard();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
 
-            addOtherUserCard();
+      // 過去のカードを追加
+      function addPastCard() {
+        let datas = dataList;
+        if (datas == null) {
+          console.log("null");
+          return;
+        }
+        datas.forEach((cardInfo) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.style.left = parseInt(cardInfo.pos.x) + "px";
+          card.style.top = parseInt(cardInfo.pos.y) + "px";
+          card.innerHTML = wrapEmojisInSpans(cardInfo.text, 20);
+          //card.style.borderColor = cardInfo.color;
+          card.style.boxShadow = "0 0 1rem 0.1rem " + cardInfo.color;
+          card.draggable = false;
+          document.getElementById("container").appendChild(card);
+          lastCardId = cardInfo.postid;
+        });
+      }
+
+      // サーバー接続周り
+      const addMessageList = (message) => {
+        message = JSON.parse(message);
+        const user = message.userid;
+        const text = message.text;
+        const x = message.pos.x;
+        const y = message.pos.y;
+        const color = message.color;
+
+        let data = {
+          userid: user,
+          postid: dataList.length + 1,
+          text: text,
+          pos: {
+            x: x,
+            y: y,
+          },
+          color: color,
         };
 
-        // 他のユーザーが作ったカードを追加
-        function addOtherUserCard(){
-            // let datas = localStorage.getItem("dataList");
-            let datas = dataList;
-            // datas = JSON.parse(datas);
-            // console.log(datas);
-            // console.log(lastCardId)
-            if(datas == null){
-                console.log("null");
-                return;
-            }
-            datas.forEach((cardInfo) => {
-                if (cardInfo.userid !== id && cardInfo.postid > lastCardId) {
-                    const card = document.createElement("div");
-                    card.className = "card";
-                    card.style.left = parseInt(cardInfo.pos.x) + "px";
-                    card.style.top = parseInt(cardInfo.pos.y) + "px";
-                    card.textContent = cardInfo.text;
-                    /*card.style.borderColor = cardInfo.color;*/
-                    card.style.boxShadow = "0 0 1rem 0.1rem " + cardInfo.color;
-                    card.draggable = false;
-                    document.getElementById("container").appendChild(card);
-                    lastCardId = cardInfo.postid;
-                }
-            });
+        dataList.push(data);
+        jsonString = JSON.stringify(dataList);
+        localStorage.setItem("dataList", jsonString);
+        console.log(dataList);
+
+        addOtherUserCard();
+      };
+
+      // 他のユーザーが作ったカードを追加
+      function addOtherUserCard() {
+        // let datas = localStorage.getItem("dataList");
+        let datas = dataList;
+        // datas = JSON.parse(datas);
+        // console.log(datas);
+        // console.log(lastCardId)
+        if (datas == null) {
+          console.log("null");
+          return;
         }
-
-        let isAddingCard = false;
-
-        // 何かが入力されたらカードを追加できるようにする
-        document.getElementById("input-post").addEventListener("input", (e) => {
-            if (e.target.value !== "") {
-                isAddingCard = true;
-                document.getElementById("tap-anywhere").style.visibility = "visible";
-            }
-        });
-
-        document.addEventListener("mousemove", (e) => {
-            if (isAddingCard && isCursorDevice) {
-                const follower = document.getElementById("follower");
-                const containerRect = document.getElementById("container").getBoundingClientRect();
-                let x = e.clientX;
-                let y = e.clientY;
-                x -= containerRect.left;
-                y -= containerRect.top;
-                follower.style = 0.5;
-                follower.style.left = x + "px";
-                follower.style.top = y + "px";
-            }else{
-                follower.style.opacity = 0;
-            }
-        });
-
-        // カードを作る
-        function createCard(x, y) {
+        datas.forEach((cardInfo) => {
+          if (cardInfo.userid !== id && cardInfo.postid > lastCardId) {
             const card = document.createElement("div");
             card.className = "card";
-            card.style.left = x + "px";
-            card.style.top = y + "px";
-            card.textContent = document.getElementById("input-post").value;
+            card.style.left = parseInt(cardInfo.pos.x) + "px";
+            card.style.top = parseInt(cardInfo.pos.y) + "px";
+            card.innerHTML = wrapEmojisInSpans(cardInfo.text, 20);
+            /*card.style.borderColor = cardInfo.color;*/
+            card.style.boxShadow = "0 0 1rem 0.1rem " + cardInfo.color;
             card.draggable = false;
-
-            color = palette[Math.floor(Math.random() * palette.length)];
-
-            card.style.borderColor = color;
-
-            card.addEventListener("dragstart", (e) => {
-                e.dataTransfer.setData("text/plain", cardIndex);
-            });
-
             document.getElementById("container").appendChild(card);
-            cardIndex++;
+            lastCardId = cardInfo.postid;
+          }
+        });
+      }
+
+      let isAddingCard = false;
+
+      // 何かが入力されたらカードを追加できるようにする
+      document.getElementById("input-post").addEventListener("input", (e) => {
+        if (e.target.value !== "") {
+          isAddingCard = true;
+          document.getElementById("tap-anywhere").style.visibility = "visible";
         }
+      });
 
-        const socket = io();
-        document.getElementById("container").addEventListener("click", (e) => {
-            if(isAddingCard){
-                const containerRect = document.getElementById("container").getBoundingClientRect();
-                x = e.clientX - containerRect.left;
-                y = e.clientY - containerRect.top;
-                createCard(x, y);
-                isAddingCard = false;
-                document.getElementById("tap-anywhere").style.visibility = "hidden";
+      document.addEventListener("mousemove", (e) => {
+        if (isAddingCard && isCursorDevice) {
+          const follower = document.getElementById("follower");
+          const containerRect = document.getElementById("container").getBoundingClientRect();
+          let x = e.clientX;
+          let y = e.clientY;
+          x -= containerRect.left;
+          y -= containerRect.top;
+          follower.style = 0.5;
+          follower.style.left = x + "px";
+          follower.style.top = y + "px";
+        } else {
+          follower.style.opacity = 0;
+        }
+      });
 
-                let inputMessage = document.getElementById("input-post").value;
-                if (inputMessage === "") {
-                    return;
-                }
+      // カードを作る
+      function createCard(x, y) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.left = x + "px";
+        card.style.top = y + "px";
+        card.textContent = document.getElementById("input-post").value;
+        card.draggable = false;
 
-                let msg = {
-                    userid: id,
-                    postid: dataList.length+1,
-                    text: inputMessage,
-                    pos: {
-                        x: x,
-                        y: y
-                    },
-                    color: color,
-                }
-                
-                msg = JSON.stringify(msg);
+        color = palette[Math.floor(Math.random() * palette.length)];
 
-                socket.emit("sendMessage", msg);
-                // console.log(msg);
+        card.style.borderColor = color;
 
-                crearText();
-            }
+        card.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text/plain", cardIndex);
         });
 
-        // 自分のユーザーIDを取得
-        socket.on("user-id", (userId) => {
-            const userIdArray = userId.split(",");
-            id = userIdArray[0];
-            if(id == ""){
-                id = userId.toString();
-            }
-        });
+        document.getElementById("container").appendChild(card);
+        cardIndex++;
+      }
 
-        // 追加されたカードの情報を取得
-        socket.on("receiveMessage", (message) => {
-            addMessageList(message);
-        });
+      const socket = io();
+      document.getElementById("container").addEventListener("click", (e) => {
+        if (isAddingCard) {
+          const containerRect = document.getElementById("container").getBoundingClientRect();
+          x = e.clientX - containerRect.left;
+          y = e.clientY - containerRect.top;
+          createCard(x, y);
+          isAddingCard = false;
+          document.getElementById("tap-anywhere").style.visibility = "hidden";
 
-        // 自分のカードを追加
-        document.getElementById("container").addEventListener("drop", (e) => {
-            e.preventDefault();
-            cardId = e.dataTransfer.getData("text/plain");
-            const card = document.querySelector(".card:nth-child(" + (parseInt(cardId) + 1) + ")");
-            if (card) {
-                console.log(lastCardId)
-                const containerRect = document.getElementById("container").getBoundingClientRect();
-                const x = e.clientX - containerRect.left;
-                const y = e.clientY - containerRect.top;
-                card.style.left = x + "px";
-                card.style.top = y + "px";
-                lastCardId = parseInt(cardId) + 1;
-            }
-        });
-    
-         // ZOOM機能
+          let inputMessage = document.getElementById("input-post").value;
+          if (inputMessage === "") {
+            return;
+          }
+
+          let msg = {
+            userid: id,
+            postid: dataList.length + 1,
+            text: inputMessage,
+            pos: {
+              x: x,
+              y: y,
+            },
+            color: color,
+          };
+
+          msg = JSON.stringify(msg);
+
+          socket.emit("sendMessage", msg);
+          // console.log(msg);
+
+          crearText();
+        }
+      });
+
+      // 自分のユーザーIDを取得
+      socket.on("user-id", (userId) => {
+        const userIdArray = userId.split(",");
+        id = userIdArray[0];
+        if (id == "") {
+          id = userId.toString();
+        }
+      });
+
+      // 追加されたカードの情報を取得
+      socket.on("receiveMessage", (message) => {
+        addMessageList(message);
+      });
+
+      // 自分のカードを追加
+      document.getElementById("container").addEventListener("drop", (e) => {
+        e.preventDefault();
+        cardId = e.dataTransfer.getData("text/plain");
+        const card = document.querySelector(".card:nth-child(" + (parseInt(cardId) + 1) + ")");
+        if (card) {
+          console.log(lastCardId);
+          const containerRect = document.getElementById("container").getBoundingClientRect();
+          const x = e.clientX - containerRect.left;
+          const y = e.clientY - containerRect.top;
+          card.style.left = x + "px";
+          card.style.top = y + "px";
+          lastCardId = parseInt(cardId) + 1;
+        }
+      });
+
+      // ZOOM機能
       let zoom = 1;
       const container = document.getElementById("container");
       document.getElementById("zoomin").addEventListener("click", (e) => {
@@ -410,17 +404,38 @@
         zoom -= 0.1;
         container.style.transform = "scale(" + zoom + ")";
       });
-        // Create Room Dialog
-        // var openButton = document.getElementById("createRoomButton");
-        // var dialog = document.getElementById("createRoomDialog");
-        // var closeButton = document.getElementById("closeDialog");
-        // openButton.addEventListener("click", function () {
-        //     dialog.showModal();
-        // }, false);
-        // closeButton.addEventListener("click", function () {
-        //     dialog.close();
-        // }, false);
-    
+
+      //一定の文字数で改行（絵文字改行への対応）
+      function wrapEmojisInSpans(emojis, maxLength) {
+        let currentLine = "";
+        let wrappedEmojis = "";
+
+        for (let i = 0; i < emojis.length; i++) {
+          currentLine += emojis[i];
+
+          if (currentLine.length >= maxLength) {
+            wrappedEmojis += `<span>${currentLine}</span>`;
+            currentLine = "";
+          }
+        }
+
+        if (currentLine.length > 0) {
+          wrappedEmojis += `<span>${currentLine}</span>`;
+        }
+
+        return wrappedEmojis;
+      }
+
+      // Create Room Dialog
+      // var openButton = document.getElementById("createRoomButton");
+      // var dialog = document.getElementById("createRoomDialog");
+      // var closeButton = document.getElementById("closeDialog");
+      // openButton.addEventListener("click", function () {
+      //     dialog.showModal();
+      // }, false);
+      // closeButton.addEventListener("click", function () {
+      //     dialog.close();
+      // }, false);
     </script>
-</body>
+  </body>
 </html>
