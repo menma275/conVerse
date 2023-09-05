@@ -124,12 +124,9 @@ html, body {
     background-color: var(--bg-primary);
     border-right: 1px solid var(--bg-secondary);
     border-radius: 1rem;
+    display: none;
 }
-@media screen and (max-width: 760px) {
-    .sidebar {
-      display: none;
-    }
-  }
+
 .sidebar h1{
     color: var(--font-secondary);
     font-size: medium;
@@ -196,6 +193,8 @@ html, body {
 
 .board{
     position: absolute;
+    left: var(--element-space);
+    width: auto;
     bottom: var(--element-space);
     right: var(--element-space);
     width: calc(100% - var(--sidebar-width) - var(--element-space)*3);
@@ -205,13 +204,6 @@ html, body {
     box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
     overflow: hidden;
 }
-@media screen and (max-width: 760px) {
-    .board {
-      left: var(--element-space);
-      width: auto;
-      bottom: var(--element-space);
-    }
-  }
 
   #container__wrapper {
     overflow: hidden;
