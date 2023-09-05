@@ -216,7 +216,9 @@
                     card.style.left = parseInt(cardInfo.pos.x) + "px";
                     card.style.top = parseInt(cardInfo.pos.y) + "px";
                     card.textContent = cardInfo.text;
-                    card.style.borderColor = cardInfo.color;
+                    //card.style.borderColor = cardInfo.color;
+                    card.style.boxShadow = "0 0 1rem 0.1rem " + cardInfo.color;
+}
                     card.draggable = false;
                     document.getElementById("container").appendChild(card);
                     lastCardId = cardInfo.postid;

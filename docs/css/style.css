@@ -396,7 +396,7 @@ button i{
     position: absolute;
     cursor: pointer;
     /* z-index: 100; */
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
 }
 
