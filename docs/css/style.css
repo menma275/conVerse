@@ -222,7 +222,8 @@ html, body {
     /* overflow: hidden;*/
     width: 5000px;
     height:5000px;
-    transform-origin:center center;
+    transform-origin:center center; 
+    overflow: auto;
   }
   #container__wrapper::-webkit-scrollbar {
     display: none;

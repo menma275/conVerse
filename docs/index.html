@@ -7,7 +7,7 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="hammer.min.js"></script>
+    <script src="js/hammer.min.js"></script>
     
 </head>
 <body>
@@ -174,13 +174,19 @@
             return !('ontouchstart' in window || navigator.maxTouchPoints);
         }
 
+        document.getElementById( "container" ).addEventListener( "scroll", function() {
+	
+		// scrollLeftを取得
+		var s = this.scrollTop ;
+console.log(s);
+    });
+
         window.addEventListener("DOMContentLoaded", () => {
             isCursorDevice = isCursorDeviceFunc();
             localStorage.removeItem("dataList");
 
             //スクロール位置をセンターに
             const container = document.getElementById("container");
-            container.scrollLeft = 2500;
             container.scrollTop = 2500;
       
             fetchMessages()
