@@ -177,6 +177,12 @@
         window.addEventListener("DOMContentLoaded", () => {
             isCursorDevice = isCursorDeviceFunc();
             localStorage.removeItem("dataList");
+
+            //スクロール位置をセンターに
+            const container = document.getElementById("container");
+            container.scrollLeft = 2500;
+            container.scrollTop = 2500;
+      
             fetchMessages()
                 .then((fetchData) => {
                     console.log(fetchData);
@@ -404,10 +410,6 @@
         zoom -= 0.1;
         container.style.transform = "scale(" + zoom + ")";
       });
-      //スクロール位置をセンターに
-      container.scrollLeft = 2500;
-      container.scrollTop = 2500;
-      
         // Create Room Dialog
         // var openButton = document.getElementById("createRoomButton");
         // var dialog = document.getElementById("createRoomDialog");
