@@ -66,11 +66,11 @@
         <div id="container__wrapper">
           <div id="container"></div>
         </div>
-        <div id="follower" class="emoji-span"></div>
         <div id="manipulate">
           <button id="zoomin">+</button>
           <button id="zoomout">-</button>
         </div>
+        <div id="follower" class="emoji-span"></div>
       </div>
     </main>
 
@@ -175,8 +175,8 @@
 
         //スクロール位置をセンターに
         const containerW = document.getElementById("container__wrapper");
-        containerW.scrollTop = 2500;
-        containerW.scrollLeft = 2500;
+        containerW.scrollTop = 2500 - window.outerWidth / 2;
+        containerW.scrollLeft = 2500 - window.outerHeight / 2;
 
         fetchMessages()
           .then((fetchData) => {
@@ -294,11 +294,11 @@
       document.addEventListener("mousemove", (e) => {
         if (isAddingCard && isCursorDevice) {
           const follower = document.getElementById("follower");
-          const containerRect = document.getElementById("container").getBoundingClientRect();
-          let x = e.clientX;
-          let y = e.clientY;
-          x -= containerRect.left;
-          y -= containerRect.top;
+          const element = document.getElementById("container__wrapper");
+          const containerRect = element.getBoundingClientRect();
+          let x = e.clientX - containerRect.left;
+          let y = e.clientY - containerRect.top;
+          console.log(containerRect.left, containerRect.top);
           follower.style = 0.5;
           follower.style.left = x + "px";
           follower.style.top = y + "px";
@@ -332,8 +332,8 @@
       document.getElementById("container").addEventListener("click", (e) => {
         if (isAddingCard) {
           const containerRect = document.getElementById("container").getBoundingClientRect();
-          x = e.clientX - containerRect.left;
-          y = e.clientY - containerRect.top;
+          x = e.clientX * zoom - containerRect.left;
+          y = e.clientY * zoom - containerRect.top;
           createCard(x, y);
           isAddingCard = false;
           document.getElementById("tap-anywhere").style.visibility = "hidden";
@@ -385,8 +385,8 @@
         if (card) {
           console.log(lastCardId);
           const containerRect = document.getElementById("container").getBoundingClientRect();
-          const x = e.clientX - containerRect.left;
-          const y = e.clientY - containerRect.top;
+          const x = e.clientX * zoom - containerRect.left;
+          const y = e.clientY * zoom - containerRect.top;
           card.style.left = x + "px";
           card.style.top = y + "px";
           lastCardId = parseInt(cardId) + 1;
