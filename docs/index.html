@@ -174,8 +174,8 @@
 
         //スクロール位置をセンターに
         const containerW = document.getElementById("container__wrapper");
-        containerW.scrollTop = 2500 - window.innerWidth / 2;
-        containerW.scrollLeft = 2500 - window.innerHeight / 2;
+        containerW.scrollTop = 2500 - containerW.clientHeight / 2;
+        containerW.scrollLeft = 2500 - containerW.clientWidth / 2;
 
         fetchMessages()
           .then((fetchData) => {
