@@ -242,8 +242,8 @@ html, body {
     height: 40px;
     background-color: var(--bg-secondary);
     color: var(--accent);
-    border: 1px solid var(--accent);
     font-size: medium;
+    box-shadow: 0 0 0.2rem 0.1rem rgba(235, 180, 65, 0.2);
   }
   
 .board h1{
@@ -292,6 +292,7 @@ html, body {
     font-weight: lighter;
     cursor: default;
     z-index: 100;
+    text-wrap: nowrap;
 }
 
 #tap-anywhere p{
