@@ -174,8 +174,8 @@
 
         //スクロール位置をセンターに
         const containerW = document.getElementById("container__wrapper");
-        containerW.scrollTop = 2500 - window.outerWidth / 2;
-        containerW.scrollLeft = 2500 - window.outerHeight / 2;
+        containerW.scrollTop = 2500 - window.innerWidth / 2;
+        containerW.scrollLeft = 2500 - window.innerHeight / 2;
 
         fetchMessages()
           .then((fetchData) => {
@@ -400,8 +400,11 @@
         container.style.transform = "scale(" + zoom + ")";
       });
       document.getElementById("zoomout").addEventListener("click", (e) => {
-        zoom -= 0.1;
-        container.style.transform = "scale(" + zoom + ")";
+        if (zoom > 0) {
+          zoom -= 0.1;
+          container.style.transform = "scale(" + zoom + ")";
+        } else {
+        }
       });
 
       //一定の文字数で改行（絵文字改行への対応）
