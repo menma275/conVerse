@@ -7,6 +7,8 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="hammer.min.js"></script>
+    
 </head>
 <body>
     <header>
@@ -218,7 +220,6 @@
                     card.textContent = cardInfo.text;
                     //card.style.borderColor = cardInfo.color;
                     card.style.boxShadow = "0 0 1rem 0.1rem " + cardInfo.color;
-}
                     card.draggable = false;
                     document.getElementById("container").appendChild(card);
                     lastCardId = cardInfo.postid;
