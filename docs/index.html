@@ -398,12 +398,16 @@
       const container = document.getElementById("container");
       document.getElementById("zoomin").addEventListener("click", (e) => {
         zoom += 0.1;
-        container.style.transform = "translate(-50%,-50%) scale(" + zoom + ")";
+        container.style.transform = "scale(" + zoom + ")";
       });
       document.getElementById("zoomout").addEventListener("click", (e) => {
         zoom -= 0.1;
-        container.style.transform = "translate(-50%,-50%) scale(" + zoom + ")";
+        container.style.transform = "scale(" + zoom + ")";
       });
+      //スクロール位置をセンターに
+      container.scrollLeft = 2500;
+      container.scrollTop = 2500;
+      
         // Create Room Dialog
         // var openButton = document.getElementById("createRoomButton");
         // var dialog = document.getElementById("createRoomDialog");
