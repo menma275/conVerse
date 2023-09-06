@@ -400,7 +400,7 @@
         container.style.transform = "scale(" + zoom + ")";
       });
       document.getElementById("zoomout").addEventListener("click", (e) => {
-        if (zoom > 0) {
+        if (zoom > 0.4) {
           zoom -= 0.1;
           container.style.transform = "scale(" + zoom + ")";
         } else {
