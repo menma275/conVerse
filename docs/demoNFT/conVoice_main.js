@@ -13,24 +13,15 @@ let seed = Math.random() * 99999;
 let mySize, margin;
 let tile_x, tile_y;
 let tile_x_size, tile_y_size;
+let boardWidth, boardHeight;
 
 // colors
-let colors_dark = "321E1E-27374D-116D6E-5F264A-2C3639-191A19"
-  .split("-")
-  .map((a) => "#" + a);
-let colors_light =
-  "EEE3CB-F9F5F6-FBFFDC-F8E8EE-E3F4F4-C1D0B5-FEA1A1-FFD966-FADA9D"
-    .split("-")
-    .map((a) => "#" + a);
+let colors_dark = "321E1E-27374D-116D6E-5F264A-2C3639-191A19".split("-").map((a) => "#" + a);
+let colors_light = "EEE3CB-F9F5F6-FBFFDC-F8E8EE-E3F4F4-C1D0B5-FEA1A1-FFD966-FADA9D".split("-").map((a) => "#" + a);
 
 let colors0 = "281914-1a1a1a-202020-242e30".split("-").map((a) => "#" + a);
-let colors1 = "fef9fb-fafdff-ffffff-fcfbf4-f9f8f6"
-  .split("-")
-  .map((a) => "#" + a);
-let colors2 =
-  "f4c815-f9cad7-A57283-c1d5de-deede6-f7f6cf-b6d8f2-f4cfdf-9ac8eb-ccd4bf-e7cba9-eebab2-f5f3f7-f5e2e4-AAD9CD-E8D595-E9BBB5-E7CBA9-8DA47E"
-    .split("-")
-    .map((a) => "#" + a);
+let colors1 = "fef9fb-fafdff-ffffff-fcfbf4-f9f8f6".split("-").map((a) => "#" + a);
+let colors2 = "f4c815-f9cad7-A57283-c1d5de-deede6-f7f6cf-b6d8f2-f4cfdf-9ac8eb-ccd4bf-e7cba9-eebab2-f5f3f7-f5e2e4-AAD9CD-E8D595-E9BBB5-E7CBA9-8DA47E".split("-").map((a) => "#" + a);
 let color1, color2;
 let plus;
 
@@ -46,7 +37,12 @@ function preload() {
   // conVerse = loadJSON("data.json");
   let datas = localStorage.getItem("dataList");
   conVerse = JSON.parse(datas);
-  console.log(datas);
+  let boardSize = localStorage.getItem("boardSize");
+  boardSize = JSON.parse(boardSize);
+  boardWidth = boardSize.width;
+  boardHeight = boardSize.height;
+  console.log("boardWidth : " + boardWidth);
+  console.log("boardHeight : " + boardHeight);
 }
 
 function setup() {
@@ -102,10 +98,10 @@ function draw() {
 
 class conVerse_chat {
   constructor(v) {
-    // this.x = v.posX;
-    // this.y = v.posY;
-    this.x = v.pos.x;
-    this.y = v.pos.y;
+    // this.x = v.pos.x;
+    // this.y = v.pos.y;
+    this.x = map(v.pos.x, 0, boardWidth, 0, width);
+    this.y = map(v.pos.y, 0, boardHeight, 0, height);
     this.color = v.color;
     this.date = v.date;
     this.time = v.time;
@@ -120,9 +116,7 @@ class conVerse_chat {
     push();
     translate(this.x, this.y);
 
-    rotate(
-      this.angle + (random([-1, 1]) * 50 * 40 * this.plus) / this.point_num
-    );
+    rotate(this.angle + (random([-1, 1]) * 50 * 40 * this.plus) / this.point_num);
     noFill();
     stroke(str(this.color) + "80");
 

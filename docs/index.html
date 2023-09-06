@@ -26,31 +26,6 @@
     </header>
 
     <main>
-      <div class="sidebar">
-        <div>
-          <h1>Rooms</h1>
-          <div class="room here">
-            <p class="icon emoji-span">😀</p>
-            <p>emoji Room</p>
-          </div>
-          <div class="room">
-            <p class="icon emoji-span">📝</p>
-            <p>Kanji Room</p>
-          </div>
-          <div class="room">
-            <p class="icon emoji-span">🔊</p>
-            <p>Sound Room</p>
-          </div>
-          <div class="room">
-            <p class="icon emoji-span">📸</p>
-            <p>Picture Room</p>
-          </div>
-        </div>
-        <button id="createRoomButton" class="room createRoom">
-          <i class="fa fa-cube" aria-hidden="true"></i>
-          <p>Create Room</p>
-        </button>
-      </div>
       <div class="board">
         <h1><span class="emoji-span">😀</span> emoji Room</h1>
         <!-- <ul id="message-list"/> -->
@@ -169,14 +144,22 @@
       }
 
       window.addEventListener("DOMContentLoaded", () => {
-        isCursorDevice = isCursorDeviceFunc();
-        localStorage.removeItem("dataList");
-
         //スクロール位置をセンターに
         const containerW = document.getElementById("container__wrapper");
         containerW.scrollTop = 2500 - containerW.clientHeight / 2;
         containerW.scrollLeft = 2500 - containerW.clientWidth / 2;
 
+        const container = document.getElementById("container");
+        boardRect = container.getBoundingClientRect();
+        let boardSize = {
+          width: boardRect.width,
+          height: boardRect.height,
+        };
+        boardSize = JSON.stringify(boardSize);
+        localStorage.setItem("boardSize", boardSize);
+        console.log(boardSize);
+        isCursorDevice = isCursorDeviceFunc();
+        localStorage.removeItem("dataList");
         fetchMessages()
           .then((fetchData) => {
             console.log(fetchData);
