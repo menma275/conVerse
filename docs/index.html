@@ -148,8 +148,8 @@
         containerW.scrollTop = 2500 - containerW.clientHeight / 2;
         containerW.scrollLeft = 2500 - containerW.clientWidth / 2;
 
-        const container = document.getElementById("container");
-        boardRect = container.getBoundingClientRect();
+        //const container = document.getElementById("container");
+        boardRect = containerW.getBoundingClientRect();
         let boardSize = {
           width: boardRect.width,
           height: boardRect.height,

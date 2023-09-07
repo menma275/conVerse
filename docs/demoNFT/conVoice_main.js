@@ -100,8 +100,8 @@ class conVerse_chat {
   constructor(v) {
     // this.x = v.pos.x;
     // this.y = v.pos.y;
-    this.x = map(v.pos.x, 0, boardWidth, 0, width);
-    this.y = map(v.pos.y, 0, boardHeight, 0, height);
+    this.x = map(v.pos.x - 2500 + boardWidth / 2, 0, boardWidth, 0, width);
+    this.y = map(v.pos.y - 2500 + boardHeight / 2, 0, boardHeight, 0, height);
     this.color = v.color;
     this.date = v.date;
     this.time = v.time;
