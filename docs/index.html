@@ -294,12 +294,15 @@
         card.className = "card";
         card.style.left = x + "px";
         card.style.top = y + "px";
-        card.textContent = document.getElementById("input-post").value;
+        // card.textContent = document.getElementById("input-post").value;
+        card.innerHTML = wrapEmojisInSpans(document.getElementById("input-post").value, 20);
         card.draggable = false;
 
         color = palette[Math.floor(Math.random() * palette.length)];
 
-        card.style.borderColor = color;
+        // card.style.borderColor = color;
+        /*card.style.borderColor = cardInfo.color;*/
+        card.style.boxShadow = "0 0 1rem 0.1rem " + color;
 
         card.addEventListener("dragstart", (e) => {
           e.dataTransfer.setData("text/plain", cardIndex);
