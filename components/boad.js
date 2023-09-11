@@ -3,8 +3,9 @@ import Card from "@/components/card";
 import LoadingDots from "@/components/loading-dots";
 
 const Boad = () => {
-  const [datalist, setDatalist] = useState([]);
+  const [dataList, setDatalist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  let jsonString = "";
 
   const createCards = (data) => {
     let newdata = [];
@@ -28,6 +29,14 @@ const Boad = () => {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    if (dataList) {
+      localStorage.removeItem("dataList");
+      jsonString = JSON.stringify(dataList);
+      console.log(jsonString);
+      localStorage.setItem("dataList", jsonString);
+    }
+  }, [dataList]);
   /*
   useEffect(() => {
     console.log(isLoading);
@@ -42,10 +51,6 @@ const Boad = () => {
       })
       .catch((error) => console.error("Error:", error));
   }, []);
-  return (
-    <>
-      (isLoading ? <LoadingDots /> : <Card datalist={datalist} />)
-    </>
-  );
+  return <>{isLoading ? <LoadingDots /> : <Card dataList={dataList} />}</>;
 };
 export default memo(Boad);

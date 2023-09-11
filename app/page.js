@@ -2,11 +2,11 @@
 
 import LoadingDots from "@/components/loading-dots";
 import { Suspense } from "react";
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { io as ClientIO } from "socket.io-client";
 import Boad from "@/components/boad";
 import GenerativeArt from "@/components/genarativeart";
-// component
+
 const Index = () => {
   const [message, setMessage] = useState("");
   //const [socketId, setSocketId] = useState("");
@@ -16,6 +16,7 @@ const Index = () => {
   const [connected, setConnected] = useState(false);
   const dataList = [];
   let socketId = "";
+  let jsonString = "";
 
   const isCursorDevice = () => {
     return !("ontouchstart" in window || navigator.maxTouchPoints);
@@ -23,6 +24,7 @@ const Index = () => {
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
+    console.log(isOpen);
   };
 
   let palettes = [
@@ -67,8 +69,10 @@ const Index = () => {
       color: color,
     };
     dataList.push(data);
-    //jsonString = JSON.stringify(dataList);
-    //localStorage.setItem("dataList", jsonString);
+
+    jsonString = JSON.stringify(dataList);
+    console.log(jsonString);
+    localStorage.setItem("dataList", jsonString);
 
     addOtherUserCard();
   };
@@ -250,7 +254,6 @@ const Index = () => {
   useEffect(() => {
     // const containerW = document.getElementById("container__wrapper");
     if (connected) {
-      console.log(targetRef);
       const handleResize = () => {
         // const clientRect = targetRef.current.getBoundingClientRect();
         const rx = 2500 - targetRef.current.clientWidth / 2;
@@ -262,15 +265,14 @@ const Index = () => {
           height: targetRef.current.clientHeight,
         };
         boardSize = JSON.stringify(boardSize);
-        console.log(boardSize);
+        localStorage.setItem("boardSize", boardSize);
+        localStorage.removeItem("dataList");
       };
       handleResize();
       window.addEventListener("resize", handleResize);
       return () => {
         window.removeEventListener("resize", handleResize);
       };
-      //localStorage.setItem("boardSize", boardSize);
-      //localStorage.removeItem("dataList");
     }
   }, [connected]);
 
@@ -322,7 +324,7 @@ const Index = () => {
 
   return (
     <div>
-      <GenerativeArt buttonLabel="Generate" isOpen={isOpen} toggleModal={toggleModal} />
+      <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
       <header>
         <div className="header">
           <h1>conVerse</h1>

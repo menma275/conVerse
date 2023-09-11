@@ -1,14 +1,14 @@
-const GenerativeArt = ({ isOpen, toggleModal }) => {
-  console.log(isOpen);
+"use client";
+const GenerativeArt = (props) => {
   return (
     <>
-      {isOpen && (
+      {props.isOpen && (
         <>
           <div className="generativeart">
-            <main></main>
+            <iframe src="/SamuelYAN/index.html" frameBorder="0"></iframe>
             <footer>
               <p className="back-button">
-                <button id="BacktoHome" onClick={toggleModal}>
+                <button id="BacktoHome" onClick={() => props.toggleModal()}>
                   Close
                 </button>
               </p>

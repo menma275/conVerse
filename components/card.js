@@ -1,7 +1,7 @@
-const Card = ({ datalist }) => {
+const Card = ({ dataList }) => {
   return (
     <>
-      {datalist.map((data, index) => (
+      {dataList.map((data, index) => (
         <div className="card" key={index} style={{ left: data.pos.x, top: data.pos.y, boxShadow: data.color + "0px 0px 1rem 0.1rem" }}>
           {data.text}
         </div>
