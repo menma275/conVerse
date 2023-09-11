@@ -2,7 +2,7 @@ import { memo } from "react";
 
 const Card = async () => {
   let dataList = [];
-  const res = await fetch("http://localhost:3000/api/message", { cache: "no-store" });
+  const res = await fetch("/api/message", { cache: "no-store" });
   const posts = await res.json();
   posts.map((data) => {
     let receiveDate = new Date(data.timestamp.toLocaleString({ timeZone: "Asia/Tokyo" }));
