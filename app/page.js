@@ -11,12 +11,18 @@ const Index = () => {
   const [message, setMessage] = useState("");
   //const [socketId, setSocketId] = useState("");
   const [isAddingCard, setIsAddingCard] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const [connected, setConnected] = useState(false);
   const dataList = [];
   let socketId = "";
 
   const isCursorDevice = () => {
     return !("ontouchstart" in window || navigator.maxTouchPoints);
+  };
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
   };
 
   let palettes = [
@@ -316,12 +322,12 @@ const Index = () => {
 
   return (
     <div>
-      <GenerativeArt buttonLabel="Generate" />
+      <GenerativeArt buttonLabel="Generate" isOpen={isOpen} toggleModal={toggleModal} />
       <header>
         <div className="header">
           <h1>conVerse</h1>
           <div className="user">
-            <button /*onClick="location.href='demoNFT/index.html'"*/>
+            <button onClick={toggleModal}>
               <p>Generate</p>
             </button>
             <img src="/icon1.jpg" alt="icon" className="user-icon" />

@@ -42,6 +42,10 @@ const Boad = () => {
       })
       .catch((error) => console.error("Error:", error));
   }, []);
-  return <>{isLoading ? <LoadingDots /> : <Card datalist={datalist} />}</>;
+  return (
+    <>
+      (isLoading ? <LoadingDots /> : <Card datalist={datalist} />)
+    </>
+  );
 };
 export default memo(Boad);

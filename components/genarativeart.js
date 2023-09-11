@@ -1,13 +1,7 @@
-import { useState } from "react";
-
-const GenerativeArt = ({ buttonLabel }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
+const GenerativeArt = ({ isOpen, toggleModal }) => {
+  console.log(isOpen);
   return (
     <>
-      <button onClick={toggleModal}>{buttonLabel}</button>
       {isOpen && (
         <>
           <div className="generativeart">
