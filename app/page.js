@@ -4,8 +4,8 @@ import LoadingDots from "@/components/loading-dots";
 import { Suspense } from "react";
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { io as ClientIO } from "socket.io-client";
-import Card from "@/components/card";
-
+import Boad from "@/components/boad";
+import GenerativeArt from "@/components/genarativeart";
 // component
 const Index = () => {
   const [message, setMessage] = useState("");
@@ -39,7 +39,7 @@ const Index = () => {
   let cardIndex = 0;
   let color;
 
-  // サーバー接続周り
+  // socketで他の人が追加したカードを取得
 
   const addMessageList = (message) => {
     let cardnum = dataList.length + 1;
@@ -92,15 +92,6 @@ const Index = () => {
       }
     });
   }
-
-  // 何かが入力されたらカードを追加できるようにする
-  const handleChange = (e) => {
-    setMessage(e.target.value);
-    if (e.target.value !== "") {
-      setIsAddingCard(true);
-      document.getElementById("tap-anywhere").style.visibility = "visible";
-    }
-  };
 
   //マウスに吹き出しが追従
   function handleMouseMove(e) {
@@ -233,11 +224,26 @@ const Index = () => {
     return wrappedEmojis;
   }
 
+  //input要素の入力を反映
+  const handleChange = (e) => {
+    setMessage(e.target.value);
+  };
+
+  // 何かが入力されたらカードを追加できるようにする
+  useEffect(() => {
+    if (message) {
+      setIsAddingCard(true);
+    } else {
+      setIsAddingCard(false);
+    }
+  }, [message]);
+
   //スクロール位置をセンターに
   const targetRef = useRef();
+
   useEffect(() => {
     // const containerW = document.getElementById("container__wrapper");
-    if (targetRef.current) {
+    if (connected) {
       console.log(targetRef);
       const handleResize = () => {
         // const clientRect = targetRef.current.getBoundingClientRect();
@@ -260,7 +266,7 @@ const Index = () => {
       //localStorage.setItem("boardSize", boardSize);
       //localStorage.removeItem("dataList");
     }
-  }, [targetRef.current]);
+  }, [connected]);
 
   useEffect(() => {
     console.log(socketId);
@@ -294,30 +300,6 @@ const Index = () => {
       }
     });*/
 
-    /*
-    fetchMessages()
-      .then((fetchData) => {
-        fetchData.forEach((data) => {
-          //console.log(JSON.parse(data.message));
-          let receiveDate = new Date(data.timestamp.toLocaleString({ timeZone: "Asia/Tokyo" }));
-          //console.log(receiveDate);
-
-          let date = receiveDate.getFullYear() + "-" + (receiveDate.getMonth() + 1) + "-" + receiveDate.getDate();
-
-          let today = new Date(new Date().toLocaleString({ timeZone: "Asia/Tokyo" }));
-          let todayDate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-
-          if (date == todayDate) dataList.push(JSON.parse(data.message));
-        });
-
-        setChat(JSON.stringify(dataList));
-        //localStorage.setItem("dataList", JSON.stringify(dataList));
-        addPastCard();
-      })
-      .catch((error) => {
-        console.log("error");
-      });*/
-
     // socket disconnet onUnmount if exists
     if (socket) return () => socket.disconnect();
   }, []);
@@ -334,6 +316,7 @@ const Index = () => {
 
   return (
     <div>
+      <GenerativeArt buttonLabel="Generate" />
       <header>
         <div className="header">
           <h1>conVerse</h1>
@@ -356,7 +339,7 @@ const Index = () => {
             {/* <form id="deleteForm">
                     <button type="submit">Reset</button></form> */}
           </div>
-          <div id="tap-anywhere">
+          <div id="tap-anywhere" style={{ display: message ? "" : "none" }}>
             <p>👇 Tap anywhere to post.</p>
           </div>
           <div id="container__wrapper" ref={targetRef}>
@@ -369,10 +352,10 @@ const Index = () => {
               }}>
               <Suspense>
                 {/* @ts-expect-error Async Server Component */}
-                <Card />
+                <Boad />
               </Suspense>
 
-              <div id="follower" className="emoji-span"></div>
+              <div id="follower" className="emoji-span" style={{ display: message ? "" : "none" }}></div>
             </div>
           </div>
           <div id="manipulate">
@@ -386,46 +369,6 @@ const Index = () => {
         </div>
       </main>
     </div>
-    /*
-   
-     {chatMessages.length ? (
-            chatMessages.map((chatMessage, i) => (
-              <div key={"msg_" + i} className="mt-1 text-black dark:text-white">
-                {chatMessage.message}
-              </div>
-            ))
-          ) : (
-            <div className="text-sm text-center text-gray-600 dark:text-gray-400 py-6">No chat messages</div>
-          )}
-
-           <input
-                ref={inputRef}
-                type="text"
-                value={messageInput}
-                placeholder={connected ? "Type a message..." : "Connecting..."}
-                className="w-full h-full rounded shadow border px-2 border-gray-600 dark:border-gray-400 text-black dark:text-white"
-                disabled={!connected}
-                onChange={(e) => {
-                  setMessageInput(e.target.value);
-                }}
-                onKeyUp={(e) => {
-                  if (e.key === "Enter") {
-                    sendMessage();
-                  }
-                }}
-              />
-
-             <button
-                className="bg-slate-50 dark:bg-slate-950 rounded shadow text-sm text-black dark:text-white h-full px-2"
-                onClick={() => {
-                  sendMessage();
-                }}
-                disabled={!connected}>
-                SEND
-              </button>
-
-       
-    */
   );
 };
 
