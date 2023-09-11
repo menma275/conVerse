@@ -6,6 +6,7 @@ const Boad = () => {
   const [dataList, setDatalist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   let jsonString = "";
+  let loadtime = 0;
 
   const createCards = (data) => {
     let newdata = [];
@@ -44,12 +45,15 @@ const Boad = () => {
   }, [isLoading]);
 */
   useEffect(() => {
-    fetch("/api/message")
-      .then((res) => res.json())
-      .then((data) => {
-        createCards(data);
-      })
-      .catch((error) => console.error("Error:", error));
+    if (loadtime == 0) {
+      fetch("/api/message")
+        .then((res) => res.json())
+        .then((data) => {
+          createCards(data);
+        })
+        .catch((error) => console.error("Error:", error));
+      loadtime++;
+    }
   }, []);
   return <>{isLoading ? <LoadingDots /> : <Card dataList={dataList} />}</>;
 };
