@@ -1,10 +1,12 @@
 import { useEffect, useState, memo } from "react";
+
 import Card from "@/components/card";
 import LoadingDots from "@/components/loading-dots";
 
 const Boad = () => {
   const [dataList, setDatalist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   let jsonString = "";
   let loadtime = 0;
 
@@ -12,10 +14,24 @@ const Boad = () => {
     let newdata = [];
 
     data.map((value) => {
-      let receiveDate = new Date(value.timestamp.toLocaleString({ timeZone: "Asia/Tokyo" }));
-      let date = receiveDate.getFullYear() + "-" + (receiveDate.getMonth() + 1) + "-" + receiveDate.getDate();
-      let today = new Date(new Date().toLocaleString({ timeZone: "Asia/Tokyo" }));
-      let todayDate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+      let receiveDate = new Date(
+        value.timestamp.toLocaleString({ timeZone: "Asia/Tokyo" })
+      );
+      let date =
+        receiveDate.getFullYear() +
+        "-" +
+        (receiveDate.getMonth() + 1) +
+        "-" +
+        receiveDate.getDate();
+      let today = new Date(
+        new Date().toLocaleString({ timeZone: "Asia/Tokyo" })
+      );
+      let todayDate =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
       let json = "";
       if (value.message) {
         json = JSON.parse(value.message);
