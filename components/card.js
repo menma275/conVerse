@@ -6,11 +6,11 @@ const Card = ({ dataList }) => {
           className="card"
           key={index}
           style={{
-            left: data.pos.x,
-            top: data.pos.y,
-            boxShadow: "0px 0px 0.25rem 0.05rem" + data.color,
+            left: data?.pos.x,
+            top: data?.pos.y,
+            boxShadow: "0px 0px 0.25rem 0.05rem" + data?.color,
           }}>
-          {data.text}
+          {data?.text}
         </div>
       ))}
     </>

@@ -1,8 +1,3 @@
-//import { useEffect, useState, memo } from "react";
-import Card from "@/components/card";
-//import LoadingDots from "@/components/loading-dots";
-let loadtime = 0;
-
 const createCards = (data) => {
   let newdata = [];
 
@@ -44,18 +39,24 @@ async function setDetaList(dataList) {
 }
 
 const Boad = async () => {
-  // const [dataList, setDatalist] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
-
-  if (loadtime == 0) {
-    loadtime++;
-    const dataList = await getPosts();
-    console.log(dataList);
-    //await setDetaList(dataList);
-    if (!dataList || dataList.length === 0) {
-      console.log("No contents");
-    }
-    return <>{<Card dataList={dataList} />}</>;
-  }
+  const dataList = await getPosts();
+  console.log(dataList);
+  await setDetaList(dataList);
+  return (
+    <>
+      {dataList.map((data, index) => (
+        <div
+          className="card"
+          key={index}
+          style={{
+            left: data?.pos?.x,
+            top: data?.pos?.y,
+            boxShadow: "0px 0px 0.25rem 0.05rem" + data?.color,
+          }}>
+          {data?.text}
+        </div>
+      ))}
+    </>
+  );
 };
 export default Boad;

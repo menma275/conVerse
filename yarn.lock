@@ -2628,7 +2628,7 @@ react-is@^16.13.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-moveable@~0.54.1:
+react-moveable@^0.54.1, react-moveable@~0.54.1:
   version "0.54.1"
   resolved "https://registry.npmjs.org/react-moveable/-/react-moveable-0.54.1.tgz"
   integrity sha512-Kj2ifw9nk3LZvu7ezhst8Z5WBPRr+yVv9oROwrBirFlHmwGHHZXUGk5Gaezu+JGqqNRsQJncVMW5Uf68KSSOvg==

@@ -199,6 +199,7 @@ body {
   border-radius: 1rem;
   border: 2px solid var(--black);
   box-shadow: 0.5rem 0.5rem 0 0 var(--accent);
+  transition: all 0.5s 0s ease;
 }
 
 .board-header {

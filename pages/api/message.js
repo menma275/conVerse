@@ -14,7 +14,7 @@ const handler = async (req, res) => {
 
     switch (method) {
       case "GET":
-        const posts = await Message.find();
+        const posts = await Message.find({});
         res.status(200).json(posts);
         break;
       case "POST":
