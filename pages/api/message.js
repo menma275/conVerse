@@ -16,7 +16,6 @@ const handler = async (req, res) => {
       case "GET":
         const posts = await Message.find();
         res.status(200).json(posts);
-
         break;
       case "POST":
         const newMessage = new Message({

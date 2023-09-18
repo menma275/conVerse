@@ -6,12 +6,16 @@ if (!process.env.MONGODB_URI) {
 
 const uri = process.env.MONGODB_URI;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
+let connectTime = 0;
 
 const connectDB = async () => {
   try {
-    mongoose.set("strictQuery", false);
-    await mongoose.connect(uri, options);
-    console.log("successfully connected to MongoDB.");
+    if (connectTime == 0) {
+      mongoose.set("strictQuery", false);
+      await mongoose.connect(uri, options);
+      console.log("successfully connected to MongoDB.");
+      connectTime++;
+    }
   } catch (err) {
     console.log("unconnected to MongoDB.");
     throw new Error();

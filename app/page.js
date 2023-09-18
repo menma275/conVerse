@@ -29,7 +29,6 @@ const Index = () => {
   const dataList = [];
   let socketId = "";
   let jsonString = "";
-
   const isCursorDevice = () => {
     return !("ontouchstart" in window || navigator.maxTouchPoints);
   };
@@ -104,10 +103,7 @@ const Index = () => {
 
   // 他のユーザーが作ったカードを追加
   function addOtherUserCard() {
-    // let datas = localStorage.getItem("dataList");
     let datas = dataList;
-    // datas = JSON.parse(datas);
-    // console.log(datas);
 
     if (datas == null) {
       console.log("null");
@@ -314,6 +310,7 @@ const Index = () => {
     });
 
     // log socket connection
+
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket.id);
       socketId = socket.id;
@@ -324,15 +321,6 @@ const Index = () => {
     socket.on("receiveMessage", (message) => {
       addMessageList(message);
     });
-    // 自分のユーザーIDを取得
-    /*
-    socket.on("user-id", (userId) => {
-      const userIdArray = userId.split(",");
-      id = userIdArray[0];
-      if (id == "") {
-        id = userId.toString();
-      }
-    });*/
 
     // socket disconnet onUnmount if exists
     if (socket) return () => socket.disconnect();
@@ -371,7 +359,6 @@ const Index = () => {
           onDrag={(e) => {
             // target!.style.left = `${left}px`;
             // target!.style.top = `${top}px`;
-            console.log("onDrag translate");
             e.target.style.transform = e.transform;
           }}
           onResize={(e) => {
