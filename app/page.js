@@ -190,7 +190,9 @@ const Index = () => {
     if (isAddingCard) {
       let cardnum = document.getElementById("container").childElementCount;
       console.log(cardnum);
-      const containerRect = document.getElementById("container").getBoundingClientRect();
+      const containerRect = document
+        .getElementById("container")
+        .getBoundingClientRect();
       x = (e.clientX - containerRect.left) / zoom;
       y = (e.clientY - containerRect.top) / zoom;
       color = palette[Math.floor(Math.random() * palette.length)];
@@ -366,15 +368,7 @@ const Index = () => {
           id="moveable"
           target={resizeTarget}
           resizable={resizable}
-          draggable={true}
           keepRatio={false}
-          dragTarget={dragTarget}
-          onDrag={(e) => {
-            // target!.style.left = `${left}px`;
-            // target!.style.top = `${top}px`;
-            console.log("onDrag translate");
-            e.target.style.transform = e.transform;
-          }}
           onResize={(e) => {
             e.target.style.width = `${e.width}px`;
             e.target.style.height = `${e.height}px`;
@@ -382,58 +376,75 @@ const Index = () => {
             console.log("onResize");
           }}
         />
-        <div className="board pixel-shadow" id="board_01" ref={resizeTarget}>
-          <div className="board-header pixel-shadow" id="header_01" ref={dragTarget}>
-            <div className="board-header-set">
-              <h1>emoji Room</h1>
-              <button>
-                <p>Generate</p>
+        <Draggable handle=".handle">
+          <div className="board pixel-shadow" id="board_01" ref={resizeTarget}>
+            <div className="board-header pixel-shadow" id="header_01">
+              <div className="board-header-set">
+                <h1>emoji Room</h1>
+                <button>
+                  <p>Generate</p>
+                </button>
+              </div>
+              <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" />
+            </div>
+            <div className="post-set">
+              <input
+                id="input-post"
+                type="text"
+                placeholder="Input your message."
+                value={message}
+                onChange={handleChange}
+              />
+              {/* <form id="deleteForm">
+                    <button type="submit">Reset</button></form> */}
+            </div>
+            <div id="tap-anywhere" style={{ display: message ? "" : "none" }}>
+              <p>👇 Tap anywhere to post.</p>
+            </div>
+            <div id="container__wrapper" ref={targetRef}>
+              <div
+                id="container"
+                onClick={placeMessage}
+                onMouseMove={(e) => handleMouseMove(e)}
+                style={{
+                  transform: `scale(${zoom})`,
+                }}
+              >
+                <Suspense>
+                  {/* @ts-expect-error Async Server Component */}
+                  <Boad />
+                </Suspense>
+
+                <div
+                  id="follower"
+                  className="emoji-span"
+                  style={{ display: message ? "" : "none" }}
+                ></div>
+              </div>
+            </div>
+            <div id="manipulate">
+              <button id="zoomin" className="pixel-shadow" onClick={zoomin}>
+                +
+              </button>
+              <button id="zoomout" className="pixel-shadow" onClick={zoomout}>
+                -
               </button>
             </div>
-            <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" />
-          </div>
-          <div className="post-set">
-            <input id="input-post" type="text" placeholder="Input your message." value={message} onChange={handleChange} />
-            {/* <form id="deleteForm">
-                    <button type="submit">Reset</button></form> */}
-          </div>
-          <div id="tap-anywhere" style={{ display: message ? "" : "none" }}>
-            <p>👇 Tap anywhere to post.</p>
-          </div>
-          <div id="container__wrapper" ref={targetRef}>
-            <div
-              id="container"
-              onClick={placeMessage}
-              onMouseMove={(e) => handleMouseMove(e)}
-              style={{
-                transform: `scale(${zoom})`,
-              }}>
-              <Suspense>
-                {/* @ts-expect-error Async Server Component */}
-                <Boad />
-              </Suspense>
-
-              <div id="follower" className="emoji-span" style={{ display: message ? "" : "none" }}></div>
+            <div className="board-description" id="board-description-01">
+              <div className="desc-jp-en">
+                <p className="jp-desc">えもじだけで話す部屋。</p>
+                <p className="en-desc">room to chat only with emojis.</p>
+              </div>
+              <button
+                id="board-description-button"
+                className="pixel-shadow"
+                onClick={toggleRoom}
+              >
+                さんかする
+              </button>
             </div>
           </div>
-          <div id="manipulate">
-            <button id="zoomin" className="pixel-shadow" onClick={zoomin}>
-              +
-            </button>
-            <button id="zoomout" className="pixel-shadow" onClick={zoomout}>
-              -
-            </button>
-          </div>
-          <div className="board-description" id="board-description-01">
-            <div className="desc-jp-en">
-              <p className="jp-desc">えもじだけで話す部屋。</p>
-              <p className="en-desc">room to chat only with emojis.</p>
-            </div>
-            <button id="board-description-button" className="pixel-shadow" onClick={toggleRoom}>
-              さんかする
-            </button>
-          </div>
-        </div>
+        </Draggable>
         <button className="pixel-shadow" id="create-room">
           Create Room
         </button>
