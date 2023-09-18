@@ -11,7 +11,6 @@ import { MdDragHandle } from "react-icons/md";
 import { RxDragHandleHorizontal } from "react-icons/rx";
 import { set } from "mongoose";
 // ドラッグ・リサイズ
-import Draggable from "react-draggable";
 import Moveable from "react-moveable";
 
 const Index = () => {
@@ -383,14 +382,14 @@ const Index = () => {
           }}
         />
         <div className="board pixel-shadow" id="board_01" ref={resizeTarget}>
-          <div className="board-header pixel-shadow" id="header_01">
+          <div className="board-header pixel-shadow" id="header_01" ref={dragTarget}>
             <div className="board-header-set">
               <h1>emoji Room</h1>
               <button>
                 <p>Generate</p>
               </button>
             </div>
-            <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" ref={dragTarget} />
+            <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" />
           </div>
           <div className="post-set">
             <input id="input-post" type="text" placeholder="Input your message." value={message} onChange={handleChange} />
