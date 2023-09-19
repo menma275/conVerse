@@ -18,7 +18,7 @@ const RoomDefault = (Props) => {
       <div className="board pixel-shadow" id="board_01" ref={resizeTarget}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <div className="board-header-set">
-            <h1>emoji Room</h1>
+            <h1>emoji Land</h1>
           </div>
           <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" />
         </div>
