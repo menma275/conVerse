@@ -19,7 +19,7 @@ const RoomChat = (Props) => {
   const [zoom, setZoom] = useState(1);
 
   const [message, setMessage] = useState("");
-  //const [socketId, setSocketId] = useState("");
+  const [socketId, setSocketId] = useState("");
   const [isAddingCard, setIsAddingCard] = useState(false);
 
   const toggleModal = () => {
@@ -28,7 +28,7 @@ const RoomChat = (Props) => {
   };
 
   const dataList = [];
-  let socketId = "";
+  // let socketId = "";
   let jsonString = "";
   const isCursorDevice = () => {
     return !("ontouchstart" in window || navigator.maxTouchPoints);
@@ -282,7 +282,7 @@ const RoomChat = (Props) => {
     // log socket connection
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket.id);
-      socketId = socket.id;
+      setSocketId(socket.id);
     });
 
     // 追加されたカードの情報を取得
