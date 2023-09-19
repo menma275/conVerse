@@ -4,6 +4,7 @@ import Moveable from "react-moveable";
 const RoomDefault = (Props) => {
   const resizeTarget = useRef(null);
   const dragTarget = useRef(null);
+
   return (
     <>
       <Moveable
@@ -26,7 +27,7 @@ const RoomDefault = (Props) => {
             <p className="jp-desc">えもじだけで話す部屋。</p>
             <p className="en-desc">room to chat only with emojis.</p>
           </div>
-          <button id="board-description-button" className="pixel-shadow" onClick={Props.toggleRoom}>
+          <button id="board-description-button" className="pixel-shadow" onClick={() => Props.setIsRoomOpen(true)}>
             さんかする
           </button>
         </div>
