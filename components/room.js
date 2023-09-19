@@ -322,7 +322,7 @@ const Room = () => {
           e.target.style.transform = e.transform;
         }}
       />
-      <div className="board pixel-shadow" id="board_01" ref={resizeTarget} /*style={{ width: "600px", height: "500px" }}*/>
+      <div className="board pixel-shadow" id="board_01" ref={resizeTarget} style={isRoomOpen && { width: "600px", height: "500px" }}>
         {!isRoomOpen ? (
           <RoomDefault toggleRoom={toggleRoom} /*dragTarget={dragTarget}*/ />
         ) : (
