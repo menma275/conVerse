@@ -9,6 +9,7 @@ import Zoom from "@/components/zoom";
 import RoomDefault from "@/components/room-default";
 // ドラッグ・リサイズ
 import Moveable from "react-moveable";
+import { motion } from "framer-motion";
 
 const Room = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +24,7 @@ const Room = () => {
   const [resizable, setResizable] = useState(false);
   const resizeTarget = useRef(null);
   const dragTarget = useRef(null);
+  const moveableRef = useRef(null);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -39,11 +41,6 @@ const Room = () => {
   // board-description-buttonを押したらboard-descriptionを非表示にする
   function toggleRoom() {
     isRoomOpen ? setIsRoomOpen(false) : setIsRoomOpen(true);
-    if (!isRoomOpen) {
-      setResizable(true);
-    } else {
-      setResizable(false);
-    }
   }
 
   let palettes = [
@@ -268,6 +265,12 @@ const Room = () => {
     localStorage.removeItem("dataList");
   };
 
+  //アニメーション後にコントロールボックスをリサイズ
+  const updateRect = () => {
+    moveableRef.current.updateRect();
+    setResizable(true);
+  };
+
   useEffect(() => {
     if (isRoomOpen) {
       handleResize();
@@ -306,27 +309,28 @@ const Room = () => {
 
   return (
     <>
-      <Moveable
-        target={resizeTarget}
-        resizable={resizable}
-        keepRatio={false}
-        onResize={(e) => {
-          e.target.style.width = `${e.width}px`;
-          e.target.style.height = `${e.height}px`;
-          e.target.style.transform = e.drag.transform;
-          console.log("onResize");
-        }}
-        draggable={true}
-        dragTarget={dragTarget}
-        onDrag={(e) => {
-          e.target.style.transform = e.transform;
-        }}
-      />
-      <div className="board pixel-shadow" id="board_01" ref={resizeTarget}>
-        {!isRoomOpen ? (
-          <RoomDefault toggleRoom={toggleRoom} /*dragTarget={dragTarget}*/ />
-        ) : (
-          <>
+      {!isRoomOpen ? (
+        <RoomDefault toggleRoom={toggleRoom} />
+      ) : (
+        <>
+          <Moveable
+            target={resizeTarget}
+            resizable={resizable}
+            keepRatio={false}
+            onResize={(e) => {
+              e.target.style.width = `${e.width}px`;
+              e.target.style.height = `${e.height}px`;
+              e.target.style.transform = e.drag.transform;
+              console.log("onResize");
+            }}
+            draggable={true}
+            dragTarget={dragTarget}
+            onDrag={(e) => {
+              e.target.style.transform = e.transform;
+            }}
+            ref={moveableRef}
+          />
+          <motion.div initial={{ width: "300px", height: "300px" }} animate={{ width: "500px", height: "500px" }} transition={{ duration: 0.2 }} className="board pixel-shadow" id="board_01" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
             <div className="board-header pixel-shadow" ref={dragTarget}>
               <div className="board-header-set">
                 <h1>emoji Room</h1>
@@ -361,9 +365,9 @@ const Room = () => {
               </div>
             </div>
             <Zoom setZoom={setZoom} zoom={zoom} />
-          </>
-        )}
-      </div>
+          </motion.div>
+        </>
+      )}
     </>
   );
 };
