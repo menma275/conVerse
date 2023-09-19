@@ -8,7 +8,7 @@ const Index = () => {
     <div>
       <header>
         <div className="header pixel-shadow">
-          <h1>conVerse</h1>
+          <h1>Prism</h1>
           <div className="user">
             <p>sakamura</p>
             <img src="/icon1.jpg" alt="icon" className="user-icon" />
@@ -18,7 +18,7 @@ const Index = () => {
       <main>
         <Room />
         <button className="pixel-shadow" id="create-room">
-          Create Room
+          Create Land
         </button>
       </main>
     </div>
