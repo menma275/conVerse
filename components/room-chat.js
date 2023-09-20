@@ -265,10 +265,6 @@ const RoomChat = () => {
     setResizable(true);
     //resize
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   };
 
   useEffect(() => {
@@ -297,6 +293,7 @@ const RoomChat = () => {
     if (socket) return () => socket.disconnect();
   }, []);
 
+  //拡大アニメーション
   const variants = isMobile
     ? {
         animate: {
