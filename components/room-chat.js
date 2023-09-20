@@ -313,7 +313,7 @@ const RoomChat = (Props) => {
         }}
         ref={moveableRef}
       />
-      <motion.div initial={{ width: "300px", height: "300px" }} animate={{ width: "500px", height: "500px" }} transition={{ duration: 0.2 }} className="board pixel-shadow" id="board_01" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
+      <motion.div initial={{ maxWidth: "300px", maxHeight: "300px" }} animate={{ maxWidth: "500px", maxHeight: "500px" }} transition={{ duration: 0.2 }} className="board pixel-shadow" id="board_01" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <div className="board-header-set">
             <h1>emoji Land</h1>
