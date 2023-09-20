@@ -35,12 +35,13 @@ let newTone06 = "374259-545B77-5C8984-F2D8D8".split("-").map((a) => "#" + a);
 
 function preload() {
   // conVerse = loadJSON("data.json");
-  let datas = localStorage.getItem("dataList");
+  const datas = localStorage.getItem("dataList");
+  console.log(datas);
   conVerse = JSON.parse(datas);
-  let boardSize = localStorage.getItem("boardSize");
-  boardSize = JSON.parse(boardSize);
-  boardWidth = boardSize.width;
-  boardHeight = boardSize.height;
+  const boardSize = localStorage.getItem("boardSize");
+  const bs = JSON.parse(boardSize);
+  boardWidth = bs.width;
+  boardHeight = bs.height;
   console.log("boardWidth : " + boardWidth);
   console.log("boardHeight : " + boardHeight);
 }
@@ -100,8 +101,8 @@ class conVerse_chat {
   constructor(v) {
     // this.x = v.pos.x;
     // this.y = v.pos.y;
-    this.x = map(v.pos.x - 2500 + boardWidth / 2, 0, boardWidth, 0, width);
-    this.y = map(v.pos.y - 2500 + boardHeight / 2, 0, boardHeight, 0, height);
+    this.x = map(v.pos?.x - 2500 + boardWidth / 2, 0, boardWidth, 0, width);
+    this.y = map(v.pos?.y - 2500 + boardHeight / 2, 0, boardHeight, 0, height);
     this.color = v.color;
     this.date = v.date;
     this.time = v.time;
