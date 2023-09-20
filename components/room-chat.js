@@ -7,8 +7,9 @@ import GenerativeArt from "@/components/genarativeart";
 import Zoom from "@/components/zoom";
 import Moveable from "react-moveable";
 import { motion } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
-const RoomChat = (Props) => {
+const RoomChat = () => {
   const [resizable, setResizable] = useState(false);
   const resizeTarget = useRef(null);
   const dragTarget = useRef(null);
@@ -21,6 +22,8 @@ const RoomChat = (Props) => {
   const [message, setMessage] = useState("");
   const [socketId, setSocketId] = useState("");
   const [isAddingCard, setIsAddingCard] = useState(false);
+
+  const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -262,10 +265,6 @@ const RoomChat = (Props) => {
     setResizable(true);
     //resize
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   };
 
   useEffect(() => {
@@ -294,6 +293,21 @@ const RoomChat = (Props) => {
     if (socket) return () => socket.disconnect();
   }, []);
 
+  //拡大アニメーション
+  const variants = isMobile
+    ? {
+        animate: {
+          width: "90%",
+          height: "500px",
+        },
+      }
+    : {
+        animate: {
+          width: "500px",
+          height: "500px",
+        },
+      };
+
   return (
     <>
       <Moveable
@@ -313,7 +327,7 @@ const RoomChat = (Props) => {
         }}
         ref={moveableRef}
       />
-      <motion.div initial={{ width: "300px", height: "300px" }} animate={{ width: "500px", height: "500px" }} transition={{ duration: 0.2 }} className="board pixel-shadow" id="board_01" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
+      <motion.div variants={variants} initial={{ width: "300px", height: "300px" }} animate="animate" transition={{ duration: 0.2 }} className="board pixel-shadow" id="board_01" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <div className="board-header-set">
             <h1>emoji Land</h1>

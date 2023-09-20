@@ -1,3 +1,4 @@
+//カードを本日分のみに
 const createCards = (data) => {
   let newdata = [];
 
@@ -20,9 +21,17 @@ const createCards = (data) => {
   return newdata;
 };
 
+//localStorageにデータをセット
+const setDetaList = (dataList) => {
+  localStorage.removeItem("dataList");
+  const jsonString = JSON.stringify(dataList);
+  localStorage.setItem("dataList", jsonString);
+};
+
+//apiからカードの情報を取得
 async function getPosts() {
   try {
-    const res = await fetch("/api/message");
+    const res = await fetch("/api/message", { cache: "no-store" });
     const data = await res.json();
     const posts = await createCards(data);
     //console.log(posts);
@@ -32,16 +41,10 @@ async function getPosts() {
   }
 }
 
-async function setDetaList(dataList) {
-  localStorage.removeItem("dataList");
-  const jsonString = JSON.stringify(dataList);
-  localStorage.setItem("dataList", jsonString);
-}
-
 const Boad = async () => {
   const dataList = await getPosts();
   console.log(dataList);
-  await setDetaList(dataList);
+  setDetaList(dataList);
   return (
     <>
       {dataList.map((data, index) => (
