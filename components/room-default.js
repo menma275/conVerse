@@ -1,5 +1,5 @@
 import { RxDragHandleHorizontal } from "react-icons/rx";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Moveable from "react-moveable";
 const RoomDefault = (Props) => {
   const resizeTarget = useRef(null);

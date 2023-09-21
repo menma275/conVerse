@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 //カードを本日分のみに
 const createCards = (data) => {
   let newdata = [];
@@ -62,4 +63,4 @@ const Boad = async () => {
     </>
   );
 };
-export default Boad;
+export default memo(Boad);
