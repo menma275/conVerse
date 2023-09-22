@@ -170,7 +170,9 @@ const RoomChat = () => {
     if (isAddingCard) {
       let cardnum = document.getElementById("container").childElementCount;
       console.log(cardnum);
-      const containerRect = document.getElementById("container").getBoundingClientRect();
+      const containerRect = document
+        .getElementById("container")
+        .getBoundingClientRect();
       x = (e.clientX - containerRect.left) / zoom;
       y = (e.clientY - containerRect.top) / zoom;
       color = palette[Math.floor(Math.random() * palette.length)];
@@ -327,7 +329,16 @@ const RoomChat = () => {
         }}
         ref={moveableRef}
       />
-      <motion.div variants={variants} initial={{ width: "300px", height: "300px" }} animate="animate" transition={{ duration: 0.2 }} className="board pixel-shadow" id="board_01" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
+      <motion.div
+        variants={variants}
+        initial={{ width: "300px", height: "300px" }}
+        animate="animate"
+        transition={{ duration: 0.2 }}
+        className="board pixel-shadow"
+        id="board_01"
+        onAnimationComplete={() => updateRect()}
+        ref={resizeTarget}
+      >
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <div className="board-header-set">
             <h1>emoji Land</h1>
@@ -335,10 +346,16 @@ const RoomChat = () => {
               <p>Generate</p>
             </button>
           </div>
-          <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" />
+          {/* <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" /> */}
         </div>
         <div className="post-set">
-          <input id="input-post" type="text" placeholder="Input your message." value={message} onChange={handleChange} />
+          <input
+            id="input-post"
+            type="text"
+            placeholder="Input your message."
+            value={message}
+            onChange={handleChange}
+          />
           {/* <form id="deleteForm"><button type="submit">Reset</button></form> */}
         </div>
 
@@ -353,12 +370,17 @@ const RoomChat = () => {
             onMouseMove={(e) => handleMouseMove(e)}
             style={{
               transform: `scale(${zoom})`,
-            }}>
+            }}
+          >
             <Suspense>
               {/* @ts-expect-error Async Server Component */}
               <Boad />
             </Suspense>
-            <div id="follower" className="emoji-span" style={{ display: message ? "" : "none" }}></div>
+            <div
+              id="follower"
+              className="emoji-span"
+              style={{ display: message ? "" : "none" }}
+            ></div>
           </div>
         </div>
         <Zoom setZoom={setZoom} zoom={zoom} />
