@@ -8,6 +8,9 @@ import Zoom from "@/components/zoom";
 import Moveable from "react-moveable";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
+import { RiEmojiStickerFill } from "react-icons/ri";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const RoomChat = () => {
   const [resizable, setResizable] = useState(false);
@@ -22,6 +25,7 @@ const RoomChat = () => {
   const [message, setMessage] = useState("");
   const [socketId, setSocketId] = useState("");
   const [isAddingCard, setIsAddingCard] = useState(false);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
 
   const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
 
@@ -310,6 +314,16 @@ const RoomChat = () => {
         },
       };
 
+  const inputEmojis = (emoji) => {
+    const input = document.getElementById("input-post");
+    input.focus();
+    setMessage(message + emoji.native);
+  };
+
+  const togglePickerOpen = () => {
+    setIsPickerOpen(!isPickerOpen);
+  };
+
   return (
     <>
       <Moveable
@@ -348,15 +362,21 @@ const RoomChat = () => {
           </div>
           {/* <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" /> */}
         </div>
-        <div className="post-set">
+        <div className="post-set rounded-full border-2 border-[var(--accent)]">
           <input
             id="input-post"
             type="text"
             placeholder="Input your message."
             value={message}
             onChange={handleChange}
+            className="focus:outline-none"
           />
-          {/* <form id="deleteForm"><button type="submit">Reset</button></form> */}
+          <button
+            onClick={togglePickerOpen}
+            className="rounded-full m-0 mx-2 p-0"
+          >
+            <RiEmojiStickerFill className="m-0 p-0 text-2xl text-[var(--accent)]" />
+          </button>
         </div>
 
         <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
@@ -385,6 +405,15 @@ const RoomChat = () => {
         </div>
         <Zoom setZoom={setZoom} zoom={zoom} />
       </motion.div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        {isPickerOpen && (
+          <Picker
+            data={data}
+            onEmojiSelect={inputEmojis}
+            previewPosition={top}
+          />
+        )}
+      </div>
     </>
   );
 };

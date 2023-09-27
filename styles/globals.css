@@ -316,7 +316,7 @@ button:active {
 .post-set {
   position: absolute;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   bottom: var(--element-space);
@@ -329,7 +329,7 @@ button:active {
 .post-set input {
   color: var(--black);
   background: var(--cream);
-  font-size: 0.75rem;
+  font-size: 1rem;
   width: 100%;
   padding: 0.5rem 1rem 0.25rem 1rem;
   cursor: pointer;
@@ -339,11 +339,12 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid var(--accent);
+  border:none;
 }
 
 .post-set input::placeholder {
   color: var(--accent);
+  font-size: 0.75rem;
 }
 
 #follower {
