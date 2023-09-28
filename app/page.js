@@ -1,20 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
+import Header from "@/components/header";
 import Room from "@/components/room";
 
 const Index = () => {
   return (
     <div>
-      <header>
-        <div className="header pixel-shadow">
-          <h1>Prism</h1>
-          <div className="user">
-            <p>sakamura</p>
-            <img src="/icon1.jpg" alt="icon" className="user-icon" />
-          </div>
-        </div>
-      </header>
+      <Header />
       <main>
         <Room />
         <button className="pixel-shadow" id="create-room">

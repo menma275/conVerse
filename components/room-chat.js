@@ -7,6 +7,9 @@ import Zoom from "@/components/zoom";
 import GenerativeArt from "@/components/genarativeart";
 import InputMessage from "@/components/input-message";
 import Container from "@/components/container";
+import { RiEmojiStickerFill } from "react-icons/ri";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const RoomChat = () => {
   const [resizable, setResizable] = useState(false);
@@ -20,6 +23,7 @@ const RoomChat = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
   const [initial, setInitial] = useState(true);
 
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
   const toggleModal = () => {
     setIsOpen(!isOpen);
     console.log(isOpen);
@@ -73,9 +77,8 @@ const RoomChat = () => {
       : controls.start({
           width: "500px",
           height: "500px",
-          transition: { duration: 0.2, type: "spring" },
-        });
-  }, []);
+        },
+      };
 
   return (
     <>
@@ -107,7 +110,7 @@ const RoomChat = () => {
               <p>Generate</p>
             </button>
           </div>
-          <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" />
+          {/* <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" /> */}
         </div>
         <InputMessage message={message} setMessage={setMessage} />
         <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
@@ -119,6 +122,15 @@ const RoomChat = () => {
         </div>
         <Zoom setZoom={setZoom} zoom={zoom} />
       </motion.div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        {isPickerOpen && (
+          <Picker
+            data={data}
+            onEmojiSelect={inputEmojis}
+            previewPosition={top}
+          />
+        )}
+      </div>
     </>
   );
 };
