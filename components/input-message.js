@@ -15,7 +15,7 @@ const InputMessage = (Props) => {
   const inputEmojis = (emoji) => {
     const input = document.getElementById("input-post");
     input.focus();
-    setMessage(Props.message + emoji.native);
+    Props.setMessage(Props.message + emoji.native);
   };
   return (
     <>
