@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header>
       <div className="header pixel-shadow">
-        <h1>Prism</h1>
+        <h1>Gundi</h1>
         <div className="user">
           <DropdownMenu.Root>
             <DropdownMenu.Trigger className="user-icon">
@@ -30,10 +30,7 @@ export default function Header() {
               <DropdownMenu.Content className="mt-3 user-dropdown cursor-pointer bg-[var(--cream)] px-1 py-2 rounded-lg pixel-shadow border-2 border-[var(--black)]">
                 {links.map((link, index) => (
                   <DropdownMenu.Item className="user-dropdown-item" key={index}>
-                    <a
-                      href={link.url}
-                      className="flex gap-x-1.5 hover:text-[var(--cream)] hover:bg-[var(--accent)] rounded-lg p-1.5 px-2.5 text-[var(--black)]"
-                    >
+                    <a href={link.url} className="flex gap-x-1.5 hover:text-[var(--cream)] hover:bg-[var(--accent)] rounded-lg p-1.5 px-2.5 text-[var(--black)]">
                       {link.icon}
                       <p className="text-xs pt-[0.1rem]">{link.name}</p>
                     </a>
