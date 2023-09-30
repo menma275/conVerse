@@ -11,7 +11,7 @@ const links = [
   },
   {
     name: "Document",
-    url: "https://converse.gitbook.io/c/~/changes/6H0aEeafHF1SV4BaCXak?r=LrligjJLsrpqidXAY78Z",
+    url: "https://gundi.gitbook.io/gundi-decentralized-chat-space/",
     icon: <IoDocument className="text-md" />,
   },
 ];

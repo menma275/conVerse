@@ -1,4 +1,3 @@
-import { RxDragHandleHorizontal } from "react-icons/rx";
 import { useRef } from "react";
 import Moveable from "react-moveable";
 const RoomDefault = (Props) => {
@@ -27,11 +26,7 @@ const RoomDefault = (Props) => {
             <p className="jp-desc">えもじだけで話すスペース。</p>
             <p className="en-desc">Land to chat only with emojis.</p>
           </div>
-          <button
-            id="board-description-button"
-            className="pixel-shadow"
-            onClick={() => Props.setIsRoomOpen(true)}
-          >
+          <button id="board-description-button" className="pixel-shadow" onClick={() => Props.setIsRoomOpen(true)}>
             さんかする
           </button>
         </div>

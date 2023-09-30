@@ -29,6 +29,11 @@
   src: url(/NuKinakoMochi-Reg.otf);
 }
 
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 html,
 body {
   font-family: "NuKinakoMochi", sans-serif;
@@ -185,7 +190,7 @@ body {
 }
 
 .board {
-  position: relative;
+  position: absolute;
   top: 50vh;
   top: 50dvh;
   left: 50vw;
@@ -250,6 +255,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   z-index: 9999;
+}
+
+.board-content {
+  padding: 40px;
 }
 
 .desc-jp-en {
@@ -339,7 +348,7 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
-  border:none;
+  border: none;
 }
 
 .post-set input::placeholder {

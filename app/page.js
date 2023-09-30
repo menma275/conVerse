@@ -4,15 +4,15 @@ import React, { useState } from "react";
 import Header from "@/components/header";
 import Room from "@/components/room";
 
+import CreateButton from "@/components/create-button";
+
 const Index = () => {
   return (
     <div>
       <Header />
       <main>
         <Room />
-        <button className="pixel-shadow" id="create-room">
-          Create Land
-        </button>
+        <CreateButton />
       </main>
     </div>
   );

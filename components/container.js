@@ -1,11 +1,11 @@
-import React, { memo, useState, useEffect } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
+import { useSocket } from "@/context/SocketContext"; // SocketContext のインポート
 import { Suspense } from "react";
 import Boad from "@/components/boad";
-import { io as ClientIO } from "socket.io-client";
 
 const Container = (Props) => {
-  const [socketId, setSocketId] = useState("");
+  const { socket } = useSocket(); // SocketContext から socket オブジェクトを取得
+
   const [isAddingCard, setIsAddingCard] = useState(false);
 
   const isCursorDevice = () => {
@@ -13,7 +13,6 @@ const Container = (Props) => {
   };
 
   const dataList = [];
-  // let socketId = "";
   let jsonString = "";
 
   let palettes = [
@@ -56,7 +55,7 @@ const Container = (Props) => {
       }
 
       let msg = {
-        userid: socketId,
+        userid: socket.id,
         postid: cardnum,
         text: inputMessage,
         pos: {
@@ -94,7 +93,7 @@ const Container = (Props) => {
     const res = await fetch("/api/message", {
       method: "POST",
       body: JSON.stringify(msg),
-      userId: socketId,
+      userId: socket.id,
     });
   };
 
@@ -136,7 +135,6 @@ const Container = (Props) => {
   // socketで他の人が追加したカードを取得
   const addMessageList = (message) => {
     let cardnum = dataList.length + 1;
-    //    message = JSON.parse(message);
     const user = message.userid;
     const text = message.text;
     const x = message.pos.x;
@@ -171,7 +169,7 @@ const Container = (Props) => {
       return;
     }
     datas.forEach((cardInfo) => {
-      if (cardInfo.userid !== socketId && cardInfo.postid > lastCardId) {
+      if (cardInfo.userid !== socket.id && cardInfo.postid > lastCardId) {
         const card = document.createElement("div");
         card.className = "card";
         card.style.left = parseInt(cardInfo.pos.x) + "px";
@@ -216,30 +214,21 @@ const Container = (Props) => {
   }, [Props.message]);
 
   useEffect(() => {
-    console.log(socketId);
-  }, [socketId]);
+    console.log(socket.id);
+  }, [socket.id]);
 
   //ロード時に実行
   useEffect(() => {
-    const socket = new ClientIO({
-      path: "/api/socket/io",
-      addTrailingSlash: false,
-    });
-
-    // log socket connection
+    // Socket 接続とイベントリスナーの設定
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket.id);
-      setSocketId(socket.id);
     });
 
     // 追加されたカードの情報を取得
     socket.on("receiveMessage", (message) => {
       addMessageList(message);
     });
-
-    // socket disconnet onUnmount if exists
-    if (socket) return () => socket.disconnect();
-  }, []);
+  }, [socket]);
 
   return (
     <>

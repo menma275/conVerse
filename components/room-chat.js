@@ -18,6 +18,7 @@ const RoomChat = () => {
   const [zoom, setZoom] = useState(1);
   const [message, setMessage] = useState("");
   const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
+  const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -51,8 +52,8 @@ const RoomChat = () => {
     handleResize();
   };
 
+  //ボードサイズが変更されたときにコントロールもリサイズ
   const controls = useAnimationControls();
-  const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
 
   useEffect(() => {
     controls.start({
@@ -62,6 +63,7 @@ const RoomChat = () => {
     });
   }, [boardSize]);
 
+  //モバイルとデスクトップで異なるアニメーション・サイズで展開
   useEffect(() => {
     isMobile
       ? controls.start({
