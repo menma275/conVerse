@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback, use } from "react";
-import { useSocket } from "@/context/socketContext";
+import { useSocket } from "@/context/socket-context";
 import OtherUserCards from "@/components/other-user-cards";
 import Follower from "@/components/parts/follower";
-import CardLoop from "@/components/cardLoop";
+import CardLoop from "@/components/card-loop";
 import LoadingSpinner from "@/components/loading/loading-spinner";
 import { Suspense } from "react";
 import BoadAc from "@/components/boad-ac";

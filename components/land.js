@@ -1,6 +1,7 @@
+"use client";
 import LandChat from "@/components/land-chat";
 import LandEntrance from "@/components/land-entrance";
-import { useLandEntrance } from "@/context/landEntranceContext";
+import { useLandEntrance } from "@/context/land-entrance-context";
 
 const Land = (props) => {
   const { openLandId, setOpenLandId, activeLandIndex, setActiveLandIndex } = useLandEntrance();

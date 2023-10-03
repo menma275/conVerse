@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import CardLoop from "@/components/cardLoop";
+import CardLoop from "@/components/card-loop";
 
 const OtherUserCards = ({ socket, lastCardId }) => {
   const [cardList, setCardList] = useState([]);
