@@ -1,4 +1,3 @@
-"use client";
 import LandChat from "@/components/land-chat";
 import LandEntrance from "@/components/land-entrance";
 import { useLandEntrance } from "@/context/landEntranceContext";

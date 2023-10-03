@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import CardLoop from "@/components/cardLoop";
+import CardLoop from "@/components/card-loop";
 
 // 本日のカードデータのみをフィルタリングする関数
 const createCards = (data) => {

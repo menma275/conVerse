@@ -1,7 +1,7 @@
 import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
-import { SocketProvider } from "@/context/socketContext";
-import { LandEntranceProvider } from "@/context/landEntranceContext";
+import { SocketProvider } from "@/context/socket-context";
+import { LandEntranceProvider } from "@/context/land-entrance-context";
 
 // Google FontsからSans Fontを設定
 const fontSans = FontSans({

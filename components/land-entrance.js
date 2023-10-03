@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import Moveable from "react-moveable";
 const LandEntrance = (props) => {
   const target = useRef(null);

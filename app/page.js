@@ -1,8 +1,8 @@
 import Header from "@/components/parts/header";
 import CreateButton from "@/components/parts/create-button";
-import LandLoopAc from "@/components/landLoop-ac";
+import LandLoopAc from "@/components/land-loop-ac";
 import { Suspense } from "react";
-import LoadingSpinner from "@/components/loading/LoadingSpinner";
+import LoadingSpinner from "@/components/loading/loading-spinner";
 /**
  * Indexコンポーネントはアプリケーションのメインページをレンダリングします。
  * ヘッダー、部屋の開閉、及び作成ボタンの3つの主要なコンポーネントで構成されています。

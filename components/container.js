@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback, use } from "react";
 import { useSocket } from "@/context/socketContext";
-import OtherUserCards from "@/components/otherUserCards";
+import OtherUserCards from "@/components/other-user-cards";
 import Follower from "@/components/parts/follower";
 import CardLoop from "@/components/cardLoop";
-import LoadingSpinner from "@/components/loading/LoadingSpinner";
+import LoadingSpinner from "@/components/loading/loading-spinner";
 import { Suspense } from "react";
 import BoadAc from "@/components/boad-ac";
 
-import { CARD_PALETTE } from "@/components/utils/cardPalette";
-import { sendApiSocketChat, saveCard } from "@/components/utils/sendSave";
+import { CARD_PALETTE } from "@/components/utils/card-palette";
+import { sendApiSocketChat, saveCard } from "@/components/utils/send-save";
 import { isCursorDevice, getRandomPalette } from "@/components/utils/utils";
 
 const OPACITY_VISIBLE = 0.5;
