@@ -29,6 +29,11 @@
   src: url(/NuKinakoMochi-Reg.otf);
 }
 
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 html,
 body {
   font-family: "NuKinakoMochi", sans-serif;
@@ -59,9 +64,6 @@ body {
   padding: 0;
   width: 100%;
   height: var(--header-height);
-  position: fixed;
-  top: 0;
-  left: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -162,7 +164,7 @@ body {
 }
 
 #manipulate {
-  position: fixed;
+  position: absolute;
   right: 1rem;
   bottom: 4rem;
   display: flex;
@@ -183,14 +185,23 @@ body {
   align-items: center;
   cursor: pointer;
 }
-
-.board {
+.land-container {
   position: relative;
+}
+#board_01 {
   top: 50vh;
   top: 50dvh;
   left: 50vw;
   left: 50dvw;
   transform: translate(-50%, -50%);
+}
+.board {
+  position: absolute;
+  /*top: 50vh;
+  top: 50dvh;
+  left: 50vw;
+  left: 50dvw;
+  transform: translate(-50%, -50%);*/
   min-width: 300px;
   min-height: 300px;
   width: 300px;
@@ -200,8 +211,11 @@ body {
   border-radius: 1rem;
   border: 2px solid var(--black);
   box-shadow: 0.5rem 0.5rem 0 0 var(--accent);
+  z-index: 1;
 }
-
+.chat {
+  z-index: 2;
+}
 .board-header {
   position: absolute;
   font-size: 0.75rem;
@@ -250,6 +264,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   z-index: 9999;
+}
+
+.board-content {
+  padding: 40px;
 }
 
 .desc-jp-en {
@@ -339,7 +357,7 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
-  border:none;
+  border: none;
 }
 
 .post-set input::placeholder {
@@ -347,7 +365,7 @@ button:active {
   font-size: 0.75rem;
 }
 
-#follower {
+.follower {
   /* visibility: hidden; */
   width: fit-content;
   height: auto;

@@ -1,10 +1,11 @@
-const Zoom = (Props) => {
+"use client";
+const Zoom = (props) => {
   const zoomin = (e) => {
-    Props.setZoom((prevCount) => prevCount + 0.2);
+    props.setZoom((prevCount) => prevCount + 0.2);
   };
   const zoomout = (e) => {
-    if (Props.zoom > 0.4) {
-      Props.setZoom((prevCount) => prevCount - 0.2);
+    if (props.zoom > 0.4) {
+      props.setZoom((prevCount) => prevCount - 0.2);
     }
   };
 

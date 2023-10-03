@@ -1,11 +1,13 @@
-import connectDB from "../../middlewares/mongodb";
+import connectDB from "../../../middlewares/mongodb";
 import mongoose from "mongoose";
 
 const handler = async (req, res) => {
   try {
     const { method } = req;
     await connectDB();
-    const messageCollection = "collection_default";
+
+    const { message = "default" } = req.query;
+    const messageCollection = `Collection_${message}`;
     const messageSchema = new mongoose.Schema(
       {
         message: String,
@@ -15,12 +17,14 @@ const handler = async (req, res) => {
         collection: messageCollection,
       }
     );
+    console.log("messageId:", message);
+    console.log("messageCollection:", messageCollection);
     const Message = mongoose.models[messageCollection] || mongoose.model(messageCollection, messageSchema);
 
     switch (method) {
       case "GET":
-        const posts = await Message.find({});
-        res.status(200).json(posts);
+        const messages = await Message.find({});
+        res.status(200).json(messages);
         break;
       case "POST":
         try {
@@ -28,7 +32,9 @@ const handler = async (req, res) => {
             message: JSON.stringify(req.body),
             timestamp: new Date(),
           });
+
           await newMessage.save(); // データベースへの保存を非同期で実行
+
           console.log("Message saved to DB...");
           res.status(201).json({ message: "Message created successfully", newMessage });
         } catch (error) {
@@ -37,7 +43,7 @@ const handler = async (req, res) => {
         }
         break;
       default:
-        res.setHeader("Allow", ["GET", "PUT"]);
+        res.setHeader("Allow", ["GET", "POST"]);
         res.status(405).end(`Method ${method} Not Allowed`);
     }
   } catch (err) {

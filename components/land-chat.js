@@ -1,34 +1,37 @@
-import { RxDragHandleHorizontal } from "react-icons/rx";
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 import { useAnimationControls, motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
-import Zoom from "@/components/zoom";
-import GenerativeArt from "@/components/genarativeart";
-import InputMessage from "@/components/input-message";
+import Zoom from "@/components/parts/zoom";
+import GenerativeArt from "@/components/parts/genarativeart";
+import InputMessage from "@/components/parts/input-message";
 import Container from "@/components/container";
 
-const RoomChat = () => {
+const LandChat = (props) => {
   const [resizable, setResizable] = useState(false);
   const resizeTarget = useRef(null);
   const dragTarget = useRef(null);
   const moveableRef = useRef(null);
+  const [zoom, setZoom] = useState(1);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [zoom, setZoom] = useState(1);
   const [message, setMessage] = useState("");
   const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
+  const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
+
+  const handleMouseDownOrTouchStart = (e) => {
+    props.setActiveLandIndex(props.landInfo.landId);
+  };
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
-    console.log(isOpen);
   };
 
   //スクロール位置をセンターに
   const targetRef = useRef();
 
   const handleResize = () => {
-    // const clientRect = targetRef.current.getBoundingClientRect();
     const rx = 2500 - targetRef.current.clientWidth / 2;
     const ry = 2500 - targetRef.current.clientHeight / 2;
     targetRef.current.scrollLeft = rx;
@@ -46,13 +49,12 @@ const RoomChat = () => {
   const updateRect = () => {
     moveableRef.current.updateRect();
     setResizable(true);
-    console.log("updateRect");
     //resize
     handleResize();
   };
 
+  //ボードサイズが変更されたときにコントロールもリサイズ
   const controls = useAnimationControls();
-  const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
 
   useEffect(() => {
     controls.start({
@@ -62,6 +64,7 @@ const RoomChat = () => {
     });
   }, [boardSize]);
 
+  //モバイルとデスクトップで異なるアニメーション・サイズで展開
   useEffect(() => {
     isMobile
       ? controls.start({
@@ -89,7 +92,6 @@ const RoomChat = () => {
           e.target.style.height = newHeight;
           e.target.style.transform = e.drag.transform;
           setBoardSize({ width: newWidth, height: newHeight });
-          console.log("onResize");
         }}
         draggable={true}
         dragTarget={dragTarget}
@@ -98,15 +100,12 @@ const RoomChat = () => {
         }}
         ref={moveableRef}
       />
-      <motion.div animate={controls} className="board pixel-shadow" id="board_01" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
+      <motion.div animate={controls} className={`board chat pixel-shadow land${props.landInfo.landId}`} style={props.style} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <div className="board-header-set">
-            <h1>emoji Land</h1>
-            <button onClick={setIsOpen}>
-              <p>Generate</p>
-            </button>
+            <h1>{props.landInfo.name}</h1>
+            <button onClick={setIsOpen}>Generate</button>
           </div>
-          {/* <RxDragHandleHorizontal className="handle text-2xl m-0 p-0" /> */}
         </div>
         <InputMessage message={message} setMessage={setMessage} />
         <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
@@ -114,11 +113,11 @@ const RoomChat = () => {
           <p>👇 Tap anywhere to post.</p>
         </div>
         <div id="container__wrapper" ref={targetRef}>
-          <Container zoom={zoom} message={message} setMessage={setMessage} />
+          <Container zoom={zoom} message={message} setMessage={setMessage} landId={props.landInfo.landId} />
         </div>
         <Zoom setZoom={setZoom} zoom={zoom} />
       </motion.div>
     </>
   );
 };
-export default RoomChat;
+export default LandChat;

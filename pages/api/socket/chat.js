@@ -8,7 +8,7 @@ const chat = async (req, res) => {
 
     // dispatch to channel "message"
     res?.socket?.server?.io?.emit("receiveMessage", msg);
-
+    console.log("socketSend", msg);
     //console.log(res?.socket?.server?.io);
     //res?.socket?.server?.io?.emit("user-id", userId);
 
