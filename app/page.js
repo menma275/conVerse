@@ -1,21 +1,30 @@
-"use client";
-
-import React, { useState } from "react";
-import Header from "@/components/header";
-import Room from "@/components/room";
-
-import CreateButton from "@/components/create-button";
-
+import Header from "@/components/parts/header";
+import CreateButton from "@/components/parts/create-button";
+import LandLoopAc from "@/components/landLoop-ac";
+import { Suspense } from "react";
+import LoadingSpinner from "@/components/loading/LoadingSpinner";
+/**
+ * Indexコンポーネントはアプリケーションのメインページをレンダリングします。
+ * ヘッダー、部屋の開閉、及び作成ボタンの3つの主要なコンポーネントで構成されています。
+ */
 const Index = () => {
   return (
-    <div>
+    <>
+      {/* ヘッダーコンポーネント */}
       <Header />
-      <main>
-        <Room />
+
+      {/* ランドコンテナー: 主要なコンテンツ領域 */}
+      <div className="land-container min-h-[calc(100vh-50px)] md:min-h[calc(100vh-50px)]">
+        <Suspense fallback={<LoadingSpinner />}>
+          <LandLoopAc />
+        </Suspense>
+
+        {/* 部屋の作成ボタンコンポーネント */}
         <CreateButton />
-      </main>
-    </div>
+      </div>
+    </>
   );
 };
 
+// Indexコンポーネントをエクスポート
 export default Index;

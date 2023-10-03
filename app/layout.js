@@ -1,29 +1,38 @@
 import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
-import { SocketProvider } from "@/context/SocketContext";
+import { SocketProvider } from "@/context/socketContext";
+import { LandEntranceProvider } from "@/context/landEntranceContext";
 
+// Google FontsからSans Fontを設定
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-const meta = {
-  title: "Next.js Realtime chat with socket.IO",
-  description: "Brought to you by NextJs, SocketIO and Me",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+// アプリのメタ情報
+const META_INFO = {
+  TITLE: "Gundi",
+  DESCRIPTION: "decentralized chat space",
+  VIEWPORT: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
 };
 
+// 外部での利用のためにエクスポートされたメタデータ
 export const metadata = {
-  title: meta.title,
-  description: meta.description,
+  title: META_INFO.TITLE,
+  description: META_INFO.DESCRIPTION,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html suppressHydrationWarning>
       <body>
-        <main className="min-h-[calc(100dvh-4rem)] md:min-h[calc(100dvh-5rem)]">
-          <SocketProvider>{children}</SocketProvider>
+        {/* メインコンテンツ領域 */}
+        <main className="h-full">
+          {/* ソケット機能のためにアプリをSocketProviderでラップ */}
+          <SocketProvider>
+            {/* LandEntranceの状態管理のためにアプリをLandEntranceProviderでラップ */}
+            <LandEntranceProvider>{children}</LandEntranceProvider>
+          </SocketProvider>
         </main>
       </body>
     </html>

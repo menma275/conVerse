@@ -5,34 +5,45 @@ import { io as ClientIO } from "socket.io-client";
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
-  const [socketId, setSocketId] = useState("");
-  const [socket, setSocket] = useState(null);
+  const [socketInstances, setSocketInstances] = useState({});
 
-  useEffect(() => {
+  const createSocketInstance = (instanceName) => {
     const newSocket = new ClientIO({
       path: "/api/socket/io",
       addTrailingSlash: false,
     });
 
-    // log socket connection
     newSocket.on("connect", () => {
-      console.log("SOCKET CONNECTED!", newSocket.id);
-      setSocketId(newSocket.id);
+      console.log(`SOCKET CONNECTED! [${instanceName}]`, newSocket.id);
     });
 
-    setSocket(newSocket);
+    return newSocket;
+  };
 
-    // Clean up socket on unmount
-    return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-      }
-    };
-  }, []);
+  const getSocketInstance = (instanceName) => {
+    if (socketInstances[instanceName]) {
+      return socketInstances[instanceName];
+    }
+    const newSocket = createSocketInstance(instanceName);
+    setSocketInstances((prev) => ({ ...prev, [instanceName]: newSocket }));
+    return newSocket;
+  };
 
-  return <SocketContext.Provider value={{ socketId, socket }}>{children}</SocketContext.Provider>;
+  return <SocketContext.Provider value={{ getSocketInstance }}>{children}</SocketContext.Provider>;
 };
 
-export const useSocket = () => {
-  return useContext(SocketContext);
+export const useSocket = (instanceName) => {
+  const { getSocketInstance } = useContext(SocketContext);
+
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const instance = getSocketInstance(instanceName);
+    setSocket(instance);
+    return () => {
+      instance.disconnect();
+    };
+  }, [instanceName]);
+
+  return socket;
 };

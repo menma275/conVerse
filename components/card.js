@@ -1,19 +1,17 @@
-const Card = ({ dataList }) => {
+import React from "react";
+
+const Card = (props) => {
+  const cardStyle = {
+    left: `${props?.data?.pos?.x}px`,
+    top: `${props?.data?.pos?.y}px`,
+    boxShadow: `0 0 1rem 0.1rem ${props?.data?.color}`,
+  };
+
   return (
-    <>
-      {dataList.map((data, index) => (
-        <div
-          className="card"
-          key={index}
-          style={{
-            left: data?.pos.x,
-            top: data?.pos.y,
-            boxShadow: "0px 0px 0.25rem 0.05rem" + data?.color,
-          }}>
-          {data?.text}
-        </div>
-      ))}
-    </>
+    <div className="card" style={cardStyle} draggable={false}>
+      {props?.data?.text}
+    </div>
   );
 };
+
 export default Card;
