@@ -2,8 +2,8 @@ import React, { memo } from "react";
 import Land from "@/components/land";
 
 const getLands = async () => {
-  const baseUrl = process.env.BASE_URL || "http://localhost:3000";
-
+  //BaseURLを設定
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   try {
     const res = await fetch(`${baseUrl}/api/land`, { cache: "no-store" });
     if (res.ok) {
