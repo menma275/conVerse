@@ -8,7 +8,7 @@ const LandEntrance = (props) => {
     zIndex: props.landInfo.landId === props.activeLandIndex ? 2 : 1, // activeLandIndexと現在のLandのindexが一致すればz-indexを2に、そうでなければ1に設定
     ...props.style, // 他のスタイルもここに追加
   };
-  const handleMouseDownOrTouchStart = (e) => {
+  const handleMouseDownOrTouchStart = () => {
     props.setActiveLandIndex(props.landInfo.landId);
   };
 
