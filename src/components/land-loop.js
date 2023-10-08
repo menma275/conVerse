@@ -2,6 +2,7 @@ import Land from "@/components/land";
 import React from "react";
 
 const LandLoop = ({ landList }) => {
+  console.log("LandLoop");
   return (
     <>
       {landList &&

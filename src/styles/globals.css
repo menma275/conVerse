@@ -188,12 +188,9 @@ body {
 .land-container {
   position: relative;
 }
-#board_01 {
-  top: 50vh;
-  top: 50dvh;
-  left: 50vw;
-  left: 50dvw;
-  transform: translate(-50%, -50%);
+
+#create-new-land {
+  z-index: 1000;
 }
 .board {
   position: absolute;

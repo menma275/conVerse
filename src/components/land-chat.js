@@ -74,8 +74,8 @@ const LandChat = (props) => {
           transition: { duration: 0.2, type: "spring" },
         })
       : controls.start({
-          width: "500px",
-          height: "500px",
+          width: "80%",
+          height: "80%",
           transition: { duration: 0.2, type: "spring" },
         });
   }, [isMobile, controls]);
@@ -102,7 +102,7 @@ const LandChat = (props) => {
         }}
         ref={moveableRef}
       />
-      <motion.div animate={controls} className={`board chat pixel-shadow land${props.landInfo.landId}`} style={props.style} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
+      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow land${props.landInfo.landId}`} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <LandChatHeader name={props.landInfo.name} /> <button onClick={toggleModal}>Generate</button>
         </div>

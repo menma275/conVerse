@@ -2,7 +2,7 @@ import { sendApiPusherChat } from "@/components/utils/send-api-pusher-chat";
 import { getRandomPalette } from "@/components/utils/utils";
 import { CARD_PALETTE } from "@/components/utils/card-palette";
 
-export const placeNewMessage = (e, landId, isAddingCard, container, zoom, message, setMessage) => {
+export const placeNewMessage = (e, setNewMessage, userId, landId, isAddingCard, container, zoom, message, setMessage) => {
   if (!isAddingCard || !message) return null;
 
   const palette = getRandomPalette(CARD_PALETTE);
@@ -13,13 +13,13 @@ export const placeNewMessage = (e, landId, isAddingCard, container, zoom, messag
   const newColor = palette[Math.floor(Math.random() * palette.length)];
 
   const msg = {
-    userid: "",
-    postid: cardnum,
+    userId: userId,
+    postId: cardnum,
     text: message,
     pos: { x: newX, y: newY },
     color: newColor,
   };
-
+  setNewMessage(msg);
   sendApiPusherChat(msg, landId);
   setMessage("");
 };

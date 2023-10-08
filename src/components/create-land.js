@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Moveable from "react-moveable";
 import { useAnimationControls, motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
-import Land from "./land";
+import { UserIdContext } from "@/context/userid-context";
 
 const CreateLand = () => {
   const [resizable, setResizable] = useState(false);
@@ -13,8 +13,9 @@ const CreateLand = () => {
   const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
   const [landVisible, setLandVisible] = useState(false); // land コンポーネントの表示状態を管理
   const [createdLandData, setCreatedLandData] = useState(null);
+  const { userId } = useContext(UserIdContext);
   const [formData, setFormData] = useState({
-    userId: "",
+    userId: { userId },
     name: "",
     description: "",
     landType: "",

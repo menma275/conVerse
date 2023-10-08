@@ -8,6 +8,6 @@ const Land = (props) => {
   const { openLandId, setOpenLandId } = useOpenLandId();
   const { activeLandIndex, setActiveLandIndex } = useActiveLandIndex();
 
-  return <>{openLandId !== props.landId ? <LandEntrance activeLandIndex={activeLandIndex} setActiveLandIndex={setActiveLandIndex} landInfo={props.landInfo} style={props.style} setOpenLandId={setOpenLandId} openLandId={openLandId} /> : <LandChat activeLandIndex={activeLandIndex} setActiveLandIndex={setActiveLandIndex} style={props.style} landInfo={props.landInfo} />}</>;
+  return <>{openLandId !== props.landId ? <LandEntrance activeLandIndex={activeLandIndex} setActiveLandIndex={setActiveLandIndex} landInfo={props.landInfo} style={props.style} setOpenLandId={setOpenLandId} openLandId={openLandId} /> : <LandChat activeLandIndex={activeLandIndex} setActiveLandIndex={setActiveLandIndex} landInfo={props.landInfo} />}</>;
 };
 export default Land;

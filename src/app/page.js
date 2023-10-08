@@ -1,6 +1,6 @@
 import Header from "@/components/parts/header";
 import CreateButton from "@/components/parts/create-button";
-import GetLandsDbAs from "@/components/get-lands-db-as";
+import GetLandsFromDb from "@/components/get-lands-from-db";
 import React from "react";
 /**
  * Indexコンポーネントはアプリケーションのメインページをレンダリングします。
@@ -14,7 +14,7 @@ const Index = () => {
 
       {/* ランドコンテナー: 主要なコンテンツ領域 */}
       <div className="land-container min-h-[calc(100vh-50px)] md:min-h[calc(100vh-50px)]">
-        <GetLandsDbAs />
+        <GetLandsFromDb />
         {/* 部屋の作成ボタンコンポーネント */}
         <CreateButton />
       </div>

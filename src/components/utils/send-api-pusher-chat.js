@@ -8,7 +8,7 @@ export const sendApiPusherChat = async (msg, landId) => {
   console.log("Sending request body:", JSON.stringify(requestBody));
 
   try {
-    const response = await fetch("/api/pusher/sendMessage", {
+    const response = await fetch("/api/pusher/sendPusherMessage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
