@@ -3,6 +3,7 @@ import Moveable from "react-moveable";
 import { useAnimationControls, motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import { UserIdContext } from "@/context/userid-context";
+import Land from "@/components/land";
 
 const CreateLand = () => {
   const [resizable, setResizable] = useState(false);

@@ -9,10 +9,9 @@ import GetCardFromDb from "@/components/get-card-from-db";
 import { placeNewMessage } from "@/components/utils/place-new-message";
 import { handleMouseMove } from "@/components/utils/mousemove-handler";
 import { UserIdContext } from "@/context/userid-context";
+import InputMessage from "@/components/parts/input-message";
 
 const EmojiSound = (props) => {
-  console.log("EmojiChat", props.landId);
-
   // 状態管理
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newMessage, setNewMessage] = useState("");
@@ -47,14 +46,19 @@ const EmojiSound = (props) => {
 
   // 描画部分
   return (
-    <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={{ transform: `scale(${props.zoom})` }}>
-      <Suspense fallback={<LoadingSpinner />}>
-        <GetCardFromDb landId={props.landId} />
-      </Suspense>
-      <Card data={newMessage} />
-      <ReceiveOtherUserCards landId={props.landId} />
-      <Follower ref={followerRef} isVisible={!!props.message} />
-    </div>
+    <>
+      <div id="container__wrapper" ref={props.targetRef}>
+        <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={{ transform: `scale(${props.zoom})` }}>
+          <Suspense fallback={<LoadingSpinner />}>
+            <GetCardFromDb landId={props.landId} />
+          </Suspense>
+          <Card data={newMessage} />
+          <ReceiveOtherUserCards landId={props.landId} />
+          <Follower ref={followerRef} isVisible={!!props.message} />
+        </div>
+      </div>
+      <InputMessage message={props.message} setMessage={props.setMessage} />
+    </>
   );
 };
 export default memo(EmojiSound);
