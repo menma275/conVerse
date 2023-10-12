@@ -20,6 +20,7 @@ const CreateLand = () => {
     name: "",
     description: "",
     landType: "",
+    sounds: "",
     genId: "",
   });
 
@@ -60,14 +61,14 @@ const CreateLand = () => {
   const saveLand = async (event) => {
     event.preventDefault();
 
-    const { userId, name, description, landType, genId } = formData;
+    const { userId, name, description, landType, sounds, genId } = formData;
     console.log("Data to be sent:", formData); // データをログに出力
 
     // ここでAPIにデータを送信
     try {
       const res = await fetch(`${baseUrl}/api/land`, {
         method: "POST",
-        body: JSON.stringify({ info: { userId, name, description, landType, genId } }),
+        body: JSON.stringify({ info: { userId, name, description, landType, sounds, genId } }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -77,7 +78,7 @@ const CreateLand = () => {
         // リソースの作成が成功した場合
         const responseData = await res.json(); // レスポンスデータをJSONとしてパース
         console.log("Land created successfully!", responseData);
-        setCreatedLandData({ userId, name, description, landType, genId });
+        setCreatedLandData({ userId, name, description, landType, sounds, genId });
         console.log("CreateLand", responseData.land);
         // land コンポーネントを表示
         setLandVisible(true);
@@ -131,19 +132,25 @@ const CreateLand = () => {
             <div className="board-content">
               <form onSubmit={saveLand}>
                 <div className="rounded-lg border-2 border-[var(--accent)]">
-                  <input id="name" type="text" name="name" placeholder="Input Land Name" value={formData.name} onChange={handleInputChange} />
+                  <input id="name" type="text" name="name" placeholder="Input Land Name" value={formData.name} onChange={handleInputChange} required />
                 </div>
                 <div className="rounded-lg border-2 border-[var(--accent)]">
                   <textarea id="description" name="description" rows="6" placeholder="Input Description" value={formData.description} onChange={handleInputChange} />
                 </div>
-                <select name="landType" value={formData.landType} onChange={handleInputChange}>
+                <select name="landType" value={formData.landType} onChange={handleInputChange} required>
                   <option value="1">Emoji Land</option>
                   <option value="2">Sound Emoji</option>
                 </select>
-                <select name="genId" value={formData.genId} onChange={handleInputChange}>
-                  <option value="">Select GenArt</option>
-                  <option value="1">Samuel YAN</option>
-                  <option value="2">sakamura</option>
+                <select name="sounds" value={formData.sounds} onChange={handleInputChange} required>
+                  <option value="1">On</option>
+                  <option value="0">Off</option>
+                </select>
+                <select name="genId" value={formData.genId} onChange={handleInputChange} required>
+                  <option value="" disabled>
+                    Select GenArt
+                  </option>
+                  <option value="samuelyan">Samuel YAN</option>
+                  <option value="sakamura">sakamura</option>
                 </select>
                 <div className="rounded-lg border-2 border-[var(--accent)]">
                   <input id="submit" type="submit" value="Create" />

@@ -24,7 +24,7 @@ const LandEntrance = (props) => {
           e.target.style.transform = e.transform;
         }}
       />
-      <div className={`board pixel-shadow land${props.landInfo.landId}`} style={style} ref={target} onMouseDown={handleMouseDownOrTouchStart}>
+      <div className={`board pixel-shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 land${props.landInfo.landId}`} style={style} ref={target} onMouseDown={handleMouseDownOrTouchStart}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <LandChatHeader name={props.landInfo.name} />
         </div>

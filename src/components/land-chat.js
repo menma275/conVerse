@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef, memo } from "react";
 import Moveable from "react-moveable";
 import { useAnimationControls, motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
-import Zoom from "@/components/parts/zoom";
 import GenerativeArt from "@/components/parts/genarativeart";
 import LandTypeSelector from "@/components/land-type/land-type-selector";
 import LandChatHeader from "@/components/parts/land-chat-header";
@@ -25,7 +24,6 @@ const LandChat = (props) => {
   };
 
   const toggleModal = () => {
-    console.log("toggleModal", isOpen);
     setIsOpen(!isOpen);
   };
 
@@ -106,12 +104,13 @@ const LandChat = (props) => {
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <LandChatHeader name={props.landInfo.name} /> <button onClick={toggleModal}>Generate</button>
         </div>
+
         <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
         <div id="tap-anywhere" style={{ display: message ? "" : "none" }}>
           <p>👇 Tap anywhere to post.</p>
         </div>
-        <LandTypeSelector zoom={zoom} message={message} targetRef={targetRef} setMessage={setMessage} landInfo={props.landInfo} />
-        <Zoom setZoom={setZoom} zoom={zoom} />
+
+        <LandTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} landInfo={props.landInfo} sounds={props.sounds} />
       </motion.div>
     </>
   );

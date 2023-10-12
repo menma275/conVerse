@@ -1,6 +1,7 @@
 import { sendApiPusherChat } from "@/components/utils/send-api-pusher-chat";
 import { getRandomPalette } from "@/components/utils/utils";
 import { CARD_PALETTE } from "@/components/utils/card-palette";
+import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
 
 export const placeNewMessage = (e, setNewMessage, userId, landId, isAddingCard, container, zoom, message, setMessage) => {
   if (!isAddingCard || !message) return null;
@@ -11,15 +12,17 @@ export const placeNewMessage = (e, setNewMessage, userId, landId, isAddingCard, 
   const newX = (e.clientX - containerRect.left) / zoom;
   const newY = (e.clientY - containerRect.top) / zoom;
   const newColor = palette[Math.floor(Math.random() * palette.length)];
+  const yPositionRelativeToCenter = (e.clientY - containerRect.top) / zoom - containerRect.height / (2 * zoom);
 
   const msg = {
     userId: userId,
     postId: cardnum,
     text: message,
     pos: { x: newX, y: newY },
+    note: getNoteFromYPosition(yPositionRelativeToCenter),
     color: newColor,
   };
-  setNewMessage(msg);
+  setNewMessage((prevMessages) => [...prevMessages, msg]);
   sendApiPusherChat(msg, landId);
   setMessage("");
 };

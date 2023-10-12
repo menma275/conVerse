@@ -12,14 +12,12 @@ const Zoom = (props) => {
 
   return (
     <>
-      <div id="manipulate">
-        <button id="zoomin" className="pixel-shadow" onClick={zoomin}>
-          +
-        </button>
-        <button id="zoomout" className="pixel-shadow" onClick={zoomout}>
-          -
-        </button>
-      </div>
+      <button id="zoomin" className="pixel-shadow" onClick={zoomin}>
+        +
+      </button>
+      <button id="zoomout" className="pixel-shadow" onClick={zoomout}>
+        -
+      </button>
     </>
   );
 };

@@ -3,25 +3,26 @@ import React, { useEffect, useState, memo, useCallback, useMemo, useContext } fr
 import CardLoop from "@/components/card-loop";
 import { getPusherInstance } from "@/components/utils/pusher-config";
 import { UserIdContext } from "@/context/userid-context";
-
-import Pusher from "pusher-js";
-
-Pusher.log = function (message) {
-  if (window.console && window.console.log) {
-    window.console.log(message);
-  }
-};
+import { playSoundForEmojiCategory } from "@/components/parts/mute-button";
 
 const ReceiveOtherUserCards = (props) => {
   const [cardList, setCardList] = useState([]);
   const [messages, setMessages] = useState([]);
   const { userId } = useContext(UserIdContext);
+  const sounds = props.sounds;
 
   const handleNewMessage = useCallback((data) => {
     // 自分が送信したメッセージかどうかを確認
     if (data.message.userId !== userId) {
-      console.log("data.message.userId", data.message);
-      console.log("userId", userId);
+      console.log("Received new message:", data.message.text);
+      //おとを再生
+      if (sounds) {
+        try {
+          playSoundForEmojiCategory(data.message.text);
+        } catch (error) {
+          console.error("Error playing emoji sound:", error);
+        }
+      }
       setMessages((prevMessages) => {
         if (prevMessages.some((message) => message.postId === data.message.postId)) {
           return prevMessages;
@@ -90,7 +91,6 @@ const ReceiveOtherUserCards = (props) => {
     }
 
     console.log("Processing latest message: ", latestMessage);
-
     const newCard = {
       id: "",
       pos: {
@@ -98,6 +98,7 @@ const ReceiveOtherUserCards = (props) => {
         y: latestMessage.pos.y,
       },
       text: wrapEmojisInSpans(latestMessage.text, 20),
+      note: latestMessage.note,
       color: latestMessage.color,
     };
     setCardList((prevCards) => [...prevCards, newCard]);
