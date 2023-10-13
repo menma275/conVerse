@@ -199,11 +199,11 @@ body {
   align-items: center;
   cursor: pointer;
 }
-.land-container {
+.space-container {
   position: relative;
 }
 
-#create-new-land {
+#create-new-space {
   z-index: 1000;
 }
 .board {

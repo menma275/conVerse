@@ -3,7 +3,7 @@ import { getRandomPalette } from "@/components/utils/utils";
 import { CARD_PALETTE } from "@/components/utils/card-palette";
 import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
 
-export const placeNewMessage = (e, setNewMessage, userId, landId, isAddingCard, container, zoom, message, setMessage) => {
+export const placeNewMessage = (e, setNewMessage, userId, spaceId, isAddingCard, container, zoom, message, setMessage) => {
   if (!isAddingCard || !message) return null;
 
   const palette = getRandomPalette(CARD_PALETTE);
@@ -23,6 +23,6 @@ export const placeNewMessage = (e, setNewMessage, userId, landId, isAddingCard, 
     color: newColor,
   };
   setNewMessage((prevMessages) => [...prevMessages, msg]);
-  sendApiPusherChat(msg, landId);
+  sendApiPusherChat(msg, spaceId);
   setMessage("");
 };

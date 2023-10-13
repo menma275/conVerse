@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import CreateLand from "@/components/create-land";
+import CreateSpace from "@/components/create-space";
 const CreateButton = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   return (
     <>
-      {isCreateOpen && <CreateLand />}
+      {isCreateOpen && <CreateSpace />}
       <button className="pixel-shadow" id="create-room" onClick={() => setIsCreateOpen(true)}>
-        Create Land
+        Create Space
       </button>
     </>
   );

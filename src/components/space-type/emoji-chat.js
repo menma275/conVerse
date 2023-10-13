@@ -14,7 +14,7 @@ import InputMessage from "@/components/parts/input-message";
 import Zoom from "@/components/parts/zoom";
 import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
 
-const EmojiSound = (props) => {
+const EmojiChat = (props) => {
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newMessage, setNewMessage] = useState([]);
   const containerRef = useRef(null);
@@ -24,17 +24,19 @@ const EmojiSound = (props) => {
   const onMouseMoveHandler = useCallback((e) => handleMouseMove(e, isAddingCard, followerRef, containerRef, props.zoom), [isAddingCard, props]);
 
   const handleContainerClick = (e) => {
-    placeNewMessage(e, setNewMessage, userId, props.landId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
+    placeNewMessage(e, setNewMessage, userId, props.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
 
-    const containerRect = containerRef.current.getBoundingClientRect(); // containerRefを使用してDOMの参照を取得します
-    const yPositionRelativeToCenter = (e.clientY - containerRect.top) / props.zoom - containerRect.height / (2 * props.zoom);
-    const note = getNoteFromYPosition(yPositionRelativeToCenter);
+    if (props.sounds) {
+      const containerRect = containerRef.current.getBoundingClientRect(); // containerRefを使用してDOMの参照を取得します
+      const yPositionRelativeToCenter = (e.clientY - containerRect.top) / props.zoom - containerRect.height / (2 * props.zoom);
+      const note = getNoteFromYPosition(yPositionRelativeToCenter);
 
-    if (props.message) {
-      try {
-        playSoundForEmojiCategory(props.message, note); // 新しいコンポーネントを使用
-      } catch (error) {
-        console.error("Error playing emoji sound:", error);
+      if (props.message) {
+        try {
+          playSoundForEmojiCategory(props.message, note); // 新しいコンポーネントを使用
+        } catch (error) {
+          console.error("Error playing emoji sound:", error);
+        }
       }
     }
   };
@@ -48,8 +50,8 @@ const EmojiSound = (props) => {
   }, [props.message]);
 
   useEffect(() => {
-    console.log("landId updated:", props.landId);
-  }, [props.landId]);
+    console.log("spaceId updated:", props.spaceId);
+  }, [props.spaceId]);
 
   useEffect(() => {
     console.log("newMessage updated:", newMessage);
@@ -60,19 +62,19 @@ const EmojiSound = (props) => {
       <div id="container__wrapper" ref={props.targetRef}>
         <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={{ transform: `scale(${props.zoom})` }}>
           <Suspense fallback={<LoadingSpinner />}>
-            <GetCardFromDb landId={props.landId} />
+            <GetCardFromDb spaceId={props.spaceId} />
           </Suspense>
           <CardLoop dataList={newMessage} />
-          <ReceiveOtherUserCards landId={props.landId} />
+          <ReceiveOtherUserCards spaceId={props.spaceId} sounds={props.sounds} />
           <Follower ref={followerRef} isVisible={!!props.message} />
         </div>
       </div>
       <InputMessage message={props.message} setMessage={props.setMessage} />
       <div id="manipulate">
-        <MuteButton />
+        {props.sounds && <MuteButton />}
         <Zoom setZoom={props.setZoom} zoom={props.zoom} />
       </div>
     </>
   );
 };
-export default EmojiSound;
+export default memo(EmojiChat);

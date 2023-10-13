@@ -2,8 +2,8 @@
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-export const saveCardDb = async (msg, landId) => {
-  const apiUrl = landId ? `${baseUrl}/api/message/${landId}` : `${baseUrl}/api/message`;
+export const saveCardDb = async (msg, spaceId) => {
+  const apiUrl = spaceId ? `${baseUrl}/api/message/${spaceId}` : `${baseUrl}/api/message`;
 
   console.log("msg", JSON.stringify(msg));
   console.log("apiUrl", apiUrl);

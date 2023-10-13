@@ -4,10 +4,10 @@ import Moveable from "react-moveable";
 import { useAnimationControls, motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import GenerativeArt from "@/components/parts/genarativeart";
-import LandTypeSelector from "@/components/land-type/land-type-selector";
-import LandChatHeader from "@/components/parts/land-chat-header";
+import SpaceTypeSelector from "@/components/space-type/space-type-selector";
+import SpaceChatHeader from "@/components/parts/space-chat-header";
 
-const LandChat = (props) => {
+const SpaceChat = (props) => {
   const [resizable, setResizable] = useState(false);
   const resizeTarget = useRef(null);
   const dragTarget = useRef(null);
@@ -20,7 +20,7 @@ const LandChat = (props) => {
   const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
 
   const handleMouseDownOrTouchStart = () => {
-    props.setActiveLandIndex(props.landInfo.landId);
+    props.setActiveSpaceIndex(props.spaceInfo.spaceId);
   };
 
   const toggleModal = () => {
@@ -100,9 +100,9 @@ const LandChat = (props) => {
         }}
         ref={moveableRef}
       />
-      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow land${props.landInfo.landId}`} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
+      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow space${props.spaceInfo.spaceId}`} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
-          <LandChatHeader name={props.landInfo.name} /> <button onClick={toggleModal}>Generate</button>
+          <SpaceChatHeader name={props.spaceInfo.name} /> <button onClick={toggleModal}>Generate</button>
         </div>
 
         <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
@@ -110,9 +110,9 @@ const LandChat = (props) => {
           <p>👇 Tap anywhere to post.</p>
         </div>
 
-        <LandTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} landInfo={props.landInfo} sounds={props.sounds} />
+        <SpaceTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} spaceInfo={props.spaceInfo} sounds={props.sounds} />
       </motion.div>
     </>
   );
 };
-export default memo(LandChat);
+export default memo(SpaceChat);

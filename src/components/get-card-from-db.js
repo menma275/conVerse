@@ -35,11 +35,11 @@ const getPosts = async (apiUrl) => {
   }
 };
 
-// 非同期コンポーネント: LandのIDに基づいてカード情報を取得し、表示する
+// 非同期コンポーネント: SpaceのIDに基づいてカード情報を取得し、表示する
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-const GetCardFromDb = async ({ landId }) => {
-  const apiUrl = landId ? `${baseUrl}/api/message/${landId}` : `${baseUrl}/api/message`;
+const GetCardFromDb = async ({ spaceId }) => {
+  const apiUrl = spaceId ? `${baseUrl}/api/message/${spaceId}` : `${baseUrl}/api/message`;
   const dataList = await getPosts(apiUrl);
   console.log("GetCardFromDb", dataList);
   setDetaList(dataList); // localStorageにデータをセット

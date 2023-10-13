@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
-import { OpenLandIdProvider } from "@/context/open-land-id-context";
-import { ActiveLandIndexProvider } from "@/context/active-land-index-context";
+import { OpenSpaceIdProvider } from "@/context/open-space-id-context";
+import { ActiveSpaceIndexProvider } from "@/context/active-space-index-context";
 import { UserIdProvider } from "@/context/userid-context";
 import GenerateUniqueId from "@/components/utils/generate-unique-id";
 import React from "react";
@@ -24,12 +24,12 @@ export default function RootLayout({ children }) {
       <body>
         {/* メインコンテンツ領域 */}
         <main className="h-full">
-          {/* LandEntranceの状態管理のためにアプリをLandEntranceProviderでラップ */}
+          {/* SpaceEntranceの状態管理のためにアプリをSpaceEntranceProviderでラップ */}
           <UserIdProvider>
             <GenerateUniqueId />
-            <OpenLandIdProvider>
-              <ActiveLandIndexProvider>{children}</ActiveLandIndexProvider>
-            </OpenLandIdProvider>
+            <OpenSpaceIdProvider>
+              <ActiveSpaceIndexProvider>{children}</ActiveSpaceIndexProvider>
+            </OpenSpaceIdProvider>
           </UserIdProvider>
         </main>
       </body>

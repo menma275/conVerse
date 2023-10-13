@@ -54,15 +54,15 @@ const ReceiveOtherUserCards = (props) => {
 
   useEffect(() => {
     const pusher = getPusherInstance();
-    console.log("state_change", props.landId);
+    console.log("state_change", props.spaceId);
 
     pusher.connection.bind("state_change", function (states) {
       console.log("Pusher connection state:", states);
     });
 
     // roomIdに基づいてチャネルを購読
-    const channel = pusher.subscribe(`room-${props.landId}`);
-    console.log("Subscribed to channel:", `room-${props.landId}`); // ここでログ出力
+    const channel = pusher.subscribe(`room-${props.spaceId}`);
+    console.log("Subscribed to channel:", `room-${props.spaceId}`); // ここでログ出力
 
     channel.bind("pusher:subscription_error", function (status) {
       console.error("Subscription error:", status);
@@ -82,7 +82,7 @@ const ReceiveOtherUserCards = (props) => {
 
       console.log("Unsubscribed from channel:", channel.name);
     };
-  }, [props.landId]);
+  }, [props.spaceId]);
 
   useEffect(() => {
     if (!latestMessage) {
@@ -102,11 +102,11 @@ const ReceiveOtherUserCards = (props) => {
       color: latestMessage.color,
     };
     setCardList((prevCards) => [...prevCards, newCard]);
-  }, [latestMessage, props.landId]);
+  }, [latestMessage, props.spaceId]);
 
   useEffect(() => {
-    console.log("landId in OtherUserCards:", props.landId);
-  }, [props.landId]);
+    console.log("spaceId in OtherUserCards:", props.spaceId);
+  }, [props.spaceId]);
   return (
     <>
       <CardLoop dataList={cardList} />

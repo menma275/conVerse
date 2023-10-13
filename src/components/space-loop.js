@@ -1,15 +1,15 @@
-import Land from "@/components/land";
+import Space from "@/components/space";
 import React from "react";
 
-const LandLoop = ({ landList }) => {
+const SpaceLoop = ({ spaceList }) => {
   return (
     <>
-      {landList &&
-        landList.map((data, index) => (
-          <Land
-            landInfo={data}
+      {spaceList &&
+        spaceList.map((data, index) => (
+          <Space
+            spaceInfo={data}
             key={index}
-            landId={data.landId}
+            spaceId={data.spaceId}
             sounds={data.sounds}
             style={{
               left: `${index * 50 + 50}px`, // 左に10pxずつずらす
@@ -21,4 +21,4 @@ const LandLoop = ({ landList }) => {
     </>
   );
 };
-export default LandLoop;
+export default SpaceLoop;

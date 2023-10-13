@@ -1,10 +1,10 @@
 //socketへの送信
-export const sendApiPusherChat = async (msg, landId) => {
+export const sendApiPusherChat = async (msg, spaceId) => {
   const requestBody = {
     message: msg,
-    landId: landId,
+    spaceId: spaceId,
   };
-  console.log("landId", landId);
+  console.log("spaceId", spaceId);
   console.log("Sending request body:", JSON.stringify(requestBody));
 
   try {
