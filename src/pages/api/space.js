@@ -1,23 +1,23 @@
 import connectDB from "../../middlewares/mongodb";
 import mongoose from "mongoose";
 
-// Landモデルを定義する関数
-const defineLandModel = () => {
-  const landSchema = new mongoose.Schema({
+// Spaceモデルを定義する関数
+const defineSpaceModel = () => {
+  const spaceSchema = new mongoose.Schema({
     info: String,
-    landId: Number,
+    spaceId: Number,
     timestamp: Date,
   });
-  const landCollection = "Land";
-  return mongoose.models[landCollection] || mongoose.model(landCollection, landSchema);
+  const spaceCollection = "Space";
+  return mongoose.models[spaceCollection] || mongoose.model(spaceCollection, spaceSchema);
 };
 
 // GETリクエストを処理する関数
 const handleGetRequest = async (req, res) => {
   try {
     await connectDB();
-    const Land = defineLandModel();
-    const posts = await Land.find({});
+    const Space = defineSpaceModel();
+    const posts = await Space.find({});
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ statusCode: 500, message: err.message });
@@ -28,26 +28,26 @@ const handleGetRequest = async (req, res) => {
 const handlePostRequest = async (req, res) => {
   try {
     await connectDB();
-    const Land = defineLandModel();
+    const Space = defineSpaceModel();
     console.log("Received request body:", req.body);
 
-    const latestDocument = await Land.find().sort({ landId: -1 }).limit(1);
-    const latestOrder = latestDocument.length > 0 ? latestDocument[0].landId : 0;
+    const latestDocument = await Space.find().sort({ spaceId: -1 }).limit(1);
+    const latestOrder = latestDocument.length > 0 ? latestDocument[0].spaceId : 0;
 
-    const newLand = new Land({
+    const newSpace = new Space({
       info: JSON.stringify(req.body.info),
-      landId: latestOrder + 1,
+      spaceId: latestOrder + 1,
       timestamp: new Date(),
     });
 
-    await newLand.save();
-    console.log("Land saved to DB...");
+    await newSpace.save();
+    console.log("Space saved to DB...");
 
-    res.status(201).json({ message: "Land created successfully", land: newLand });
+    res.status(201).json({ message: "Space created successfully", space: newSpace });
   } catch (err) {
-    console.error("Could not save Land to DB...");
+    console.error("Could not save Space to DB...");
     console.error(err);
-    res.status(500).json({ message: "An error occurred while creating the land" });
+    res.status(500).json({ message: "An error occurred while creating the space" });
   }
 };
 

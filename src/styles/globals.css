@@ -173,6 +173,20 @@ body {
   z-index: 10;
 }
 
+.mute-button {
+  width: 35px;
+  height: 35px;
+  background-color: var(--accent);
+  border: 2px solid var(--black);
+  color: var(--cream);
+  font-size: medium;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
 #manipulate button {
   width: 35px;
   height: 35px;
@@ -185,11 +199,11 @@ body {
   align-items: center;
   cursor: pointer;
 }
-.land-container {
+.space-container {
   position: relative;
 }
 
-#create-new-land {
+#create-new-space {
   z-index: 1000;
 }
 .board {

@@ -3,25 +3,26 @@ import React, { useEffect, useState, memo, useCallback, useMemo, useContext } fr
 import CardLoop from "@/components/card-loop";
 import { getPusherInstance } from "@/components/utils/pusher-config";
 import { UserIdContext } from "@/context/userid-context";
-
-import Pusher from "pusher-js";
-
-Pusher.log = function (message) {
-  if (window.console && window.console.log) {
-    window.console.log(message);
-  }
-};
+import { playSoundForEmojiCategory } from "@/components/parts/mute-button";
 
 const ReceiveOtherUserCards = (props) => {
   const [cardList, setCardList] = useState([]);
   const [messages, setMessages] = useState([]);
   const { userId } = useContext(UserIdContext);
+  const sounds = props.sounds;
 
   const handleNewMessage = useCallback((data) => {
     // 自分が送信したメッセージかどうかを確認
     if (data.message.userId !== userId) {
-      console.log("data.message.userId", data.message);
-      console.log("userId", userId);
+      console.log("Received new message:", data.message.text);
+      //おとを再生
+      if (sounds) {
+        try {
+          playSoundForEmojiCategory(data.message.text);
+        } catch (error) {
+          console.error("Error playing emoji sound:", error);
+        }
+      }
       setMessages((prevMessages) => {
         if (prevMessages.some((message) => message.postId === data.message.postId)) {
           return prevMessages;
@@ -53,15 +54,15 @@ const ReceiveOtherUserCards = (props) => {
 
   useEffect(() => {
     const pusher = getPusherInstance();
-    console.log("state_change", props.landId);
+    console.log("state_change", props.spaceId);
 
     pusher.connection.bind("state_change", function (states) {
       console.log("Pusher connection state:", states);
     });
 
     // roomIdに基づいてチャネルを購読
-    const channel = pusher.subscribe(`room-${props.landId}`);
-    console.log("Subscribed to channel:", `room-${props.landId}`); // ここでログ出力
+    const channel = pusher.subscribe(`room-${props.spaceId}`);
+    console.log("Subscribed to channel:", `room-${props.spaceId}`); // ここでログ出力
 
     channel.bind("pusher:subscription_error", function (status) {
       console.error("Subscription error:", status);
@@ -81,7 +82,7 @@ const ReceiveOtherUserCards = (props) => {
 
       console.log("Unsubscribed from channel:", channel.name);
     };
-  }, [props.landId]);
+  }, [props.spaceId]);
 
   useEffect(() => {
     if (!latestMessage) {
@@ -90,7 +91,6 @@ const ReceiveOtherUserCards = (props) => {
     }
 
     console.log("Processing latest message: ", latestMessage);
-
     const newCard = {
       id: "",
       pos: {
@@ -98,14 +98,15 @@ const ReceiveOtherUserCards = (props) => {
         y: latestMessage.pos.y,
       },
       text: wrapEmojisInSpans(latestMessage.text, 20),
+      note: latestMessage.note,
       color: latestMessage.color,
     };
     setCardList((prevCards) => [...prevCards, newCard]);
-  }, [latestMessage, props.landId]);
+  }, [latestMessage, props.spaceId]);
 
   useEffect(() => {
-    console.log("landId in OtherUserCards:", props.landId);
-  }, [props.landId]);
+    console.log("spaceId in OtherUserCards:", props.spaceId);
+  }, [props.spaceId]);
   return (
     <>
       <CardLoop dataList={cardList} />
