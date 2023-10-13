@@ -62,7 +62,7 @@ const EmojiSound = (props) => {
           <Suspense fallback={<LoadingSpinner />}>
             <GetCardFromDb landId={props.landId} />
           </Suspense>
-          <CardLoop dataList={newMessage} containerRef={containerRef} zoom={props.zoom} />
+          <CardLoop dataList={newMessage} />
           <ReceiveOtherUserCards landId={props.landId} />
           <Follower ref={followerRef} isVisible={!!props.message} />
         </div>

@@ -7,7 +7,7 @@ const CardLoop = (props) => {
     <>
       {/* dataListの各データを元にカードをマッピングして表示 */}
       {props.dataList.map((data, index) => (
-        <Card data={data} key={index} containerRef={props.containerRef} zoom={props.zoom} />
+        <Card data={data} key={index} />
       ))}
     </>
   );
