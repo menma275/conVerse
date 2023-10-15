@@ -68,6 +68,43 @@ const Card = (props) => {
   // カードのクラス名定義
   const cardClassName = isDraggable ? "card draggable-card" : "card";
 
+  //SPのタッチ対応
+  const handleTouchStart = (e) => {
+    if (!isDraggable) return;
+    setIsDragging(true);
+    setStartMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+    setStartCardPosition({ x: positionRef.current.x, y: positionRef.current.y });
+  };
+
+  const handleTouchMove = (e) => {
+    if (isDragging) {
+      const dx = e.touches[0].clientX - startMousePosition.x;
+      const dy = e.touches[0].clientY - startMousePosition.y;
+      const newPosition = {
+        x: startCardPosition.x + dx,
+        y: startCardPosition.y + dy,
+      };
+      positionRef.current = newPosition;
+      setPosition(newPosition);
+    }
+  };
+
+  const handleTouchEnd = async () => {
+    setIsDragging(false);
+    window.removeEventListener("touchmove", handleTouchMove);
+    window.removeEventListener("touchend", handleTouchEnd);
+
+    const cardData = {
+      ...props.data,
+      pos: {
+        x: positionRef.current.x,
+        y: positionRef.current.y,
+      },
+    };
+    await sendApiPusherChat(cardData, props?.data?.spaceId);
+    await updateCardDb(cardData, props?.data?.spaceId);
+  };
+
   // propsからの位置変更を監視して、positionRefとstateを更新する
   useEffect(() => {
     positionRef.current = {
@@ -85,11 +122,15 @@ const Card = (props) => {
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("touchmove", handleTouchMove);
+      window.addEventListener("touchend", handleTouchEnd);
     }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, [isDragging, startMousePosition]);
 
@@ -115,7 +156,8 @@ const Card = (props) => {
         }
       }}
       onClick={handleCardClick}
-      onMouseDown={handleMouseDown}>
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}>
       {props?.data?.text}
     </div>
   );

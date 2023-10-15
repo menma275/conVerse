@@ -202,6 +202,7 @@ body {
 }
 .space-container {
   position: relative;
+  height: calc(100dvh - 50px);
 }
 
 #create-new-space {
@@ -209,11 +210,6 @@ body {
 }
 .board {
   position: absolute;
-  /*top: 50vh;
-  top: 50dvh;
-  left: 50vw;
-  left: 50dvw;
-  transform: translate(-50%, -50%);*/
   min-width: 300px;
   min-height: 300px;
   width: 300px;
@@ -225,6 +221,12 @@ body {
   box-shadow: 0.5rem 0.5rem 0 0 var(--accent);
   z-index: 1;
 }
+
+em-emoji-picker,
+#root {
+  height: 400px;
+}
+
 .chat {
   z-index: 2;
 }

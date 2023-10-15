@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import CardLoop from "@/components/card-loop";
 import { getPusherInstance } from "@/components/utils/pusher-config";
 import { UserIdContext } from "@/context/userid-context";
@@ -15,45 +15,45 @@ const ReceiveOtherUserCards = (props) => {
   const { userId } = useContext(UserIdContext);
   const sounds = props.sounds;
 
-  const handleNewMessage = (data) => {
-    console.log("Received Data:", data);
-
-    if (data.message.userId !== userId) {
-      if (sounds) {
-        try {
-          playSoundForEmojiCategory(data.message.text);
-        } catch (error) {
-          console.error("Error playing emoji sound:", error);
-        }
-      }
-
-      const newCard = {
-        id: data.message.postId.toString(),
-        spaceId: props.spaceId,
-        pos: {
-          x: data.message.pos.x,
-          y: data.message.pos.y,
-        },
-        text: data.message.text,
-        note: data.message.note,
-        color: data.message.color,
-      };
-
-      setCardList((prevCards) => {
-        const updatedCards = [...prevCards];
-        const cardIndex = updatedCards.findIndex((card) => card.id === newCard.id);
-        if (cardIndex !== -1) {
-          updatedCards[cardIndex] = newCard;
-        } else {
-          updatedCards.push(newCard);
-        }
-        console.log("Updated Card List:", updatedCards);
-        return updatedCards;
-      });
-    }
-  };
-
   useEffect(() => {
+    const handleNewMessage = (data) => {
+      console.log("Received Data:", data);
+
+      if (data.message.userId !== userId) {
+        if (sounds) {
+          try {
+            playSoundForEmojiCategory(data.message.text);
+          } catch (error) {
+            console.error("Error playing emoji sound:", error);
+          }
+        }
+
+        const newCard = {
+          id: data.message.postId.toString(),
+          spaceId: props.spaceId,
+          pos: {
+            x: data.message.pos.x,
+            y: data.message.pos.y,
+          },
+          text: data.message.text,
+          note: data.message.note,
+          color: data.message.color,
+        };
+
+        setCardList((prevCards) => {
+          const updatedCards = [...prevCards];
+          const cardIndex = updatedCards.findIndex((card) => card.id === newCard.id);
+          if (cardIndex !== -1) {
+            updatedCards[cardIndex] = newCard;
+          } else {
+            updatedCards.push(newCard);
+          }
+          console.log("Updated Card List:", updatedCards);
+          return updatedCards;
+        });
+      }
+    };
+
     const pusher = getPusherInstance();
     const channel = pusher.subscribe(`room-${props.spaceId}`);
     channel.bind("new-message", handleNewMessage);
@@ -61,7 +61,7 @@ const ReceiveOtherUserCards = (props) => {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  }, [props.spaceId, handleNewMessage]);
+  }, [props.spaceId, userId, sounds]);
 
   return <CardLoop dataList={cardList} />;
 };

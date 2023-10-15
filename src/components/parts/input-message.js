@@ -42,7 +42,7 @@ const InputMessage = (props) => {
     <>
       <div className="post-set rounded-full border-2 border-[var(--accent)]">
         <div className="absolute bottom-10 left-0" ref={pickerRef} onMouseEnter={() => isCursorDevice() && setIsPickerOpen(true)} onMouseLeave={() => isCursorDevice() && setIsPickerOpen(false)}>
-          {isPickerOpen && <Picker data={data} onEmojiSelect={inputEmojis} perLine="6" emojiButtonSize="50" emojiSize="38" theme="light" previewPosition="none" />}
+          {isPickerOpen && <Picker data={data} onEmojiSelect={inputEmojis} perLine="6" emojiButtonSize="40" emojiSize="30" theme="light" previewPosition="none" />}
         </div>
         <input id="input-post" type="text" placeholder="Input your message." value={props.message} onChange={handleChange} className="focus:outline-none" />
         <button onClick={togglePickerOpen} className="rounded-full m-0 mx-2 p-0">

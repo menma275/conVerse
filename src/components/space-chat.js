@@ -23,7 +23,7 @@ const SpaceChat = (props) => {
     props.setActiveSpaceIndex(props.spaceInfo.spaceId);
   };
 
-  const toggleModal = () => {
+  const toggleModal = (e) => {
     setIsOpen(!isOpen);
   };
 
@@ -100,9 +100,12 @@ const SpaceChat = (props) => {
         }}
         ref={moveableRef}
       />
-      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow space${props.spaceInfo.spaceId}`} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
+      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow mt-[-40px] sm:mt-0 space${props.spaceInfo.spaceId}`} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
-          <SpaceChatHeader name={props.spaceInfo.name} /> <button onClick={toggleModal}>Generate</button>
+          <SpaceChatHeader name={props.spaceInfo.name} />{" "}
+          <button onMouseUp={toggleModal} onTouchEnd={toggleModal}>
+            Generate
+          </button>
         </div>
 
         <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
