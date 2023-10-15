@@ -11,6 +11,7 @@ const Card = (props) => {
   const [startMousePosition, setStartMousePosition] = useState({ x: 0, y: 0 });
   const [startCardPosition, setStartCardPosition] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isBouncing, setIsBouncing] = useState(false);
 
   // カードの現在の位置を保存するためのref
   const positionRef = useRef({ x: props?.data?.pos?.x || 0, y: props?.data?.pos?.y || 0 });
@@ -62,11 +63,10 @@ const Card = (props) => {
   // カードのスタイル定義
   const cardStyle = {
     transform: `translate(${position.x}px, ${position.y}px)`,
+  };
+  const cardStyle2 = {
     boxShadow: isDragging ? `0 0 var(--hover-shadow-distance, 1rem) 0.1rem ${props?.data?.color}` : `0 0 var(--default-shadow-distance, 0.5rem) 0.05rem ${props?.data?.color}`,
   };
-
-  // カードのクラス名定義
-  const cardClassName = isDraggable ? "card draggable-card" : "card";
 
   //SPのタッチ対応
   const handleTouchStart = (e) => {
@@ -77,7 +77,9 @@ const Card = (props) => {
   };
 
   const handleTouchMove = (e) => {
-    if (isDragging) {
+    if (isDragging && e.touches.length === 1) {
+      // タッチポイントが1つの場合のみ処理を実行
+      e.preventDefault(); // ページのスクロールを防ぐ
       const dx = e.touches[0].clientX - startMousePosition.x;
       const dy = e.touches[0].clientY - startMousePosition.y;
       const newPosition = {
@@ -137,13 +139,26 @@ const Card = (props) => {
   // カードクリック時のサウンド再生ハンドラ
   const handleCardClick = () => {
     if (props?.data?.text) {
+      setIsBouncing(true);
       playSoundForEmojiCategory(props.data.text, props.data.note);
     }
   };
 
+  useEffect(() => {
+    if (isBouncing) {
+      const timer = setTimeout(() => {
+        setIsBouncing(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isBouncing]);
+
+  // カードのクラス名定義
+  const cardClassName = `${isDraggable ? "card draggable-card" : "card"} ${isBouncing ? "jello-animation" : ""}`;
+
   return (
     <div
-      className={cardClassName}
+      className="card-wrapper"
       style={cardStyle}
       onMouseEnter={(e) => {
         if (isDraggable) {
@@ -158,7 +173,9 @@ const Card = (props) => {
       onClick={handleCardClick}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}>
-      {props?.data?.text}
+      <div style={cardStyle2} className={cardClassName}>
+        {props?.data?.text}
+      </div>
     </div>
   );
 };
