@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { RiEmojiStickerFill } from "react-icons/ri";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { isCursorDevice } from "@/components/utils/utils"; // ヘルパー関数のインポート
 
 const InputMessage = (props) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -31,14 +32,16 @@ const InputMessage = (props) => {
 
   const handleClickOutside = (event) => {
     if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-      setIsPickerOpen(false);
+      if (isCursorDevice()) {
+        setIsPickerOpen(false);
+      }
     }
   };
 
   return (
     <>
       <div className="post-set rounded-full border-2 border-[var(--accent)]">
-        <div className="absolute bottom-10 left-0" ref={pickerRef}>
+        <div className="absolute bottom-10 left-0" ref={pickerRef} onMouseEnter={() => isCursorDevice() && setIsPickerOpen(true)} onMouseLeave={() => isCursorDevice() && setIsPickerOpen(false)}>
           {isPickerOpen && <Picker data={data} onEmojiSelect={inputEmojis} perLine="6" emojiButtonSize="50" emojiSize="38" theme="light" previewPosition="none" />}
         </div>
         <input id="input-post" type="text" placeholder="Input your message." value={props.message} onChange={handleChange} className="focus:outline-none" />

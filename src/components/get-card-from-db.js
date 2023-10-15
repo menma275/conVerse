@@ -39,7 +39,7 @@ const getPosts = async (apiUrl) => {
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 const GetCardFromDb = async ({ spaceId }) => {
-  const apiUrl = spaceId ? `${baseUrl}/api/message/${spaceId}` : `${baseUrl}/api/message`;
+  const apiUrl = `${baseUrl}/api/message/${spaceId}`;
   const dataList = await getPosts(apiUrl);
   console.log("GetCardFromDb", dataList);
   setDetaList(dataList); // localStorageにデータをセット

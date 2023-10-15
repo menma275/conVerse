@@ -13,7 +13,6 @@ import MuteButton, { playSoundForEmojiCategory } from "@/components/parts/mute-b
 import InputMessage from "@/components/parts/input-message";
 import Zoom from "@/components/parts/zoom";
 import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
-
 const EmojiChat = (props) => {
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newMessage, setNewMessage] = useState([]);

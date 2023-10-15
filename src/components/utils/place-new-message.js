@@ -16,6 +16,7 @@ export const placeNewMessage = (e, setNewMessage, userId, spaceId, isAddingCard,
 
   const msg = {
     userId: userId,
+    spaceId: spaceId,
     postId: cardnum,
     text: message,
     pos: { x: newX, y: newY },

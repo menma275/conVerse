@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, memo } from "react";
+import React, { useRef } from "react";
 import Moveable from "react-moveable";
 import SpaceChatHeader from "@/components/parts/space-chat-header";
 
@@ -13,7 +13,6 @@ const SpaceEntrance = (props) => {
   const handleMouseDownOrTouchStart = () => {
     props.setActiveSpaceIndex(props.spaceInfo.spaceId);
   };
-
   return (
     <>
       <Moveable
@@ -36,6 +35,7 @@ const SpaceEntrance = (props) => {
             id="board-description-button"
             className="pixel-shadow"
             onClick={() => {
+              console.log(props.spaceInfo.spaceId);
               props.setOpenSpaceId(props.spaceInfo.spaceId); // ここでspaceIdを設定
             }}>
             さんかする
@@ -45,4 +45,4 @@ const SpaceEntrance = (props) => {
     </>
   );
 };
-export default memo(SpaceEntrance);
+export default SpaceEntrance;
