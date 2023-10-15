@@ -45,6 +45,7 @@ body {
   background-image: linear-gradient(0deg, transparent 19px, rgba(235, 180, 65, 0.25) 20px), linear-gradient(90deg, transparent 19px, rgba(235, 180, 65, 0.25) 20px);
   background-color: var(--bg-primary);
   background-size: 20px 20px;
+  font-size: 16px;
 }
 
 .emoji-span {
@@ -407,11 +408,20 @@ button:active {
   color: var(--black);
   font-size: 1.5rem;
   position: absolute;
-  cursor: pointer;
+  cursor: default; /* デフォルトのカーソル */
   border-radius: 1rem;
   line-height: 1.2;
   display: flex;
   flex-wrap: wrap;
+  transition: all 0.2s linear;
+  user-select: none;
+}
+.draggable-card {
+  cursor: pointer; /* ドラッグ可能なカードのカーソル */
+}
+
+.draggable-card:hover {
+  transform: translateY(-3px);
 }
 .card span {
   white-space: nowrap;

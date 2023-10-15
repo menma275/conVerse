@@ -91,6 +91,9 @@ const createSounds = (note, lastDigit, oscillator, envelope) => {
 };
 
 const getLastDigitFromCharCode = (emoji) => {
+  if (typeof emoji !== "string") {
+    throw new Error("Expected emoji to be a string, but got: " + typeof emoji);
+  }
   const codePoint = emoji.codePointAt(0).toString(16).toUpperCase();
 
   // 最後の1文字を数字として取得

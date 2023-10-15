@@ -78,7 +78,7 @@ const CreateSpace = () => {
         // リソースの作成が成功した場合
         const responseData = await res.json(); // レスポンスデータをJSONとしてパース
         console.log("Space created successfully!", responseData);
-        setCreatedSpaceData({ userId, name, description, spaceType, sounds, genId });
+        setCreatedSpaceData({ userId, name, description, spaceType, sounds, genId, spaceId: responseData.space.spaceId });
         console.log("CreateSpace", responseData.space);
         // space コンポーネントを表示
         setSpaceVisible(true);
@@ -98,7 +98,7 @@ const CreateSpace = () => {
   return (
     <>
       {spaceVisible ? ( // spaceVisible の値に応じて表示内容を切り替え
-        <Space spaceInfo={createdSpaceData} spacekey={createdSpaceData.spaceId} />
+        <Space spaceInfo={createdSpaceData} spaceId={createdSpaceData.spaceId} />
       ) : (
         <>
           <Moveable
