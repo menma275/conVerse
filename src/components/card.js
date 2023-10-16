@@ -79,9 +79,9 @@ const Card = (props) => {
   };
 
   const handleTouchMove = (e) => {
+    console.log(e.touches.length);
     if (isDragging && e.touches.length === 1) {
       // タッチポイントが1つの場合のみ処理を実行
-      e.preventDefault(); // ページのスクロールを防ぐ
       const dx = e.touches[0].clientX - startMousePosition.x;
       const dy = e.touches[0].clientY - startMousePosition.y;
       const newPosition = {
@@ -93,7 +93,7 @@ const Card = (props) => {
     }
   };
 
-  const handleTouchEnd = async () => {
+  const handleTouchEnd = async (e) => {
     if (e.touches.length === 0 && isDragging) {
       setIsDragging(false);
       window.removeEventListener("touchmove", handleTouchMove);
@@ -176,6 +176,7 @@ const Card = (props) => {
       }}
       onClick={handleCardClick}
       onMouseDown={handleMouseDown}
+      onTouchMove={handleTouchMove}
       onTouchStart={handleTouchStart}>
       <div style={cardStyle2} className={cardClassName}>
         {props?.data?.text}

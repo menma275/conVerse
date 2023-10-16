@@ -41,6 +41,24 @@ const EmojiChat = (props) => {
   };
 
   useEffect(() => {
+    const containerElement = containerRef.current;
+
+    const touchMoveHandler = (e) => {
+      if (e.touches.length === 1) {
+        e.preventDefault();
+      }
+    };
+
+    // Add the event listener
+    containerElement.addEventListener("touchmove", touchMoveHandler, { passive: false });
+
+    // Cleanup on unmount
+    return () => {
+      containerElement.removeEventListener("touchmove", touchMoveHandler);
+    };
+  }, []);
+
+  useEffect(() => {
     if (props.message) {
       setIsAddingCard(true);
     } else {

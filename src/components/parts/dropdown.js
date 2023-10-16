@@ -7,16 +7,16 @@ import React from "react";
 
 const links = [
   {
-    name: "Discord",
-    url: "https://discord.gg/5RxKe49QSC",
-    icon: <FaDiscord className="text-md" />,
-  },
-  {
     name: "Document",
     url: "https://gundi.gitbook.io/gundi-decentralized-chat-space/",
     icon: <IoDocument className="text-md" />,
   },
 ];
+/* {
+    name: "Discord",
+    url: "https://discord.gg/5RxKe49QSC",
+    icon: <FaDiscord className="text-md" />,
+  }, */
 const Dropdown = () => {
   return (
     <DropdownMenu.Root>
