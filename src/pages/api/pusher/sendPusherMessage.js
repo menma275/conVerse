@@ -13,8 +13,12 @@ const sendPusherMessage = async (req, res) => {
   console.log("sendMessage function called");
   if (req.method === "POST") {
     try {
-      //dbに保存
-      saveCardDb(req.body.message, req.body.spaceId);
+      const messageType = req.body.message.type || "new-message";
+
+      if (messageType === "new-message") {
+        //dbに保存
+        saveCardDb(req.body.message, req.body.spaceId);
+      }
 
       // Pusherを使用してメッセージをブロードキャスト
       console.log("Triggering on channel:", `room-${req.body.spaceId}`);

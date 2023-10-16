@@ -148,6 +148,7 @@ export const playSoundForEmojiCategory = (emoji, note) => {
 
     if (lastDigit >= 1 && lastDigit <= 10) {
       createSounds(note, lastDigit, randomOscillator, envelope);
+      console.log("playSoundForEmojiCategory: Success", note, lastDigit);
     } else {
       console.error("Invalid lastDigit value:", lastDigit);
     }

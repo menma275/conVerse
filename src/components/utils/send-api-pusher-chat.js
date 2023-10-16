@@ -1,7 +1,7 @@
-//socketへの送信
-export const sendApiPusherChat = async (msg, spaceId) => {
+// socketへの送信
+export const sendApiPusherChat = async (msg, spaceId, messageType = "new-message") => {
   const requestBody = {
-    message: msg,
+    message: { ...msg, type: messageType },
     spaceId: spaceId,
   };
   console.log("spaceId", spaceId);

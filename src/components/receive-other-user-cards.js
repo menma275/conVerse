@@ -18,10 +18,10 @@ const ReceiveOtherUserCards = (props) => {
   useEffect(() => {
     const handleNewMessage = (data) => {
       console.log("Received Data:", data);
-
       if (data.message.userId !== userId) {
         if (sounds) {
           try {
+            // カードが新しく受信された場合またはクリックされた場合に音を再生します
             playSoundForEmojiCategory(data.message.text);
           } catch (error) {
             console.error("Error playing emoji sound:", error);

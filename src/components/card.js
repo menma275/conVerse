@@ -145,6 +145,14 @@ const Card = (props) => {
     if (props?.data?.text) {
       setIsBouncing(true);
       playSoundForEmojiCategory(props.data.text, props.data.note);
+
+      // カードクリックの情報をPusherを使って他のユーザーに送信
+      const msg = {
+        type: "card-clicked",
+        text: props.data.text,
+        note: props.data.note,
+      };
+      sendApiPusherChat(props.data, props?.data?.spaceId, "card-clicked");
     }
   };
 
