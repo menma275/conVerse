@@ -71,9 +71,11 @@ const Card = (props) => {
   //SPのタッチ対応
   const handleTouchStart = (e) => {
     if (!isDraggable) return;
-    setIsDragging(true);
-    setStartMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-    setStartCardPosition({ x: positionRef.current.x, y: positionRef.current.y });
+    if (e.touches.length === 1) {
+      setIsDragging(true);
+      setStartMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+      setStartCardPosition({ x: positionRef.current.x, y: positionRef.current.y });
+    }
   };
 
   const handleTouchMove = (e) => {
@@ -92,19 +94,21 @@ const Card = (props) => {
   };
 
   const handleTouchEnd = async () => {
-    setIsDragging(false);
-    window.removeEventListener("touchmove", handleTouchMove);
-    window.removeEventListener("touchend", handleTouchEnd);
+    if (e.touches.length === 0 && isDragging) {
+      setIsDragging(false);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
 
-    const cardData = {
-      ...props.data,
-      pos: {
-        x: positionRef.current.x,
-        y: positionRef.current.y,
-      },
-    };
-    await sendApiPusherChat(cardData, props?.data?.spaceId);
-    await updateCardDb(cardData, props?.data?.spaceId);
+      const cardData = {
+        ...props.data,
+        pos: {
+          x: positionRef.current.x,
+          y: positionRef.current.y,
+        },
+      };
+      await sendApiPusherChat(cardData, props?.data?.spaceId);
+      await updateCardDb(cardData, props?.data?.spaceId);
+    }
   };
 
   // propsからの位置変更を監視して、positionRefとstateを更新する

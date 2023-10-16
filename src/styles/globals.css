@@ -46,6 +46,7 @@ body {
   background-color: var(--bg-primary);
   background-size: 20px 20px;
   font-size: 16px;
+  user-select: none;
 }
 
 .emoji-span {
@@ -420,7 +421,6 @@ button:active {
   display: flex;
   flex-wrap: wrap;
   transition: all 0.2s linear;
-  user-select: none;
 }
 
 /*bounceアニメ*/
