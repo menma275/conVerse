@@ -5,17 +5,18 @@ import { UserIdContext } from "@/context/userid-context";
 import { sendApiPusherChat } from "@/components/utils/send-api-pusher-chat";
 import { updateCardDb } from "@/components/utils/update-card-db";
 import { useCardContext } from "@/context/card-context";
+import { useDraggingContext } from "@/context/use-dragging-context";
 
 const Card = (props) => {
   console.log("props", props);
   // ステートの定義
-  const [isDragging, setIsDragging] = useState(false);
   const [startMousePosition, setStartMousePosition] = useState({ x: 0, y: 0 });
   const [startCardPosition, setStartCardPosition] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isBouncing, setIsBouncing] = useState(false);
   const [isInitialRender, setIsInitialRender] = useState(true);
   const { postId } = useCardContext();
+  const { isCardDragging, setIsCardDragging } = useDraggingContext();
 
   // カードの現在の位置を保存するためのref
   const positionRef = useRef({ x: props?.data?.pos?.x || 0, y: props?.data?.pos?.y || 0 });
@@ -41,7 +42,7 @@ const Card = (props) => {
 
   // マウスアップ時のハンドラ
   const handleMouseUp = async () => {
-    setIsDragging(false);
+    setIsCardDragging(false);
     window.removeEventListener("mousemove", handleMouseMove);
     window.removeEventListener("mouseup", handleMouseUp);
 
@@ -59,7 +60,7 @@ const Card = (props) => {
   // マウスダウン時のハンドラ
   const handleMouseDown = (e) => {
     if (!isDraggable) return;
-    setIsDragging(true);
+    setIsCardDragging(true);
     setStartMousePosition({ x: e.clientX, y: e.clientY });
     setStartCardPosition({ x: positionRef.current.x, y: positionRef.current.y });
   };
@@ -69,14 +70,14 @@ const Card = (props) => {
     transform: `translate(${position.x}px, ${position.y}px)`,
   };
   const cardStyle2 = {
-    boxShadow: isDragging ? `0 0 var(--hover-shadow-distance, 1rem) 0.1rem ${props?.data?.color}` : `0 0 var(--default-shadow-distance, 0.5rem) 0.05rem ${props?.data?.color}`,
+    boxShadow: isCardDragging ? `0 0 var(--hover-shadow-distance, 1rem) 0.1rem ${props?.data?.color}` : `0 0 var(--default-shadow-distance, 0.5rem) 0.05rem ${props?.data?.color}`,
   };
 
   //SPのタッチ対応
   const handleTouchStart = (e) => {
     if (!isDraggable) return;
     if (e.touches.length === 1) {
-      setIsDragging(true);
+      setIsCardDragging(true);
       setStartMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
       setStartCardPosition({ x: positionRef.current.x, y: positionRef.current.y });
     }
@@ -84,7 +85,7 @@ const Card = (props) => {
 
   const handleTouchMove = (e) => {
     console.log(e.touches.length);
-    if (isDragging && e.touches.length === 1) {
+    if (isCardDragging && e.touches.length === 1) {
       // タッチポイントが1つの場合のみ処理を実行
       const dx = e.touches[0].clientX - startMousePosition.x;
       const dy = e.touches[0].clientY - startMousePosition.y;
@@ -98,8 +99,8 @@ const Card = (props) => {
   };
 
   const handleTouchEnd = async (e) => {
-    if (e.touches.length === 0 && isDragging) {
-      setIsDragging(false);
+    if (e.touches.length === 0 && isCardDragging) {
+      setIsCardDragging(false);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
 
@@ -129,7 +130,7 @@ const Card = (props) => {
 
   // isDraggingの変化を監視して、適切なイベントリスナーを登録/解除する
   useEffect(() => {
-    if (isDragging) {
+    if (isCardDragging) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
       window.addEventListener("touchmove", handleTouchMove);
@@ -142,7 +143,7 @@ const Card = (props) => {
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isDragging, startMousePosition]);
+  }, [isCardDragging, startMousePosition]);
 
   // カードクリック時のサウンド再生ハンドラ
   const handleCardClick = () => {

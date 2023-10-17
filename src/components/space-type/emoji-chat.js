@@ -13,12 +13,15 @@ import MuteButton, { playSoundForEmojiCategory } from "@/components/parts/mute-b
 import InputMessage from "@/components/parts/input-message";
 import Zoom from "@/components/parts/zoom";
 import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
+import { useDraggingContext } from "@/context/use-dragging-context";
+
 const EmojiChat = (props) => {
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newMessage, setNewMessage] = useState([]);
   const containerRef = useRef(null);
   const followerRef = useRef(null);
   const { userId } = useContext(UserIdContext);
+  const { isCardDragging } = useDraggingContext();
 
   const onMouseMoveHandler = useCallback((e) => handleMouseMove(e, isAddingCard, followerRef, containerRef, props.zoom), [isAddingCard, props]);
 
@@ -44,19 +47,17 @@ const EmojiChat = (props) => {
     const containerElement = containerRef.current;
 
     const touchMoveHandler = (e) => {
-      if (e.touches.length === 1) {
+      if (isCardDragging && e.touches.length === 1) {
         e.preventDefault();
       }
     };
 
-    // Add the event listener
     containerElement.addEventListener("touchmove", touchMoveHandler, { passive: false });
 
-    // Cleanup on unmount
     return () => {
       containerElement.removeEventListener("touchmove", touchMoveHandler);
     };
-  }, []);
+  }, [isCardDragging]);
 
   useEffect(() => {
     if (props.message) {
