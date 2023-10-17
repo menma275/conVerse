@@ -402,10 +402,9 @@ button:active {
 }
 
 .card-wrapper {
-  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.card-wrapper.no-transition {
-  transition: none !important;
+.card-wrapper.transition {
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .card {
   width: fit-content;
@@ -451,32 +450,17 @@ button:active {
 }
 
 .jello-animation {
-  animation: jello 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) infinite;
-}
-
-@keyframes popIn {
-  0% {
-    transform: scale(0);
-  }
-  70% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.card-pop-in {
-  animation: popIn 0.5s ease-in-out forwards;
+  animation: jello 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
 }
 
 .draggable-card {
   cursor: pointer; /* ドラッグ可能なカードのカーソル */
 }
-
 .draggable-card:hover {
   transform: translateY(-3px);
+  box-shadow: 0 0 var(--hover-shadow-distance, 3rem) 0.1rem; /* カラーはpropsから取得またはデフォルト値を設定 */
 }
+
 .card span {
   white-space: nowrap;
 }

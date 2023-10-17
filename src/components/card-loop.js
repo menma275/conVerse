@@ -1,13 +1,22 @@
 import Card from "@/components/card";
 import React from "react";
+import { motion } from "framer-motion";
 
 const CardLoop = (props) => {
+  const stagger = {
+    animate: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
   return (
     <>
-      {/* dataListの各データを元にカードをマッピングして表示 */}
-      {props.dataList.map((data, index) => (
-        <Card data={data} key={index} />
-      ))}
+      <motion.div variants={stagger} initial="initial" animate="animate">
+        {props.dataList.map((data) => (
+          <Card data={data} key={data.postId} />
+        ))}
+      </motion.div>
     </>
   );
 };

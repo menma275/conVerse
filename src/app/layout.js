@@ -3,7 +3,6 @@ import { OpenSpaceIdProvider } from "@/context/open-space-id-context";
 import { ActiveSpaceIndexProvider } from "@/context/active-space-index-context";
 import { UserIdProvider } from "@/context/userid-context";
 import { CardProvider } from "@/context/card-context";
-import { DraggingProvider } from "@/context/use-dragging-context";
 import GenerateUniqueId from "@/components/utils/generate-unique-id";
 import React from "react";
 
@@ -31,9 +30,7 @@ export default function RootLayout({ children }) {
             <GenerateUniqueId />
             <OpenSpaceIdProvider>
               <ActiveSpaceIndexProvider>
-                <DraggingProvider>
-                  <CardProvider>{children}</CardProvider>{" "}
-                </DraggingProvider>
+                <CardProvider>{children}</CardProvider>
               </ActiveSpaceIndexProvider>
             </OpenSpaceIdProvider>
           </UserIdProvider>
