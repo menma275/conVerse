@@ -4,14 +4,18 @@ import { playSoundForEmojiCategory } from "@/components/parts/mute-button";
 import { UserIdContext } from "@/context/userid-context";
 import { sendApiPusherChat } from "@/components/utils/send-api-pusher-chat";
 import { updateCardDb } from "@/components/utils/update-card-db";
+import { useCardContext } from "@/context/card-context";
 
 const Card = (props) => {
+  console.log("props", props);
   // ステートの定義
   const [isDragging, setIsDragging] = useState(false);
   const [startMousePosition, setStartMousePosition] = useState({ x: 0, y: 0 });
   const [startCardPosition, setStartCardPosition] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isBouncing, setIsBouncing] = useState(false);
+  const [isInitialRender, setIsInitialRender] = useState(true);
+  const { postId } = useCardContext();
 
   // カードの現在の位置を保存するためのref
   const positionRef = useRef({ x: props?.data?.pos?.x || 0, y: props?.data?.pos?.y || 0 });
@@ -145,16 +149,19 @@ const Card = (props) => {
     if (props?.data?.text) {
       setIsBouncing(true);
       playSoundForEmojiCategory(props.data.text, props.data.note);
-
       // カードクリックの情報をPusherを使って他のユーザーに送信
-      const msg = {
-        type: "card-clicked",
-        text: props.data.text,
-        note: props.data.note,
-      };
       sendApiPusherChat(props.data, props?.data?.spaceId, "card-clicked");
     }
   };
+
+  useEffect(() => {
+    console.log("postId", postId);
+    console.log("props.data.id", props.data.postId);
+    // カードがクリックされたかどうかを判定
+    if (isBouncing || postId == props.data.postId) {
+      setIsBouncing(true);
+    }
+  }, [postId]);
 
   useEffect(() => {
     if (isBouncing) {
@@ -165,12 +172,19 @@ const Card = (props) => {
     }
   }, [isBouncing]);
 
+  useEffect(() => {
+    // コンポーネントがマウントされた後、次のフレームで初回レンダリングではないとマークする。
+    requestAnimationFrame(() => {
+      setIsInitialRender(false);
+    });
+  }, []);
+
   // カードのクラス名定義
-  const cardClassName = `${isDraggable ? "card draggable-card" : "card"} ${isBouncing ? "jello-animation" : ""}`;
+  const cardClassName = `${isDraggable ? "card draggable-card" : "card"} ${isBouncing ? "jello-animation" : ""} `;
 
   return (
     <div
-      className="card-wrapper"
+      className={`card-wrapper ${isInitialRender ? "no-transition" : ""}`}
       style={cardStyle}
       onMouseEnter={(e) => {
         if (isDraggable) {

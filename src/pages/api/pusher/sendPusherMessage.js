@@ -22,7 +22,7 @@ const sendPusherMessage = async (req, res) => {
 
       // Pusherを使用してメッセージをブロードキャスト
       console.log("Triggering on channel:", `room-${req.body.spaceId}`);
-      pusher.trigger(`room-${req.body.spaceId}`, "new-message", {
+      pusher.trigger(`room-${req.body.spaceId}`, messageType, {
         message: req.body.message,
       });
 

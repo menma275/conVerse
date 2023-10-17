@@ -402,6 +402,10 @@ button:active {
 }
 
 .card-wrapper {
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card-wrapper.no-transition {
+  transition: none !important;
 }
 .card {
   width: fit-content;
@@ -420,7 +424,8 @@ button:active {
   line-height: 1.2;
   display: flex;
   flex-wrap: wrap;
-  transition: all 0.2s linear;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  animation: popIn 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 /*bounceアニメ*/
@@ -447,6 +452,22 @@ button:active {
 
 .jello-animation {
   animation: jello 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) infinite;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.card-pop-in {
+  animation: popIn 0.5s ease-in-out forwards;
 }
 
 .draggable-card {
