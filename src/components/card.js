@@ -5,7 +5,6 @@ import { UserIdContext } from "@/context/userid-context";
 import { sendApiPusherChat } from "@/components/utils/send-api-pusher-chat";
 import { updateCardDb } from "@/components/utils/update-card-db";
 import { useCardContext } from "@/context/card-context";
-import { motion } from "framer-motion";
 
 const Card = (props) => {
   console.log("props", props);
@@ -14,7 +13,7 @@ const Card = (props) => {
   const [startCardPosition, setStartCardPosition] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isBouncing, setIsBouncing] = useState(false);
-  const [isInitialRender, setIsInitialRender] = useState(true);
+  const [isInitialRender, setIsInitialRender] = useState(false);
   const [isCardDragging, setIsCardDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -141,6 +140,7 @@ const Card = (props) => {
 
   // カードクリック時のサウンド再生ハンドラ
   const handleCardClick = () => {
+    console.log("card clicked", props.data.postId);
     if (props?.data?.text) {
       setIsBouncing(true);
       playSoundForEmojiCategory(props.data.text, props.data.note);
@@ -170,10 +170,9 @@ const Card = (props) => {
   }, [isBouncing]);
 
   useEffect(() => {
-    // コンポーネントがマウントされた後、次のフレームで初回レンダリングではないとマークする。
     const timer = setTimeout(() => {
-      setIsInitialRender(false);
-    }, 500);
+      setIsInitialRender(true);
+    }, 500 + 500 * props.index);
     return () => clearTimeout(timer);
   }, []);
 
@@ -189,32 +188,13 @@ const Card = (props) => {
   };
   // カードのクラス名定義
   const cardWrapperClassName = `card-wrapper ${isInitialRender ? "transition" : ""}`;
-  const cardClassName = `card popIn ${isDraggable ? "draggable-card" : ""} ${isBouncing ? "jello-animation" : ""}`;
-
-  const delayDuration = 0.1; // Adjust this value as you see fit
-
-  const popInWithBounce = {
-    initial: { opacity: 0, scale: 0.8, y: 0 },
-    animate: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        delay: props.custom * delayDuration,
-        type: "spring",
-        stiffness: 500,
-        damping: 30,
-      },
-    },
-  };
+  const cardClassName = `card  ${isInitialRender ? "popIn" : ""} ${isDraggable ? "draggable-card" : ""} ${isBouncing ? "jello-animation" : ""}`;
 
   return (
     <div className={cardWrapperClassName} style={cardWrapperCardStyle} onClick={handleCardClick} onMouseDown={handleMouseDown} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart}>
-      <motion.div variants={popInWithBounce}>
-        <div style={cardStyle} className={cardClassName} onMouseEnter={() => isDraggable && setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
-          {props?.data?.text}
-        </div>
-      </motion.div>
+      <div style={cardStyle} className={cardClassName} onMouseEnter={() => isDraggable && setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
+        {props?.data?.text}
+      </div>
     </div>
   );
 };
