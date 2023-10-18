@@ -20,7 +20,6 @@ const EmojiChat = (props) => {
   const containerRef = useRef(null);
   const followerRef = useRef(null);
   const { userId } = useContext(UserIdContext);
-
   const onMouseMoveHandler = useCallback(
     (e) => {
       handleMouseMove(e, isAddingCard, followerRef, containerRef, props.zoom);
@@ -38,7 +37,8 @@ const EmojiChat = (props) => {
 
       if (props.message) {
         try {
-          playSoundForEmojiCategory(props.message, note); // 新しいコンポーネントを使用
+          console.log("props.message.text", props.message.text);
+          playSoundForEmojiCategory(props.message.text, note);
         } catch (error) {
           console.error("Error playing emoji sound:", error);
         }

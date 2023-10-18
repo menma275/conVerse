@@ -25,7 +25,7 @@ const wrapEmojisInSpans = (emojis, maxLength) => {
 
 const ReceiveOtherUserCards = (props) => {
   const [cardList, setCardList] = useState([]);
-  const { postId, setPostId } = useCardContext();
+  const { setPostId } = useCardContext();
   const { userId } = useContext(UserIdContext);
   const sounds = props.sounds;
 
@@ -33,25 +33,26 @@ const ReceiveOtherUserCards = (props) => {
   const handleNewMessage = (data) => {
     console.log("Received Data:", data);
 
-    if (data.message.userId !== userId) {
+    if (data.content.userId !== userId) {
       if (sounds) {
         try {
-          playSoundForEmojiCategory(data.message.text);
+          console.log("data.message.text", data.content.message.text);
+          playSoundForEmojiCategory(data.content.message.text);
         } catch (error) {
           console.error("Error playing emoji sound:", error);
         }
       }
 
       const newCard = {
-        postId: data.message.postId,
+        postId: data.content.message.postId,
         spaceId: props.spaceId,
         pos: {
-          x: data.message.pos.x,
-          y: data.message.pos.y,
+          x: data.content.message.pos.x,
+          y: data.content.message.pos.y,
         },
-        text: wrapEmojisInSpans(data.message.text, 20),
-        note: data.message.note,
-        color: data.message.color,
+        text: wrapEmojisInSpans(data.content.message.text, 20),
+        note: data.content.message.note,
+        color: data.content.message.color,
       };
 
       setCardList((prevCards) => {
@@ -71,12 +72,12 @@ const ReceiveOtherUserCards = (props) => {
   // card-clicked
   const handleCardClicked = (data) => {
     //自分じゃない時
-    if (data.message.userId !== userId) {
-      console.log("Card Clicked:", data);
+    if (data.content.userId !== userId) {
+      console.log("Card Clicked:", data.content.message.postId);
       if (sounds) {
         try {
-          playSoundForEmojiCategory(data.message.text, data.message.note);
-          setPostId(data.message.postId);
+          playSoundForEmojiCategory(data.content.message.text, data.content.message.note);
+          setPostId(data.content.message.postId);
         } catch (error) {
           console.error("Error playing sound on card click:", error);
         }
@@ -98,7 +99,7 @@ const ReceiveOtherUserCards = (props) => {
     };
   }, [props.spaceId, userId, sounds]);
 
-  return <CardLoop dataList={cardList} clickedCardIds={postId} />;
+  return <CardLoop dataList={cardList} />;
 };
 
 export default ReceiveOtherUserCards;

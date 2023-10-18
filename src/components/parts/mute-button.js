@@ -1,89 +1,92 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MembraneSynth, Reverb, FeedbackDelay, Master, Synth, MonoSynth, FMSynth, AMSynth, PolySynth, FatOscillator, MetalSynth, start } from "tone";
+import { Time, MembraneSynth, Reverb, FeedbackDelay, getDestination, Synth, MonoSynth, FMSynth, AMSynth, PolySynth, MetalSynth, start } from "tone";
 import { FaVolumeDown, FaVolumeMute } from "react-icons/fa"; // mute アイコンをインポート
+
+const createAndPlaySynth = (SynthType, options, note) => {
+  const synth = new SynthType(options).toDestination();
+  let duration = "8n"; // Default duration
+
+  if (synth instanceof PolySynth) {
+    synth.triggerAttackRelease([note, note, note], duration);
+  } else {
+    synth.triggerAttackRelease(note, duration);
+  }
+
+  addEffectsToSynth(synth);
+
+  // Reverb decay time + note duration
+  const reverbDecayTime = 6; // 4 seconds decay time for reverb
+  const timeToDispose = (Time(duration).toSeconds() + reverbDecayTime) * 1000; // Convert to milliseconds
+
+  setTimeout(() => {
+    synth.dispose();
+    synth.disconnect();
+  }, timeToDispose);
+};
+
+const addEffectsToSynth = (synth) => {
+  const reverb = new Reverb(4).toDestination();
+  const delay = new FeedbackDelay("8n", 0.5).toDestination();
+
+  reverb.wet.value = 0.9;
+  delay.wet.value = 0.2;
+
+  synth.connect(delay);
+  delay.connect(reverb);
+
+  // Dispose effects after usage
+  reverb.generate().then(() => {
+    delay.dispose();
+    reverb.dispose();
+  });
+};
 
 //サウンドに関するロジックはこちらに全て納めている
 const createSounds = (note, lastDigit, oscillator, envelope) => {
   try {
-    switch (lastDigit) {
-      case 1:
-        const synth1 = new Synth({ oscillator, envelope }).toDestination();
-        synth1.triggerAttackRelease(note, "8n");
-        addEffectsToSynth(synth1);
-        break;
-      case 2:
-        const monoSynth = new MonoSynth({
-          oscillator: {
-            type: oscillator,
-          },
-          envelope,
-        }).toDestination();
-        monoSynth.triggerAttackRelease(note, "8n");
-        addEffectsToSynth(monoSynth);
-        break;
-      case 3:
-      case 10:
-        const fmSynth = new FMSynth({ oscillator, envelope }).toDestination();
-        fmSynth.triggerAttackRelease(note, "8n");
-        addEffectsToSynth(fmSynth);
-        break;
-      case 4:
-        const amSynth = new AMSynth({ oscillator, envelope }).toDestination();
-        amSynth.triggerAttackRelease(note, "8n");
-        addEffectsToSynth(amSynth);
-        break;
-      case 5:
-        const polySynth = new PolySynth({ oscillator, envelope }).toDestination();
-        polySynth.triggerAttackRelease([note, note, note], "8n");
-        addEffectsToSynth(polySynth);
-        break;
-      case 6:
-        const fatSynth = new Synth({
-          oscillator: {
-            type: "fatsawtooth",
-            spread: 20,
-            count: 3,
-          },
-          envelope,
-        }).toDestination();
-        fatSynth.triggerAttackRelease(note, "8n");
-        addEffectsToSynth(fatSynth);
-        break;
-      case 7:
-        const metalSynth = new MetalSynth({
+    const commonOptions = { oscillator, envelope };
+    const synthConfigurations = {
+      1: { SynthType: Synth, options: commonOptions },
+      2: { SynthType: MonoSynth, options: { oscillator: { type: oscillator }, envelope } },
+      3: { SynthType: FMSynth, options: commonOptions },
+      4: { SynthType: AMSynth, options: commonOptions },
+      5: { SynthType: PolySynth, options: commonOptions },
+      6: { SynthType: Synth, options: { oscillator: { type: "fatsawtooth", spread: 20, count: 3 }, envelope } },
+      7: {
+        SynthType: MetalSynth,
+        options: {
           frequency: 300,
-          envelope: envelope,
+          envelope,
           harmonicity: 5.1,
           modulationIndex: 32,
           resonance: 4000,
           octaves: 1.5,
-        }).toDestination();
-        metalSynth.triggerAttackRelease(note, "8n");
-        addEffectsToSynth(metalSynth);
-        break;
-      case 8:
-        const drumSynth = new MembraneSynth({
-          octaves: 4,
-          pitchDecay: 0.1,
-        }).toDestination();
-        drumSynth.triggerAttackRelease(note, "8n");
-        addEffectsToSynth(drumSynth);
-        break;
-      case 9:
+        },
+      },
+      8: { SynthType: MembraneSynth, options: { octaves: 4, pitchDecay: 0.1 } },
+      10: { SynthType: FMSynth, options: commonOptions },
+    };
+
+    const configuration = synthConfigurations[lastDigit];
+
+    if (configuration) {
+      if (lastDigit !== 9) {
+        createAndPlaySynth(configuration.SynthType, configuration.options, note);
+      } else {
+        // ケース9は特別な処理が必要なので、こちらのロジックを維持
         const granularEmulation = new FMSynth().toDestination();
         const interval = setInterval(() => {
           granularEmulation.triggerAttackRelease(note, "32n");
-        }, 50); // 50ms毎に音を鳴らす
-
+        }, 50);
         setTimeout(() => {
           clearInterval(interval);
-        }, 500); // 500ミリ秒後に停止
-        addEffectsToSynth(granularEmulation);
-        break;
-      default:
-        console.error("Invalid lastDigit value:", lastDigit);
-        break;
+          addEffectsToSynth(granularEmulation);
+          granularEmulation.dispose();
+        }, 500);
+      }
+    } else {
+      console.error("Invalid lastDigit value:", lastDigit);
     }
   } catch (error) {
     console.error("Error playing emoji sound:", error);
@@ -109,20 +112,6 @@ const getLastDigitFromCharCode = (emoji) => {
 
   // Return the last digit
   return lastDigitInt;
-};
-
-const addEffectsToSynth = (synth) => {
-  // リバーブを作成
-  const reverb = new Reverb(4).toDestination();
-  reverb.wet.value = 0.9;
-
-  // フィードバックディレイを作成
-  const delay = new FeedbackDelay("8n", 0.5).toDestination();
-  delay.wet.value = 0.2; // wet.valueを0.7に増加
-
-  // シンセサイザーをディレイとリバーブに接続
-  synth.connect(delay);
-  delay.connect(reverb);
 };
 
 export const playSoundForEmojiCategory = (emoji, note) => {
@@ -153,22 +142,23 @@ export const playSoundForEmojiCategory = (emoji, note) => {
       console.error("Invalid lastDigit value:", lastDigit);
     }
   } catch (error) {
-    console.error("Error playing emoji sound:", error);
+    console.error(`Error playing sound for emoji ${emoji} with note ${note}:`, error);
   }
 };
 
 const MuteButton = () => {
   const [isMuted, setIsMuted] = useState(false);
 
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-    Master.mute = !isMuted; // これを追加
-  };
-
   useEffect(() => {
     start();
     console.log("Tone.jsの初期化に成功");
   }, []);
+
+  const toggleMute = () => {
+    const newMuteStatus = !isMuted;
+    setIsMuted(newMuteStatus);
+    getDestination().mute = newMuteStatus;
+  };
 
   return (
     <button onClick={toggleMute} className="mute-button pixel-shadow">

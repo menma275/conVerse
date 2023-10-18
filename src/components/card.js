@@ -7,7 +7,6 @@ import { updateCardDb } from "@/components/utils/update-card-db";
 import { useCardContext } from "@/context/card-context";
 
 const Card = (props) => {
-  console.log("props", props);
   // ステートの定義
   const [startMousePosition, setStartMousePosition] = useState({ x: 0, y: 0 });
   const [startCardPosition, setStartCardPosition] = useState({ x: 0, y: 0 });
@@ -54,8 +53,13 @@ const Card = (props) => {
         y: positionRef.current.y,
       },
     };
-    await sendApiPusherChat(cardData, props?.data?.spaceId);
-    await updateCardDb(cardData, props?.data?.spaceId);
+    try {
+      await sendApiPusherChat(userId, cardData, props?.data?.spaceId);
+      await updateCardDb(cardData, props?.data?.spaceId);
+    } catch (error) {
+      console.error("Error updating card data:", error);
+      // Here you can also set some state to show an error message to the user
+    }
   };
 
   // マウスダウン時のハンドラ
@@ -103,7 +107,7 @@ const Card = (props) => {
           y: positionRef.current.y,
         },
       };
-      await sendApiPusherChat(cardData, props?.data?.spaceId);
+      await sendApiPusherChat(userId, cardData, props?.data?.spaceId);
       await updateCardDb(cardData, props?.data?.spaceId);
     }
   };
@@ -140,31 +144,33 @@ const Card = (props) => {
 
   // カードクリック時のサウンド再生ハンドラ
   const handleCardClick = () => {
+    setIsClicked(!isClicked); // クリックする度に状態をトグル
+
     console.log("card clicked", props.data.postId);
     if (props?.data?.text) {
       setIsBouncing(true);
+      console.log("props.data.text", props.data.text);
       playSoundForEmojiCategory(props.data.text, props.data.note);
-      console.log("props.data", props.data);
       // カードクリックの情報をPusherを使って他のユーザーに送信
-      sendApiPusherChat(props.data, props?.data?.spaceId, "card-clicked");
+      sendApiPusherChat(userId, props.data, props?.data?.spaceId, "card-clicked");
     }
   };
 
   useEffect(() => {
-    console.log("postId", postId);
-    console.log("props.data.id", props.data.postId);
     // カードがクリックされたかどうかを判定
     if (isBouncing || postId == props.data.postId) {
-      setIsBouncing(true);
+      setIsBouncing(!isBouncing);
+      setPostId(false);
     }
   }, [postId]);
 
   useEffect(() => {
     if (isBouncing) {
+      setIsInitialRender(true);
       const timer = setTimeout(() => {
         setIsBouncing(false);
-        setPostId(false);
-      }, 500);
+        setIsInitialRender(false);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [isBouncing]);
@@ -172,9 +178,11 @@ const Card = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialRender(true);
-    }, 500 + 500 * props.index);
+    }, 500 + 100 * props.index);
     return () => clearTimeout(timer);
   }, []);
+
+  const [isClicked, setIsClicked] = useState(false);
 
   // カードのスタイル定義
   const cardWrapperCardStyle = {
@@ -183,18 +191,20 @@ const Card = (props) => {
   };
 
   const cardStyle = {
-    boxShadow: isCardDragging ? `0 0 var(--hover-shadow-distance, 1rem) 0.1rem ${props?.data?.color}` : isHovered ? `0 0 3rem 0.1rem ${props?.data?.color}` : `0 0 var(--default-shadow-distance, 0.5rem) 0.05rem ${props?.data?.color}`,
+    boxShadow: isCardDragging ? `0 0 var(--hover-shadow-distance, 1rem) 0.1rem ${props?.data?.color}` : isHovered ? `0 0 2rem 0.1rem ${props?.data?.color}` : `0 0 var(--default-shadow-distance, 0.5rem) 0.05rem ${props?.data?.color}`,
     animationDelay: `${props.animationDelay}s`,
   };
   // カードのクラス名定義
   const cardWrapperClassName = `card-wrapper ${isInitialRender ? "transition" : ""}`;
-  const cardClassName = `card  ${isInitialRender ? "popIn" : ""} ${isDraggable ? "draggable-card" : ""} ${isBouncing ? "jello-animation" : ""}`;
+  const cardClassName = ["card", isInitialRender ? "popIn" : "opacity-100", isDraggable ? "draggable-card" : "", isBouncing ? "jello-animation" : "", isClicked ? "jello-animation" : ""].join(" ");
 
   return (
     <div className={cardWrapperClassName} style={cardWrapperCardStyle} onClick={handleCardClick} onMouseDown={handleMouseDown} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart}>
-      <div style={cardStyle} className={cardClassName} onMouseEnter={() => isDraggable && setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
-        {props?.data?.text}
-      </div>
+      {props?.data && (
+        <div style={cardStyle} className={cardClassName} onMouseEnter={() => isDraggable && setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
+          {props?.data?.text}
+        </div>
+      )}
     </div>
   );
 };

@@ -38,7 +38,7 @@ const SpaceEntrance = (props) => {
               console.log(props.spaceInfo.spaceId);
               props.setOpenSpaceId(props.spaceInfo.spaceId); // ここでspaceIdを設定
             }}>
-            さんかする
+            {"さんかする"}
           </button>
         </div>
       </div>

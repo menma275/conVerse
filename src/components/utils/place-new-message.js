@@ -24,6 +24,6 @@ export const placeNewMessage = (e, setNewMessage, userId, spaceId, isAddingCard,
     color: newColor,
   };
   setNewMessage((prevMessages) => [...prevMessages, msg]);
-  sendApiPusherChat(msg, spaceId);
+  sendApiPusherChat(userId, msg, spaceId);
   setMessage("");
 };

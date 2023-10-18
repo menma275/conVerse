@@ -472,6 +472,7 @@ button:active {
   cursor: pointer; /* ドラッグ可能なカードのカーソル */
 }
 .draggable-card:hover {
+  opacity: 1;
   transform: translateY(-3px);
   box-shadow: 0 0 var(--hover-shadow-distance, 3rem) 0.1rem; /* カラーはpropsから取得またはデフォルト値を設定 */
 }
