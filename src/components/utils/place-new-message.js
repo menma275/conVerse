@@ -1,3 +1,4 @@
+"use client";
 import { sendApiPusherChat } from "@/components/utils/send-api-pusher-chat";
 import { getRandomPalette } from "@/components/utils/utils";
 import { CARD_PALETTE } from "@/components/utils/card-palette";
