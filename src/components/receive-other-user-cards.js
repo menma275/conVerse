@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useContext } from "react";
 import CardLoop from "@/components/card-loop";
 import { getPusherInstance } from "@/components/utils/pusher-config";
