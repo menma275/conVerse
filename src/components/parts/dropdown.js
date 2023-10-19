@@ -7,16 +7,16 @@ import React from "react";
 
 const links = [
   {
-    name: "Discord",
-    url: "https://discord.gg/5RxKe49QSC",
-    icon: <FaDiscord className="text-md" />,
-  },
-  {
     name: "Document",
     url: "https://gundi.gitbook.io/gundi-decentralized-chat-space/",
     icon: <IoDocument className="text-md" />,
   },
 ];
+/* {
+    name: "Discord",
+    url: "https://discord.gg/5RxKe49QSC",
+    icon: <FaDiscord className="text-md" />,
+  }, */
 const Dropdown = () => {
   return (
     <DropdownMenu.Root>
@@ -24,7 +24,7 @@ const Dropdown = () => {
         <GiHamburgerMenu className="text-lg my-auto" />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="mt-3 user-dropdown cursor-pointer bg-[var(--cream)] px-1 py-2 rounded-lg pixel-shadow border-2 border-[var(--black)]">
+        <DropdownMenu.Content className="mt-3 user-dropdown cursor-pointer bg-[var(--cream)] px-1 py-2 rounded-lg pixel-shadow border-2 border-[var(--black)] z-50">
           {links.map((link, index) => (
             <DropdownMenu.Item className="user-dropdown-item" key={index}>
               <a href={link.url} className="flex gap-x-1.5 hover:text-[var(--cream)] hover:bg-[var(--accent)] rounded-lg p-1.5 px-2.5 text-[var(--black)]">

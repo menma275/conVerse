@@ -45,6 +45,8 @@ body {
   background-image: linear-gradient(0deg, transparent 19px, rgba(235, 180, 65, 0.25) 20px), linear-gradient(90deg, transparent 19px, rgba(235, 180, 65, 0.25) 20px);
   background-color: var(--bg-primary);
   background-size: 20px 20px;
+  font-size: 16px;
+  user-select: none;
 }
 
 .emoji-span {
@@ -201,6 +203,7 @@ body {
 }
 .space-container {
   position: relative;
+  height: calc(100dvh - 50px);
 }
 
 #create-new-space {
@@ -208,11 +211,6 @@ body {
 }
 .board {
   position: absolute;
-  /*top: 50vh;
-  top: 50dvh;
-  left: 50vw;
-  left: 50dvw;
-  transform: translate(-50%, -50%);*/
   min-width: 300px;
   min-height: 300px;
   width: 300px;
@@ -224,6 +222,12 @@ body {
   box-shadow: 0.5rem 0.5rem 0 0 var(--accent);
   z-index: 1;
 }
+
+em-emoji-picker,
+#root {
+  height: 400px;
+}
+
 .chat {
   z-index: 2;
 }
@@ -397,9 +401,14 @@ button:active {
   opacity: 0.5;
 }
 
+.card-wrapper {
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
 .card {
   width: fit-content;
   height: auto;
+  min-width: 1em;
+  min-height: 1em;
   max-width: 10.4em;
   word-break: break-all;
   padding: 0.5rem;
@@ -407,12 +416,65 @@ button:active {
   color: var(--black);
   font-size: 1.5rem;
   position: absolute;
-  cursor: pointer;
+  cursor: default; /* デフォルトのカーソル */
   border-radius: 1rem;
   line-height: 1.2;
   display: flex;
   flex-wrap: wrap;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
+/*bounceアニメ*/
+@keyframes jello {
+  0% {
+    transform: scale(1.1, 1.1) rotate(0deg);
+  }
+  20% {
+    transform: scale(0.9, 0.9) rotate(-2deg);
+  }
+  40% {
+    transform: scale(1.1, 1.1) rotate(2deg);
+  }
+  60% {
+    transform: scale(0.95, 0.95) rotate(-1deg);
+  }
+  80% {
+    transform: scale(1.05, 1.05) rotate(1deg);
+  }
+  100% {
+    transform: scale(1, 1) rotate(0deg);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.5, 0.5);
+  }
+  70% {
+    transform: scale(1.2, 1.2);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.popIn {
+  animation: popIn 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+.jello-animation {
+  opacity: 1;
+  animation: jello 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+}
+
+.draggable-card {
+  cursor: pointer; /* ドラッグ可能なカードのカーソル */
+}
+.draggable-card:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+  box-shadow: 0 0 var(--hover-shadow-distance, 3rem) 0.1rem; /* カラーはpropsから取得またはデフォルト値を設定 */
+}
+
 .card span {
   white-space: nowrap;
 }

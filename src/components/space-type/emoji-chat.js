@@ -9,7 +9,8 @@ import GetCardFromDb from "@/components/get-card-from-db";
 import { placeNewMessage } from "@/components/utils/place-new-message";
 import { handleMouseMove } from "@/components/utils/mousemove-handler";
 import { UserIdContext } from "@/context/userid-context";
-import MuteButton, { playSoundForEmojiCategory } from "@/components/parts/mute-button";
+import { playSoundForEmojiCategory } from "@/components/sound/sound-generator";
+import MuteButton from "@/components/parts/mute-button";
 import InputMessage from "@/components/parts/input-message";
 import Zoom from "@/components/parts/zoom";
 import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
@@ -20,8 +21,12 @@ const EmojiChat = (props) => {
   const containerRef = useRef(null);
   const followerRef = useRef(null);
   const { userId } = useContext(UserIdContext);
-
-  const onMouseMoveHandler = useCallback((e) => handleMouseMove(e, isAddingCard, followerRef, containerRef, props.zoom), [isAddingCard, props]);
+  const onMouseMoveHandler = useCallback(
+    (e) => {
+      handleMouseMove(e, isAddingCard, followerRef, containerRef, props.zoom);
+    },
+    [isAddingCard, props]
+  );
 
   const handleContainerClick = (e) => {
     placeNewMessage(e, setNewMessage, userId, props.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
@@ -33,12 +38,17 @@ const EmojiChat = (props) => {
 
       if (props.message) {
         try {
-          playSoundForEmojiCategory(props.message, note); // 新しいコンポーネントを使用
+          console.log("props.message.text", props.message.text);
+          playSoundForEmojiCategory(props.message.text, note);
         } catch (error) {
           console.error("Error playing emoji sound:", error);
         }
       }
     }
+  };
+
+  const containerStyle = {
+    transform: `scale(${props.zoom})`,
   };
 
   useEffect(() => {
@@ -60,7 +70,7 @@ const EmojiChat = (props) => {
   return (
     <>
       <div id="container__wrapper" ref={props.targetRef}>
-        <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={{ transform: `scale(${props.zoom})` }}>
+        <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={containerStyle}>
           <Suspense fallback={<LoadingSpinner />}>
             <GetCardFromDb spaceId={props.spaceId} />
           </Suspense>

@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { OpenSpaceIdProvider } from "@/context/open-space-id-context";
 import { ActiveSpaceIndexProvider } from "@/context/active-space-index-context";
 import { UserIdProvider } from "@/context/userid-context";
+import { CardProvider } from "@/context/card-context";
 import GenerateUniqueId from "@/components/utils/generate-unique-id";
 import React from "react";
 
@@ -28,7 +29,9 @@ export default function RootLayout({ children }) {
           <UserIdProvider>
             <GenerateUniqueId />
             <OpenSpaceIdProvider>
-              <ActiveSpaceIndexProvider>{children}</ActiveSpaceIndexProvider>
+              <ActiveSpaceIndexProvider>
+                <CardProvider>{children}</CardProvider>
+              </ActiveSpaceIndexProvider>
             </OpenSpaceIdProvider>
           </UserIdProvider>
         </main>
