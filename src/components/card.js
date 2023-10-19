@@ -13,6 +13,8 @@ const Card = (props) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isBouncing, setIsBouncing] = useState(false);
   const [isInitialRender, setIsInitialRender] = useState(false);
+  const [isOpacity, setIsOpacity] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
   const [isCardDragging, setIsCardDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -169,6 +171,7 @@ const Card = (props) => {
       setIsInitialRender(true);
       const timer = setTimeout(() => {
         setIsBouncing(false);
+        setIsInitialRender(false);
       }, 1000);
       return () => clearTimeout(timer);
     }
@@ -177,11 +180,10 @@ const Card = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialRender(true);
+      setIsOpacity(false);
     }, 500 + 100 * props.index);
     return () => clearTimeout(timer);
   }, []);
-
-  const [isClicked, setIsClicked] = useState(false);
 
   // カードのスタイル定義
   const cardWrapperCardStyle = {
@@ -194,11 +196,10 @@ const Card = (props) => {
     animationDelay: `${props.animationDelay}s`,
   };
   // カードのクラス名定義
-  const cardWrapperClassName = `card-wrapper ${isInitialRender ? "transition" : ""}`;
-  const cardClassName = ["card", isInitialRender ? "popIn" : "opacity-0", isDraggable ? "draggable-card" : "", isBouncing ? "jello-animation" : "", isClicked ? "jello-animation" : ""].join(" ");
+  const cardClassName = ["card", isOpacity ? "opacity-0" : "opacity-100", isInitialRender ? "popIn" : "", isDraggable ? "draggable-card" : "", isBouncing ? "jello-animation" : "", isClicked ? "jello-animation" : ""].join(" ");
 
   return (
-    <div className={cardWrapperClassName} style={cardWrapperCardStyle} onClick={handleCardClick} onMouseDown={handleMouseDown} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart}>
+    <div className="`card-wrapper" style={cardWrapperCardStyle} onClick={handleCardClick} onMouseDown={handleMouseDown} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart}>
       {props?.data && (
         <div style={cardStyle} className={cardClassName} onMouseEnter={() => isDraggable && setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
           {props?.data?.text}

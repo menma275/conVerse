@@ -3,6 +3,22 @@ import React, { useEffect, useState } from "react";
 import { Time, MembraneSynth, Reverb, FeedbackDelay, getDestination, Synth, MonoSynth, FMSynth, AMSynth, PolySynth, MetalSynth, start } from "tone";
 import { FaVolumeDown, FaVolumeMute } from "react-icons/fa"; // mute アイコンをインポート
 
+// エフェクトのインスタンスを一度だけ作成
+const reverb = new Reverb(4).toDestination();
+const delay = new FeedbackDelay("8n", 0.5).toDestination();
+
+reverb.wet.value = 0.9;
+delay.wet.value = 0.8;
+
+// エフェクトの接続
+delay.connect(reverb);
+
+const addEffectsToSynth = (synth) => {
+  // 既存のエフェクトのインスタンスをシンセサイザーに接続
+  synth.connect(delay);
+  // reverbのインスタンスを返さない
+};
+
 const createAndPlaySynth = (SynthType, options, note) => {
   const synth = new SynthType(options).toDestination();
   let duration = "8n"; // Default duration
@@ -14,7 +30,7 @@ const createAndPlaySynth = (SynthType, options, note) => {
   }
 
   addEffectsToSynth(synth);
-  const reverb = addEffectsToSynth(synth);
+
   // Reverb decay time + note duration
   const reverbDecayTime = 6; // 4 seconds decay time for reverb
   const timeToDispose = (Time(duration).toSeconds() + reverbDecayTime) * 1000; // Convert to milliseconds
@@ -22,21 +38,8 @@ const createAndPlaySynth = (SynthType, options, note) => {
   setTimeout(() => {
     synth.dispose();
     synth.disconnect();
-    reverb.dispose(); // Reverbの破棄をこちらに移動
+    // reverb.dispose(); // この部分を削除（エフェクトは再利用するため）
   }, timeToDispose);
-};
-
-const addEffectsToSynth = (synth) => {
-  const reverb = new Reverb(4).toDestination();
-  const delay = new FeedbackDelay("8n", 0.5).toDestination();
-  delay.feedback.value = 0.2;
-  reverb.wet.value = 0.9;
-  delay.wet.value = 0.8;
-
-  synth.connect(delay);
-  delay.connect(reverb);
-
-  return reverb; // Reverbのインスタンスを返す
 };
 
 //サウンドに関するロジックはこちらに全て納めている
@@ -112,6 +115,11 @@ const getLastDigitFromCharCode = (emoji) => {
 };
 
 export const playSoundForEmojiCategory = (emoji, note) => {
+  if (!emoji) {
+    console.error("Emoji is undefined or null.");
+    return;
+  }
+
   try {
     const lastDigit = getLastDigitFromCharCode(emoji);
     const synth = new Synth().toDestination();
