@@ -1,15 +1,19 @@
-"use client";
 import { Reverb, FeedbackDelay, start, getDestination } from "tone";
 
-// エフェクトのインスタンスを一度だけ作成
-const reverb = new Reverb(4).toDestination();
-const delay = new FeedbackDelay("8n", 0.5).toDestination();
+let reverb;
+let delay;
 
-reverb.wet.value = 0.9;
-delay.wet.value = 0.8;
+if (typeof window !== "undefined") {
+  // エフェクトのインスタンスを一度だけ作成
+  reverb = new Reverb(4).toDestination();
+  delay = new FeedbackDelay("8n", 0.5).toDestination();
 
-// エフェクトの接続
-delay.connect(reverb);
+  reverb.wet.value = 0.9;
+  delay.wet.value = 0.8;
+
+  // エフェクトの接続
+  delay.connect(reverb);
+}
 
 export const toneInitializer = async () => {
   if (typeof window !== "undefined") {
@@ -20,9 +24,13 @@ export const toneInitializer = async () => {
 
 export const addEffectsToSynth = (synth) => {
   // 既存のエフェクトのインスタンスをシンセサイザーに接続
-  synth.connect(delay);
-  // reverbのインスタンスを返さない
+  if (reverb && delay) {
+    synth.connect(delay);
+  }
 };
+
 export const toggleMute = (muteStatus) => {
-  getDestination().mute = muteStatus;
+  if (typeof window !== "undefined") {
+    getDestination().mute = muteStatus;
+  }
 };

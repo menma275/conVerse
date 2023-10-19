@@ -96,6 +96,7 @@ const getLastDigitFromCharCode = (emoji) => {
 };
 
 export const playSoundForEmojiCategory = (emoji, note) => {
+  if (typeof window === "undefined") return;
   if (!emoji) {
     console.error("Emoji is undefined or null.");
     return;
