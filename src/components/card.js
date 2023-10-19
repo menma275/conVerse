@@ -158,8 +158,8 @@ const Card = (props) => {
 
   useEffect(() => {
     // カードがクリックされたかどうかを判定
-    if (isBouncing || postId == props.data.postId) {
-      setIsBouncing(!isBouncing);
+    if (postId == props.data.postId) {
+      setIsBouncing(true);
       setPostId(false);
     }
   }, [postId]);
@@ -169,7 +169,6 @@ const Card = (props) => {
       setIsInitialRender(true);
       const timer = setTimeout(() => {
         setIsBouncing(false);
-        setIsInitialRender(false);
       }, 1000);
       return () => clearTimeout(timer);
     }
@@ -196,7 +195,7 @@ const Card = (props) => {
   };
   // カードのクラス名定義
   const cardWrapperClassName = `card-wrapper ${isInitialRender ? "transition" : ""}`;
-  const cardClassName = ["card", isInitialRender ? "popIn" : "opacity-100", isDraggable ? "draggable-card" : "", isBouncing ? "jello-animation" : "", isClicked ? "jello-animation" : ""].join(" ");
+  const cardClassName = ["card", isInitialRender ? "popIn" : "opacity-0", isDraggable ? "draggable-card" : "", isBouncing ? "jello-animation" : "", isClicked ? "jello-animation" : ""].join(" ");
 
   return (
     <div className={cardWrapperClassName} style={cardWrapperCardStyle} onClick={handleCardClick} onMouseDown={handleMouseDown} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart}>

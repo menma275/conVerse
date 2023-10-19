@@ -36,8 +36,7 @@ const ReceiveOtherUserCards = (props) => {
     if (data.content.userId !== userId) {
       if (sounds) {
         try {
-          console.log("data.message.text", data.content.message.text);
-          playSoundForEmojiCategory(data.content.message.text);
+          playSoundForEmojiCategory(data.content.message.text, data.content.message.note);
         } catch (error) {
           console.error("Error playing emoji sound:", error);
         }
