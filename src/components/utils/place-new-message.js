@@ -26,7 +26,6 @@ export const placeNewMessage = (e, setNewMessage, userId, spaceId, isAddingCard,
     color: newColor,
   };
   setNewMessage((prevMessages) => [...prevMessages, msg]);
-  playSoundForEmojiCategory(msg.text, msg.note);
   sendApiPusherChat(userId, msg, spaceId);
   setMessage("");
 };

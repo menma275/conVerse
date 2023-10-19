@@ -199,7 +199,7 @@ const Card = (props) => {
   const cardClassName = ["card", isOpacity ? "opacity-0" : "opacity-100", isInitialRender ? "popIn" : "", isDraggable ? "draggable-card" : "", isBouncing ? "jello-animation" : "", isClicked ? "jello-animation" : ""].join(" ");
 
   return (
-    <div className="`card-wrapper" style={cardWrapperCardStyle} onClick={handleCardClick} onMouseDown={handleMouseDown} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart}>
+    <div className="card-wrapper" style={cardWrapperCardStyle} onClick={handleCardClick} onMouseDown={handleMouseDown} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart}>
       {props?.data && (
         <div style={cardStyle} className={cardClassName} onMouseEnter={() => isDraggable && setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
           {props?.data?.text}
