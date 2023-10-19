@@ -12,8 +12,10 @@ delay.wet.value = 0.8;
 delay.connect(reverb);
 
 export const toneInitializer = async () => {
-  await start();
-  console.log("Tone.jsの初期化に成功");
+  if (typeof window !== "undefined") {
+    await start();
+    console.log("Tone.jsの初期化に成功");
+  }
 };
 
 export const addEffectsToSynth = (synth) => {

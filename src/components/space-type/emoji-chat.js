@@ -38,8 +38,8 @@ const EmojiChat = (props) => {
 
       if (props.message) {
         try {
-          console.log("props.message.text", props.content.message.text);
-          playSoundForEmojiCategory(props.content.message.text, note);
+          console.log("props.message.text", props.message.text);
+          playSoundForEmojiCategory(props.message.text, note);
         } catch (error) {
           console.error("Error playing emoji sound:", error);
         }
