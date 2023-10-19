@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import CardLoop from "@/components/card-loop";
 import { getPusherInstance } from "@/components/utils/pusher-config";
 import { UserIdContext } from "@/context/userid-context";
-import { playSoundForEmojiCategory } from "@/components/parts/mute-button";
+import { playSoundForEmojiCategory } from "@/components/sound/sound-generator";
 import { useCardContext } from "@/context/card-context";
 
 const wrapEmojisInSpans = (emojis, maxLength) => {

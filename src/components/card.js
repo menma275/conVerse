@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { playSoundForEmojiCategory } from "@/components/parts/mute-button";
+import { playSoundForEmojiCategory } from "@/components/sound/sound-generator";
 import { UserIdContext } from "@/context/userid-context";
 import { sendApiPusherChat } from "@/components/utils/send-api-pusher-chat";
 import { updateCardDb } from "@/components/utils/update-card-db";
