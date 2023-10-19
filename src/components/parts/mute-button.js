@@ -38,7 +38,6 @@ const createAndPlaySynth = (SynthType, options, note) => {
   setTimeout(() => {
     synth.dispose();
     synth.disconnect();
-    // reverb.dispose(); // この部分を削除（エフェクトは再利用するため）
   }, timeToDispose);
 };
 
