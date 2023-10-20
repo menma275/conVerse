@@ -29,6 +29,7 @@ const Card = (props) => {
 
   // マウス移動時のハンドラ
   const handleMouseMove = (e) => {
+    if (!isDraggable) return;
     if (isCardDragging) {
       const dx = e.clientX - startMousePosition.x;
       const dy = e.clientY - startMousePosition.y;
@@ -83,6 +84,7 @@ const Card = (props) => {
   };
 
   const handleTouchMove = (e) => {
+    if (!isDraggable) return;
     if (isCardDragging && e.touches.length === 1) {
       // タッチポイントが1つの場合のみ処理を実行
       const dx = e.touches[0].clientX - startMousePosition.x;
@@ -97,6 +99,7 @@ const Card = (props) => {
   };
 
   const handleTouchEnd = async (e) => {
+    if (!isDraggable) return;
     if (e.touches.length === 0 && isCardDragging) {
       setIsCardDragging(false);
       window.removeEventListener("touchmove", handleTouchMove);
