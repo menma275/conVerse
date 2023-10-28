@@ -98,7 +98,7 @@ const EmojiChat = (props) => {
           </Suspense>
           <CardLoop dataList={allCards} messageDesign={props.messageDesign} resizable={props.resizable} isInitialLoad={isInitialLoad} setIsInitialLoad={setIsInitialLoad} />
           <ReceiveOtherUserCards spaceId={props.spaceId} sounds={props.sounds} cardList={allCards} onReceiveNewCardData={handleReceiveNewCardData} />
-          <Follower ref={followerRef} isVisible={!!props.message} />
+          <Follower ref={followerRef} isVisible={!!props.message} message={props.message} />
         </div>
       </div>
       <InputMessage message={props.message} setMessage={props.setMessage} />
