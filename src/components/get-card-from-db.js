@@ -1,5 +1,4 @@
-import React, { memo } from "react";
-import CardLoop from "@/components/card-loop";
+import { memo } from "react";
 
 // 本日のカードデータのみをフィルタリングする関数
 const createCards = (data) => {
@@ -17,13 +16,6 @@ const createCards = (data) => {
     .map((value) => (value.message ? JSON.parse(value.message) : "NULL"));
 };
 
-// localStorageにデータをセットする関数
-const setDetaList = (dataList) => {
-  localStorage.removeItem("dataList");
-  const jsonString = JSON.stringify(dataList);
-  localStorage.setItem("dataList", jsonString);
-};
-
 // APIからカードの情報を非同期で取得する関数
 const getPosts = async (apiUrl) => {
   try {
@@ -32,19 +24,26 @@ const getPosts = async (apiUrl) => {
     return createCards(data);
   } catch (error) {
     console.error("エラーが発生しました:", error);
+    return []; // ここで空の配列を返すようにします
   }
 };
 
 // 非同期コンポーネント: SpaceのIDに基づいてカード情報を取得し、表示する
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-const GetCardFromDb = async ({ spaceId }) => {
-  const apiUrl = `${baseUrl}/api/message/${spaceId}`;
+const GetCardFromDb = async (props) => {
+  if (props.loadedData) {
+    return null; // 既にデータがロードされているのでAPIリクエストはスキップ
+  }
+  const apiUrl = `${baseUrl}/api/message/${props.spaceId}`;
   const dataList = await getPosts(apiUrl);
-  console.log("GetCardFromDb", dataList);
-  setDetaList(dataList); // localStorageにデータをセット
+  if (dataList && dataList.length > 0) {
+    props.onReceiveData(dataList);
+  } else {
+    console.warn("取得したデータが空または不正です");
+  }
 
-  return <CardLoop dataList={dataList} />;
+  return null;
 };
 
 export default memo(GetCardFromDb);

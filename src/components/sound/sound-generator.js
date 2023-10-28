@@ -49,25 +49,21 @@ const createSounds = (note, lastDigit, oscillator, envelope) => {
       10: { SynthType: FMSynth, options: commonOptions },
     };
 
-    const configuration = synthConfigurations[lastDigit];
-
-    if (configuration) {
-      if (lastDigit !== 9) {
-        createAndPlaySynth(configuration.SynthType, configuration.options, note);
-      } else {
-        // ケース9は特別な処理が必要なので、こちらのロジックを維持
-        const granularEmulation = new FMSynth().toDestination();
-        const interval = setInterval(() => {
-          granularEmulation.triggerAttackRelease(note, "32n");
-        }, 50);
-        setTimeout(() => {
-          clearInterval(interval);
-          addEffectsToSynth(granularEmulation);
-          granularEmulation.dispose();
-        }, 500);
-      }
+    if (lastDigit !== 9) {
+      const configuration = synthConfigurations[lastDigit];
+      createAndPlaySynth(configuration.SynthType, configuration.options, note);
     } else {
-      console.error("Invalid lastDigit value:", lastDigit);
+      // ケース9は特別な処理が必要なので、こちらのロジックを維持
+      const granularEmulation = new FMSynth().toDestination();
+      addEffectsToSynth(granularEmulation);
+
+      const interval = setInterval(() => {
+        granularEmulation.triggerAttackRelease(note, "32n");
+      }, 20);
+      setTimeout(() => {
+        clearInterval(interval);
+        granularEmulation.dispose();
+      }, 1000);
     }
   } catch (error) {
     console.error("Error playing emoji sound:", error);
@@ -126,7 +122,7 @@ export const playSoundForEmojiCategory = (emoji, note) => {
       createSounds(note, lastDigit, randomOscillator, envelope);
       console.log("playSoundForEmojiCategory: Success", note, lastDigit);
     } else {
-      console.error("Invalid lastDigit value:", lastDigit);
+      console.error("Invalid lastDigit value:", lastDigit, "Type:", typeof lastDigit);
     }
   } catch (error) {
     console.error(`Error playing sound for emoji ${emoji} with note ${note}:`, error);

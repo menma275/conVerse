@@ -48,7 +48,9 @@ body {
   font-size: 16px;
   user-select: none;
 }
-
+select {
+  display: block;
+}
 .emoji-span {
   font-family: "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
@@ -402,8 +404,10 @@ button:active {
 }
 
 .card-wrapper {
-  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  position: absolute;
+  display: inline-block;
 }
+
 .card {
   width: fit-content;
   height: auto;
@@ -415,15 +419,31 @@ button:active {
   background-color: var(--bg-primary);
   color: var(--black);
   font-size: 1.5rem;
-  position: absolute;
-  cursor: default; /* デフォルトのカーソル */
+  cursor: default;
   border-radius: 1rem;
   line-height: 1.2;
   display: flex;
   flex-wrap: wrap;
-  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
-
+.nocard {
+  width: fit-content;
+  height: auto;
+  min-width: none;
+  min-height: none;
+  max-width: 10.4em;
+  word-break: break-all;
+  padding: 0;
+  color: var(--bg-primary);
+  font-size: 3rem;
+  cursor: default; /* デフォルトのカーソル */
+  line-height: 0.8;
+  padding-top: 12px;
+  display: inline-block;
+  flex-wrap: wrap;
+}
+.nocard:hover {
+  transform: translateY(-2px);
+}
 /*bounceアニメ*/
 @keyframes jello {
   0% {
@@ -448,10 +468,15 @@ button:active {
 
 @keyframes popIn {
   0% {
+    opacity: 0;
     transform: scale(0.5, 0.5);
   }
+  20% {
+    opacity: 1;
+    transform: scale(0.8, 0.8);
+  }
   70% {
-    transform: scale(1.2, 1.2);
+    transform: scale(1.1, 1.1);
   }
   100% {
     transform: scale(1, 1);
@@ -462,17 +487,11 @@ button:active {
   animation: popIn 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 .jello-animation {
-  opacity: 1;
   animation: jello 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
 }
 
 .draggable-card {
   cursor: pointer; /* ドラッグ可能なカードのカーソル */
-}
-.draggable-card:hover {
-  opacity: 1;
-  transform: translateY(-3px);
-  box-shadow: 0 0 var(--hover-shadow-distance, 3rem) 0.1rem; /* カラーはpropsから取得またはデフォルト値を設定 */
 }
 
 .card span {
@@ -536,6 +555,14 @@ iframe {
 .moveable-control.moveable-rotation {
   opacity: 0;
 }
+
+.moveable-rotation {
+  height: calc(20px * var(--zoom)) !important;
+}
+.moveable-control.moveable-origin {
+  opacity: 0;
+}
+
 /* Moveableの枠線を消す */
 .moveable-line {
   opacity: 0;
@@ -548,4 +575,10 @@ iframe {
 
 .moveable-direction {
   opacity: 0;
+}
+.card-wrapper:hover .moveable-control-box,
+.card-wrapper:hover .moveable-control.moveable-rotation,
+.card-wrapper:hover .moveable-line,
+.card-wrapper:hover .moveable-direction {
+  opacity: 1;
 }

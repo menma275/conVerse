@@ -16,11 +16,14 @@ import Zoom from "@/components/parts/zoom";
 import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
 
 const EmojiChat = (props) => {
+  const [allCards, setAllCards] = useState([]);
   const [isAddingCard, setIsAddingCard] = useState(false);
-  const [newMessage, setNewMessage] = useState([]);
   const containerRef = useRef(null);
   const followerRef = useRef(null);
   const { userId } = useContext(UserIdContext);
+  const [loadedData, setLoadedData] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
   const onMouseMoveHandler = useCallback(
     (e) => {
       handleMouseMove(e, isAddingCard, followerRef, containerRef, props.zoom);
@@ -29,7 +32,7 @@ const EmojiChat = (props) => {
   );
 
   const handleContainerClick = (e) => {
-    placeNewMessage(e, setNewMessage, userId, props.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
+    placeNewMessage(e, setAllCards, userId, props.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
 
     if (props.sounds) {
       const containerRect = containerRef.current.getBoundingClientRect(); // containerRefを使用してDOMの参照を取得します
@@ -51,6 +54,29 @@ const EmojiChat = (props) => {
     transform: `scale(${props.zoom})`,
   };
 
+  const handleReceiveNewCardData = useCallback((newCard) => {
+    setAllCards((prevCards) => {
+      const cardIndex = prevCards.findIndex((card) => card.postId === newCard.postId);
+      if (cardIndex === -1) {
+        return [...prevCards, newCard];
+      } else {
+        return prevCards.map((card) => (card.postId === newCard.postId ? newCard : card));
+      }
+    });
+  }, []);
+
+  const handleReceiveData = (newData) => {
+    setAllCards(() => newData);
+    setLoadedData(true);
+  };
+
+  // localStorageにデータをセットする関数
+  const setDetaList = (allCards) => {
+    localStorage.removeItem("dataList");
+    const jsonString = JSON.stringify(allCards);
+    localStorage.setItem("dataList", jsonString);
+  };
+
   useEffect(() => {
     if (props.message) {
       setIsAddingCard(true);
@@ -60,22 +86,18 @@ const EmojiChat = (props) => {
   }, [props.message]);
 
   useEffect(() => {
-    console.log("spaceId updated:", props.spaceId);
-  }, [props.spaceId]);
-
-  useEffect(() => {
-    console.log("newMessage updated:", newMessage);
-  }, [newMessage]);
+    setDetaList(allCards);
+  }, [allCards]);
 
   return (
     <>
       <div id="container__wrapper" ref={props.targetRef}>
         <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={containerStyle}>
           <Suspense fallback={<LoadingSpinner />}>
-            <GetCardFromDb spaceId={props.spaceId} />
+            <GetCardFromDb spaceId={props.spaceId} onReceiveData={handleReceiveData} loadedData={loadedData} />
           </Suspense>
-          <CardLoop dataList={newMessage} />
-          <ReceiveOtherUserCards spaceId={props.spaceId} sounds={props.sounds} />
+          <CardLoop dataList={allCards} messageDesign={props.messageDesign} resizable={props.resizable} isInitialLoad={isInitialLoad} setIsInitialLoad={setIsInitialLoad} />
+          <ReceiveOtherUserCards spaceId={props.spaceId} sounds={props.sounds} cardList={allCards} onReceiveNewCardData={handleReceiveNewCardData} />
           <Follower ref={followerRef} isVisible={!!props.message} />
         </div>
       </div>

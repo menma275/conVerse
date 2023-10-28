@@ -21,6 +21,8 @@ const CreateSpace = () => {
     description: "",
     spaceType: "1", // デフォルトの選択項目の値
     sounds: "1", // デフォルトの選択項目の値
+    messageDesign: "card",
+    resizable: false,
     genId: "samuelyan", // デフォルトの選択項目の値
   });
 
@@ -47,11 +49,19 @@ const CreateSpace = () => {
 
   // フォームデータを更新
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, value, checked } = event.target;
+
+    if (name === "resizable") {
+      setFormData({
+        ...formData,
+        [name]: checked,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   //BaseURLを設定
@@ -61,14 +71,14 @@ const CreateSpace = () => {
   const saveSpace = async (event) => {
     event.preventDefault();
 
-    const { userId, name, description, spaceType, sounds, genId } = formData;
+    const { userId, name, description, spaceType, sounds, messageDesign, resizable, genId } = formData;
     console.log("Data to be sent:", formData); // データをログに出力
 
     // ここでAPIにデータを送信
     try {
       const res = await fetch(`${baseUrl}/api/space`, {
         method: "POST",
-        body: JSON.stringify({ info: { userId, name, description, spaceType, sounds, genId } }),
+        body: JSON.stringify({ info: { userId, name, description, spaceType, sounds, messageDesign, resizable, genId } }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -78,7 +88,7 @@ const CreateSpace = () => {
         // リソースの作成が成功した場合
         const responseData = await res.json(); // レスポンスデータをJSONとしてパース
         console.log("Space created successfully!", responseData);
-        setCreatedSpaceData({ userId, name, description, spaceType, sounds, genId, spaceId: responseData.space.spaceId });
+        setCreatedSpaceData({ userId, name, description, spaceType, sounds, messageDesign, resizable, genId, spaceId: responseData.space.spaceId });
         console.log("CreateSpace", responseData.space);
         // space コンポーネントを表示
         setSpaceVisible(true);
@@ -130,29 +140,37 @@ const CreateSpace = () => {
               </div>
             </div>
             <div className="board-content">
-              <form onSubmit={saveSpace}>
-                <div className="rounded-lg border-2 border-[var(--accent)]">
-                  <input id="name" type="text" name="name" placeholder="Input Space Name" value={formData.name} onChange={handleInputChange} required />
+              <form onSubmit={saveSpace} className="block pt-4">
+                <div className="rounded-lg border-2 border-[var(--accent)] mb-2 overflow-hidden">
+                  <input id="name" className="block w-full" type="text" name="name" placeholder="Input Space Name" value={formData.name} onChange={handleInputChange} required />
                 </div>
-                <div className="rounded-lg border-2 border-[var(--accent)]">
-                  <textarea id="description" name="description" rows="6" placeholder="Input Description" value={formData.description} onChange={handleInputChange} />
+                <div className="rounded-lg border-2 border-[var(--accent)] mb-2 overflow-hidden">
+                  <textarea id="description" name="description" rows="6" placeholder="Input Description" value={formData.description} onChange={handleInputChange} className="block w-full" />
                 </div>
-                <select name="spaceType" value={formData.spaceType} onChange={handleInputChange} required>
+                <select name="spaceType" value={formData.spaceType} onChange={handleInputChange} required className="mb-2">
                   <option value="1">Emoji Space</option>
                   <option value="2">Sound Emoji</option>
                 </select>
-                <select name="sounds" value={formData.sounds} onChange={handleInputChange} required>
+                <select name="sounds" value={formData.sounds} onChange={handleInputChange} required className="mb-2">
                   <option value="1">On</option>
                   <option value="0">Off</option>
                 </select>
-                <select name="genId" value={formData.genId} onChange={handleInputChange} required>
+                <select name="messageDesign" value={formData.messageDesign} onChange={handleInputChange} required className="mb-2">
+                  <option value="card">Card</option>
+                  <option value="nocard">None</option>
+                </select>
+                <label className="block mb-2">
+                  <input type="checkbox" name="resizable" checked={formData.resizable} onChange={handleInputChange} className="mr-4" required />
+                  Resizable
+                </label>
+                <select name="genId" value={formData.genId} onChange={handleInputChange} required className="mb-2">
                   <option value="" disabled>
                     Select GenArt
                   </option>
                   <option value="samuelyan">Samuel YAN</option>
                   <option value="sakamura">sakamura</option>
                 </select>
-                <div className="rounded-lg border-2 border-[var(--accent)]">
+                <div className="rounded-lg border-2 border-[var(--accent)] mb-2">
                   <input id="submit" type="submit" value="Create" />
                 </div>
               </form>

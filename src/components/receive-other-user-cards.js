@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState, useContext } from "react";
-import CardLoop from "@/components/card-loop";
+import { useEffect, useContext } from "react";
+
 import { getPusherInstance } from "@/components/utils/pusher-config";
 import { UserIdContext } from "@/context/userid-context";
 import { playSoundForEmojiCategory } from "@/components/sound/sound-generator";
@@ -25,7 +25,7 @@ const wrapEmojisInSpans = (emojis, maxLength) => {
 };
 
 const ReceiveOtherUserCards = (props) => {
-  const [cardList, setCardList] = useState([]);
+  console.log("ReceiveOtherUserCards props", props);
   const { setPostId } = useCardContext();
   const { userId } = useContext(UserIdContext);
   const sounds = props.sounds;
@@ -50,22 +50,13 @@ const ReceiveOtherUserCards = (props) => {
           x: data.content.message.pos.x,
           y: data.content.message.pos.y,
         },
+        scale: data.content.message.scale,
+        rotate: data.content.message.rotate,
         text: wrapEmojisInSpans(data.content.message.text, 20),
         note: data.content.message.note,
         color: data.content.message.color,
       };
-
-      setCardList((prevCards) => {
-        const updatedCards = [...prevCards];
-        const cardIndex = updatedCards.findIndex((card) => card.postId === newCard.postId);
-        if (cardIndex !== -1) {
-          updatedCards[cardIndex] = newCard;
-        } else {
-          updatedCards.push(newCard);
-        }
-        console.log("Updated Card List:", updatedCards);
-        return updatedCards;
-      });
+      props.onReceiveNewCardData(newCard);
     }
   };
 
@@ -99,7 +90,7 @@ const ReceiveOtherUserCards = (props) => {
     };
   }, [props.spaceId, userId, sounds]);
 
-  return <CardLoop dataList={cardList} />;
+  return null;
 };
 
 export default ReceiveOtherUserCards;
