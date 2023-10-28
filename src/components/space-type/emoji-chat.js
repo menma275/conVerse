@@ -93,7 +93,7 @@ const EmojiChat = (props) => {
     <>
       <div id="container__wrapper" ref={props.targetRef}>
         <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={containerStyle}>
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense>
             <GetCardFromDb spaceId={props.spaceId} onReceiveData={handleReceiveData} loadedData={loadedData} />
           </Suspense>
           <CardLoop dataList={allCards} messageDesign={props.messageDesign} resizable={props.resizable} isInitialLoad={isInitialLoad} setIsInitialLoad={setIsInitialLoad} />

@@ -9,6 +9,7 @@ export const placeNewMessage = (e, setAllCards, userId, spaceId, isAddingCard, c
 
   const palette = getRandomPalette(CARD_PALETTE);
   const cardnum = container.childElementCount;
+  console.log("cardnum", cardnum);
   const containerRect = container.getBoundingClientRect();
   const newX = (e.clientX - containerRect.left) / zoom;
   const newY = (e.clientY - containerRect.top) / zoom;
