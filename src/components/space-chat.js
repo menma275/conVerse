@@ -77,7 +77,6 @@ const SpaceChat = (props) => {
           transition: { duration: 0.2, type: "spring" },
         });
   }, [isMobile, controls]);
-
   return (
     <>
       <Moveable
@@ -113,7 +112,7 @@ const SpaceChat = (props) => {
           <p>👇 Tap anywhere to post.</p>
         </div>
 
-        <SpaceTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} spaceInfo={props.spaceInfo} sounds={props.sounds} />
+        <SpaceTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} spaceInfo={props.spaceInfo} sounds={props.sounds} messageDesign={props.messageDesign} resizable={props.resizable} />
       </motion.div>
     </>
   );

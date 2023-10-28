@@ -5,7 +5,6 @@ export const sendApiPusherChat = async (userId, msg, spaceId, messageType = "new
     spaceId: spaceId,
     userId: userId,
   };
-  console.log("sendApiPusherChat", requestBody);
   try {
     const response = await fetch("/api/pusher/sendPusherMessage", {
       method: "POST",

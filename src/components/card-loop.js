@@ -4,7 +4,7 @@ const CardLoop = (props) => {
   return (
     <>
       {props.dataList.map((data, index) => (
-        <Card data={data} key={data.postId} index={index} />
+        <Card data={data} key={data.postId} index={index} messageDesign={props.messageDesign} resizable={props.resizable} isInitialLoad={props.isInitialLoad} setIsInitialLoad={props.setIsInitialLoad} />
       ))}
     </>
   );
