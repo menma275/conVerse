@@ -378,6 +378,18 @@ button:active {
   border: none;
 }
 
+[type="submit"] {
+  color: var(--cream);
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 1rem;
+  background-color: var(--accent);
+  border: 2px solid var(--black);
+  width: 100%;
+  cursor: pointer;
+}
+
 .post-set input::placeholder {
   color: var(--accent);
   font-size: 0.75rem;

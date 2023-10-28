@@ -55,7 +55,7 @@ const Card = (props) => {
     transform: `translate(${position.x}px, ${position.y}px)`,
     transformOrigin: `50% 50%`,
     touchAction: "none",
-    transition: !isCardDragging && "transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
+    transition: !isCardDragging && "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
   };
 
   const computeTransform = () => {
@@ -65,9 +65,9 @@ const Card = (props) => {
 
   const cardStyle = {
     transform: computeTransform(),
-    boxShadow: messageDesign === "card" && (isCardDragging || (isHovered && isDraggable)) ? `0 0 2rem 0.1rem ${data?.color}` : "none",
-    textShadow: messageDesign !== "card" && (isCardDragging || (isHovered && isDraggable)) ? `0 0.4rem 0.4rem ${hexToRgba(data?.color, 0.5)}` : `0 0.2rem 0.1rem ${hexToRgba(data?.color, 0.5)}`,
-    transition: !isCardDragging && "transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
+    boxShadow: messageDesign === "card" ? (isCardDragging || (isHovered && isDraggable) ? `0 0 1rem 0.2rem ${data?.color}` : `0 0 0.5rem 0.1rem ${data?.color}`) : "none",
+    textShadow: messageDesign !== "card" ? (isCardDragging || (isHovered && isDraggable) ? `0 0.4rem 0.4rem ${hexToRgba(data?.color, 0.5)}` : `0 0.2rem 0.1rem ${hexToRgba(data?.color, 0.5)}`) : "none",
+    transition: !isCardDragging && "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
   };
 
   // Rendering

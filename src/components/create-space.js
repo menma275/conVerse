@@ -151,16 +151,16 @@ const CreateSpace = () => {
                   <option value="1">Emoji Space</option>
                   <option value="2">Sound Emoji</option>
                 </select>
-                <select name="sounds" value={formData.sounds} onChange={handleInputChange} required className="mb-2">
-                  <option value="1">On</option>
-                  <option value="0">Off</option>
-                </select>
+                <label className="block mb-2">
+                  <input type="checkbox" name="sounds" value={formData.sounds} onChange={handleInputChange} className="mr-4" />
+                  Sound
+                </label>
                 <select name="messageDesign" value={formData.messageDesign} onChange={handleInputChange} required className="mb-2">
                   <option value="card">Card</option>
                   <option value="nocard">None</option>
                 </select>
                 <label className="block mb-2">
-                  <input type="checkbox" name="resizable" checked={formData.resizable} onChange={handleInputChange} className="mr-4" required />
+                  <input type="checkbox" name="resizable" checked={formData.resizable} onChange={handleInputChange} className="mr-4" />
                   Resizable
                 </label>
                 <select name="genId" value={formData.genId} onChange={handleInputChange} required className="mb-2">
@@ -170,9 +170,7 @@ const CreateSpace = () => {
                   <option value="samuelyan">Samuel YAN</option>
                   <option value="sakamura">sakamura</option>
                 </select>
-                <div className="rounded-lg border-2 border-[var(--accent)] mb-2">
-                  <input id="submit" type="submit" value="Create" />
-                </div>
+                <input id="submit" className="pixel-shadow" type="submit" value="Create" />
               </form>
             </div>
           </motion.div>
