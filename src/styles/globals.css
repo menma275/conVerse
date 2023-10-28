@@ -359,6 +359,7 @@ button:active {
   transform: translateX(-50%);
   z-index: 100;
   width: calc(100% - var(--element-space) * 2);
+  background: var(--cream);
 }
 
 .post-set input {
@@ -433,11 +434,11 @@ button:active {
   max-width: 10.4em;
   word-break: break-all;
   padding: 0;
-  color: var(--bg-primary);
+  color: var(--black);
   font-size: 3rem;
   cursor: default; /* デフォルトのカーソル */
   line-height: 0.8;
-  padding-top: 12px;
+  padding-top: 16px;
   display: inline-block;
   flex-wrap: wrap;
 }
