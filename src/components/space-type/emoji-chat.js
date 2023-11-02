@@ -33,7 +33,7 @@ const EmojiChat = (props) => {
 
   // コンテナをクリックしたときのハンドラ
   const handleContainerClick = (e) => {
-    placeNewMessage(e, handleReceiveNewCardData, userId, props.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
+    placeNewMessage(e, handleReceiveNewCardData, userId, props.spaceInfo.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
   };
 
   // コンテナのスタイルを設定
@@ -59,12 +59,12 @@ const EmojiChat = (props) => {
         <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={containerStyle}>
           <Suspense>
             {/* DBからカードを取得 */}
-            <GetCardFromDb spaceId={props.spaceId} onReceiveData={handleReceiveData} loadedData={loadedData} />
+            <GetCardFromDb spaceId={props.spaceInfo.spaceId} onReceiveData={handleReceiveData} loadedData={loadedData} />
           </Suspense>
           {/* カードのループ表示 */}
-          <CardLoop dataList={allCards} messageDesign={props.messageDesign} resizable={props.resizable} isInitialLoad={isInitialLoad} setIsInitialLoad={setIsInitialLoad} />
+          <CardLoop dataList={allCards} messageDesign={props.spaceInfo.messageDesign} resizable={props.spaceInfo.resizable} isInitialLoad={isInitialLoad} setIsInitialLoad={setIsInitialLoad} />
           {/* 他のユーザーからのカードを受信 */}
-          <ReceiveOtherUserCards spaceId={props.spaceId} sounds={props.sounds} onReceiveNewCardData={handleReceiveNewCardData} />
+          <ReceiveOtherUserCards spaceId={props.spaceInfo.spaceId} sounds={props.spaceInfo.sounds} onReceiveNewCardData={handleReceiveNewCardData} />
           {/* フォロワーの表示 */}
           <Follower ref={followerRef} isVisible={!!props.message} message={props.message} />
         </div>
@@ -73,7 +73,7 @@ const EmojiChat = (props) => {
       <InputMessage message={props.message} setMessage={props.setMessage} />
       <div id="manipulate">
         {/* サウンドのミュートボタン */}
-        {props.sounds && <MuteButton />}
+        {props.spaceInfo.sounds && <MuteButton />}
         {/* ズームコントロール */}
         <Zoom setZoom={props.setZoom} zoom={props.zoom} />
       </div>

@@ -9,10 +9,10 @@ const SpaceLoop = ({ spaceList }) => {
           <Space
             spaceInfo={data}
             key={index}
-            spaceId={data.spaceId}
+            /*spaceId={data.spaceId}
             sounds={data.sounds}
             messageDesign={data.messageDesign}
-            resizable={data.resizable}
+            resizable={data.resizable}*/
             style={{
               left: `${index * 50 + 50}px`, // 左に10pxずつずらす
               top: `${index * 50 + 50}px`, // 上に10pxずつずらす
