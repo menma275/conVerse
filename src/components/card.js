@@ -18,6 +18,7 @@ const Card = (props) => {
   const { userId } = useContext(UserIdContext);
   const { postId, setPostId } = useCardContext();
   const isDraggable = data.userId === userId;
+  console.log("data", data);
 
   // States and Refs
   const [position, setPosition] = useState({ x: data?.pos?.x || 0, y: data?.pos?.y || 0 });
