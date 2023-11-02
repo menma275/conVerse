@@ -36,7 +36,7 @@ button {
 
 html,
 body {
-  font-family: "NuKinakoMochi", sans-serif;
+  font-family: "NuKinakoMochi", "Apple Color Emoji", sans-serif;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -359,6 +359,7 @@ button:active {
   transform: translateX(-50%);
   z-index: 100;
   width: calc(100% - var(--element-space) * 2);
+  background: var(--cream);
 }
 
 .post-set input {
@@ -377,30 +378,21 @@ button:active {
   border: none;
 }
 
+[type="submit"] {
+  color: var(--cream);
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 1rem;
+  background-color: var(--accent);
+  border: 2px solid var(--black);
+  width: 100%;
+  cursor: pointer;
+}
+
 .post-set input::placeholder {
   color: var(--accent);
   font-size: 0.75rem;
-}
-
-.follower {
-  /* visibility: hidden; */
-  width: fit-content;
-  height: auto;
-  min-width: 100px;
-  min-height: 50px;
-  max-width: 300px;
-  padding: 0.5rem 1rem;
-  background-color: var(--bg-primary);
-  color: var(--black);
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
-  position: absolute;
-  z-index: 999;
-  opacity: 0.5;
 }
 
 .card-wrapper {
@@ -433,14 +425,33 @@ button:active {
   max-width: 10.4em;
   word-break: break-all;
   padding: 0;
-  color: var(--bg-primary);
+  color: var(--black);
   font-size: 3rem;
   cursor: default; /* デフォルトのカーソル */
-  line-height: 0.8;
-  padding-top: 12px;
+  line-height: 1;
+  padding-top: 16px;
   display: inline-block;
   flex-wrap: wrap;
 }
+.follower {
+  width: fit-content;
+  height: auto;
+  min-width: none;
+  min-height: none;
+  max-width: 10.4em;
+  word-break: break-all;
+  padding: 0;
+  font-family: "NuKinakoMochi", "Apple Color Emoji", sans-serif;
+  color: var(--black);
+  font-size: 3rem;
+  cursor: default; /* デフォルトのカーソル */
+  line-height: 0.8;
+  padding-top: 16px;
+  display: inline-block;
+  flex-wrap: wrap;
+  position: absolute;
+}
+
 .nocard:hover {
   transform: translateY(-2px);
 }

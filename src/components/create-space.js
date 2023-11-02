@@ -1,9 +1,11 @@
+"use client";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Moveable from "react-moveable";
 import { useAnimationControls, motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import { UserIdContext } from "@/context/userid-context";
 import Space from "@/components/space";
+import { useActiveSpaceIndex } from "@/context/active-space-index-context";
 
 const CreateSpace = () => {
   const [resizable, setResizable] = useState(false);
@@ -15,6 +17,7 @@ const CreateSpace = () => {
   const [spaceVisible, setSpaceVisible] = useState(false); // space コンポーネントの表示状態を管理
   const [createdSpaceData, setCreatedSpaceData] = useState(null);
   const { userId } = useContext(UserIdContext);
+  const { activeSpaceIndex, setActiveSpaceIndex } = useActiveSpaceIndex();
   const [formData, setFormData] = useState({
     userId: userId,
     name: "",
@@ -26,6 +29,12 @@ const CreateSpace = () => {
     genId: "samuelyan", // デフォルトの選択項目の値
   });
 
+  const style = {
+    zIndex: -1 === activeSpaceIndex ? 3 : 1, // activeSpaceIndexと現在のSpaceのindexが一致すればz-indexを2に、そうでなければ1に設定
+  };
+  const handleMouseDownOrTouchStart = () => {
+    setActiveSpaceIndex(-1);
+  };
   useEffect(() => {
     console.log("CreateSpace", createdSpaceData);
   }, [createdSpaceData]);
@@ -133,7 +142,7 @@ const CreateSpace = () => {
             }}
             ref={moveableRef}
           />
-          <motion.div animate={controls} className="board pixel-shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" id="create-new-space" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
+          <motion.div animate={controls} onMouseDown={handleMouseDownOrTouchStart} style={style} className="board pixel-shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" id="create-new-space" onAnimationComplete={() => updateRect()} ref={resizeTarget}>
             <div className="board-header pixel-shadow" ref={dragTarget}>
               <div className="board-header-set">
                 <h1>Create New Space</h1>
@@ -151,16 +160,16 @@ const CreateSpace = () => {
                   <option value="1">Emoji Space</option>
                   <option value="2">Sound Emoji</option>
                 </select>
-                <select name="sounds" value={formData.sounds} onChange={handleInputChange} required className="mb-2">
-                  <option value="1">On</option>
-                  <option value="0">Off</option>
-                </select>
+                <label className="block mb-2">
+                  <input type="checkbox" name="sounds" value={formData.sounds} onChange={handleInputChange} className="mr-4" />
+                  Sound
+                </label>
                 <select name="messageDesign" value={formData.messageDesign} onChange={handleInputChange} required className="mb-2">
                   <option value="card">Card</option>
                   <option value="nocard">None</option>
                 </select>
                 <label className="block mb-2">
-                  <input type="checkbox" name="resizable" checked={formData.resizable} onChange={handleInputChange} className="mr-4" required />
+                  <input type="checkbox" name="resizable" checked={formData.resizable} onChange={handleInputChange} className="mr-4" />
                   Resizable
                 </label>
                 <select name="genId" value={formData.genId} onChange={handleInputChange} required className="mb-2">
@@ -170,9 +179,7 @@ const CreateSpace = () => {
                   <option value="samuelyan">Samuel YAN</option>
                   <option value="sakamura">sakamura</option>
                 </select>
-                <div className="rounded-lg border-2 border-[var(--accent)] mb-2">
-                  <input id="submit" type="submit" value="Create" />
-                </div>
+                <input id="submit" className="pixel-shadow" type="submit" value="Create" />
               </form>
             </div>
           </motion.div>

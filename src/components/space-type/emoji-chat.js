@@ -3,27 +3,27 @@ import React, { useState, useEffect, useRef, useCallback, memo, useContext } fro
 import ReceiveOtherUserCards from "@/components/receive-other-user-cards";
 import Follower from "@/components/parts/follower";
 import CardLoop from "@/components/card-loop";
-import LoadingSpinner from "@/components/loading/loading-spinner";
 import { Suspense } from "react";
 import GetCardFromDb from "@/components/get-card-from-db";
 import { placeNewMessage } from "@/components/utils/place-new-message";
 import { handleMouseMove } from "@/components/utils/mousemove-handler";
 import { UserIdContext } from "@/context/userid-context";
-import { playSoundForEmojiCategory } from "@/components/sound/sound-generator";
 import MuteButton from "@/components/parts/mute-button";
 import InputMessage from "@/components/parts/input-message";
 import Zoom from "@/components/parts/zoom";
-import { getNoteFromYPosition } from "@/components/utils/get-note-from-y-position";
+import { useCardState } from "@/components/hooks/use-card-state";
+import useLocalStorage from "@/components/hooks/use-local-storage";
 
 const EmojiChat = (props) => {
-  const [allCards, setAllCards] = useState([]);
-  const [isAddingCard, setIsAddingCard] = useState(false);
-  const containerRef = useRef(null);
-  const followerRef = useRef(null);
-  const { userId } = useContext(UserIdContext);
-  const [loadedData, setLoadedData] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  // ステートとリファレンスの定義
+  const [isAddingCard, setIsAddingCard] = useState(false); // カードを追加しているかどうかのステート
+  const containerRef = useRef(null); // コンテナのリファレンス
+  const followerRef = useRef(null); // フォロワーのリファレンス
+  const { userId } = useContext(UserIdContext); // ユーザーIDを取得
+  const [isInitialLoad, setIsInitialLoad] = useState(true); // 初回読み込みかどうかのステート
+  const { allCards, loadedData, handleReceiveNewCardData, handleReceiveData } = useCardState();
 
+  // マウスの動きをハンドルする関数
   const onMouseMoveHandler = useCallback(
     (e) => {
       handleMouseMove(e, isAddingCard, followerRef, containerRef, props.zoom);
@@ -31,52 +31,20 @@ const EmojiChat = (props) => {
     [isAddingCard, props]
   );
 
+  // コンテナをクリックしたときのハンドラ
   const handleContainerClick = (e) => {
-    placeNewMessage(e, setAllCards, userId, props.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
-
-    if (props.sounds) {
-      const containerRect = containerRef.current.getBoundingClientRect(); // containerRefを使用してDOMの参照を取得します
-      const yPositionRelativeToCenter = (e.clientY - containerRect.top) / props.zoom - containerRect.height / (2 * props.zoom);
-      const note = getNoteFromYPosition(yPositionRelativeToCenter);
-
-      if (props.message) {
-        try {
-          console.log("props.message.text", props.message.text);
-          playSoundForEmojiCategory(props.message.text, note);
-        } catch (error) {
-          console.error("Error playing emoji sound:", error);
-        }
-      }
-    }
+    placeNewMessage(e, handleReceiveNewCardData, userId, props.spaceInfo.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
   };
 
+  // コンテナのスタイルを設定
   const containerStyle = {
     transform: `scale(${props.zoom})`,
   };
 
-  const handleReceiveNewCardData = useCallback((newCard) => {
-    setAllCards((prevCards) => {
-      const cardIndex = prevCards.findIndex((card) => card.postId === newCard.postId);
-      if (cardIndex === -1) {
-        return [...prevCards, newCard];
-      } else {
-        return prevCards.map((card) => (card.postId === newCard.postId ? newCard : card));
-      }
-    });
-  }, []);
+  // localStorageにカードデータをセット
+  useLocalStorage("dataList", allCards);
 
-  const handleReceiveData = (newData) => {
-    setAllCards(() => newData);
-    setLoadedData(true);
-  };
-
-  // localStorageにデータをセットする関数
-  const setDetaList = (allCards) => {
-    localStorage.removeItem("dataList");
-    const jsonString = JSON.stringify(allCards);
-    localStorage.setItem("dataList", jsonString);
-  };
-
+  // メッセージの変更を監視してカードの追加ステートを更新
   useEffect(() => {
     if (props.message) {
       setIsAddingCard(true);
@@ -85,28 +53,32 @@ const EmojiChat = (props) => {
     }
   }, [props.message]);
 
-  useEffect(() => {
-    setDetaList(allCards);
-  }, [allCards]);
-
   return (
     <>
       <div id="container__wrapper" ref={props.targetRef}>
         <div ref={containerRef} id="container" onClick={handleContainerClick} onMouseMove={onMouseMoveHandler} style={containerStyle}>
-          <Suspense fallback={<LoadingSpinner />}>
-            <GetCardFromDb spaceId={props.spaceId} onReceiveData={handleReceiveData} loadedData={loadedData} />
+          <Suspense>
+            {/* DBからカードを取得 */}
+            <GetCardFromDb spaceId={props.spaceInfo.spaceId} onReceiveData={handleReceiveData} loadedData={loadedData} />
           </Suspense>
-          <CardLoop dataList={allCards} messageDesign={props.messageDesign} resizable={props.resizable} isInitialLoad={isInitialLoad} setIsInitialLoad={setIsInitialLoad} />
-          <ReceiveOtherUserCards spaceId={props.spaceId} sounds={props.sounds} cardList={allCards} onReceiveNewCardData={handleReceiveNewCardData} />
-          <Follower ref={followerRef} isVisible={!!props.message} />
+          {/* カードのループ表示 */}
+          <CardLoop dataList={allCards} messageDesign={props.spaceInfo.messageDesign} resizable={props.spaceInfo.resizable} isInitialLoad={isInitialLoad} setIsInitialLoad={setIsInitialLoad} />
+          {/* 他のユーザーからのカードを受信 */}
+          <ReceiveOtherUserCards spaceId={props.spaceInfo.spaceId} sounds={props.spaceInfo.sounds} onReceiveNewCardData={handleReceiveNewCardData} />
+          {/* フォロワーの表示 */}
+          <Follower ref={followerRef} isVisible={!!props.message} message={props.message} />
         </div>
       </div>
+      {/* メッセージ入力部分 */}
       <InputMessage message={props.message} setMessage={props.setMessage} />
       <div id="manipulate">
-        {props.sounds && <MuteButton />}
+        {/* サウンドのミュートボタン */}
+        {props.spaceInfo.sounds && <MuteButton />}
+        {/* ズームコントロール */}
         <Zoom setZoom={props.setZoom} zoom={props.zoom} />
       </div>
     </>
   );
 };
+
 export default memo(EmojiChat);

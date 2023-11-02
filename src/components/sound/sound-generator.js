@@ -85,8 +85,6 @@ const getLastDigitFromCharCode = (emoji) => {
     lastDigitInt = 10;
   }
 
-  console.log("Last Digit (Int):", lastDigitInt);
-
   // Return the last digit
   return lastDigitInt;
 };
@@ -102,7 +100,7 @@ export const playSoundForEmojiCategory = (emoji, note) => {
     const lastDigit = getLastDigitFromCharCode(emoji);
     const synth = new Synth().toDestination();
 
-    console.log("playSoundForEmojiCategory: Last Digit (Int):", lastDigit);
+    console.log("playSoundForEmojiCategory: Last Digit (Int):", lastDigit, note);
 
     synth.volume.value = -12;
 
