@@ -4,7 +4,7 @@ const createMessageModel = (messageCollectionName) => {
   const messageSchema = new mongoose.Schema(
     {
       postId: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
       },

@@ -7,7 +7,7 @@ const SpaceEntrance = (props) => {
   const target = useRef(null);
   const dragTarget = useRef(null);
   const style = {
-    zIndex: props.spaceInfo.spaceId === props.activeSpaceIndex ? 2 : 1, // activeSpaceIndexと現在のSpaceのindexが一致すればz-indexを2に、そうでなければ1に設定
+    zIndex: props.spaceInfo.spaceId === props.activeSpaceIndex ? 3 : 1, // activeSpaceIndexと現在のSpaceのindexが一致すればz-indexを2に、そうでなければ1に設定
     ...props.style, // 他のスタイルもここに追加
   };
   const handleMouseDownOrTouchStart = () => {
@@ -38,7 +38,7 @@ const SpaceEntrance = (props) => {
               console.log(props.spaceInfo.spaceId);
               props.setOpenSpaceId(props.spaceInfo.spaceId); // ここでspaceIdを設定
             }}>
-            さんかする
+            {"さんかする"}
           </button>
         </div>
       </div>

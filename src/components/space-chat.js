@@ -18,12 +18,15 @@ const SpaceChat = (props) => {
   const [message, setMessage] = useState("");
   const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
   const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
-
+  const style = {
+    zIndex: props.spaceInfo.spaceId === props.activeSpaceIndex ? 3 : 1, // activeSpaceIndexと現在のSpaceのindexが一致すればz-indexを2に、そうでなければ1に設定
+    ...props.style, // 他のスタイルもここに追加
+  };
   const handleMouseDownOrTouchStart = () => {
     props.setActiveSpaceIndex(props.spaceInfo.spaceId);
   };
 
-  const toggleModal = () => {
+  const toggleModal = (e) => {
     setIsOpen(!isOpen);
   };
 
@@ -77,7 +80,6 @@ const SpaceChat = (props) => {
           transition: { duration: 0.2, type: "spring" },
         });
   }, [isMobile, controls]);
-
   return (
     <>
       <Moveable
@@ -100,9 +102,12 @@ const SpaceChat = (props) => {
         }}
         ref={moveableRef}
       />
-      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow space${props.spaceInfo.spaceId}`} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
+      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow mt-[-40px] sm:mt-0 space${props.spaceInfo.spaceId}`} style={style} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
-          <SpaceChatHeader name={props.spaceInfo.name} /> <button onClick={toggleModal}>Generate</button>
+          <SpaceChatHeader name={props.spaceInfo.name} />{" "}
+          <button onMouseUp={toggleModal} onTouchEnd={toggleModal}>
+            Generate
+          </button>
         </div>
 
         <GenerativeArt isOpen={isOpen} toggleModal={toggleModal} />
@@ -110,7 +115,7 @@ const SpaceChat = (props) => {
           <p>👇 Tap anywhere to post.</p>
         </div>
 
-        <SpaceTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} spaceInfo={props.spaceInfo} sounds={props.sounds} />
+        <SpaceTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} spaceInfo={props.spaceInfo} />
       </motion.div>
     </>
   );

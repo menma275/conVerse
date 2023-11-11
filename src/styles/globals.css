@@ -36,7 +36,7 @@ button {
 
 html,
 body {
-  font-family: "NuKinakoMochi", sans-serif;
+  font-family: "NuKinakoMochi", "Apple Color Emoji", sans-serif;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -46,8 +46,11 @@ body {
   background-color: var(--bg-primary);
   background-size: 20px 20px;
   font-size: 16px;
+  user-select: none;
 }
-
+select {
+  display: block;
+}
 .emoji-span {
   font-family: "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
@@ -202,6 +205,7 @@ body {
 }
 .space-container {
   position: relative;
+  height: calc(100dvh - 50px);
 }
 
 #create-new-space {
@@ -209,11 +213,6 @@ body {
 }
 .board {
   position: absolute;
-  /*top: 50vh;
-  top: 50dvh;
-  left: 50vw;
-  left: 50dvw;
-  transform: translate(-50%, -50%);*/
   min-width: 300px;
   min-height: 300px;
   width: 300px;
@@ -225,6 +224,12 @@ body {
   box-shadow: 0.5rem 0.5rem 0 0 var(--accent);
   z-index: 1;
 }
+
+em-emoji-picker,
+#root {
+  height: 400px;
+}
+
 .chat {
   z-index: 2;
 }
@@ -354,6 +359,7 @@ button:active {
   transform: translateX(-50%);
   z-index: 100;
   width: calc(100% - var(--element-space) * 2);
+  background: var(--cream);
 }
 
 .post-set input {
@@ -372,57 +378,133 @@ button:active {
   border: none;
 }
 
+[type="submit"] {
+  color: var(--cream);
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 1rem;
+  background-color: var(--accent);
+  border: 2px solid var(--black);
+  width: 100%;
+  cursor: pointer;
+}
+
 .post-set input::placeholder {
   color: var(--accent);
   font-size: 0.75rem;
 }
 
-.follower {
-  /* visibility: hidden; */
-  width: fit-content;
-  height: auto;
-  min-width: 100px;
-  min-height: 50px;
-  max-width: 300px;
-  padding: 0.5rem 1rem;
-  background-color: var(--bg-primary);
-  color: var(--black);
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem 0.1rem rgba(0, 0, 0, 0.05);
+.card-wrapper {
   position: absolute;
-  z-index: 999;
-  opacity: 0.5;
+  display: inline-block;
 }
 
 .card {
   width: fit-content;
   height: auto;
+  min-width: 1em;
+  min-height: 1em;
   max-width: 10.4em;
   word-break: break-all;
   padding: 0.5rem;
   background-color: var(--bg-primary);
   color: var(--black);
   font-size: 1.5rem;
-  position: absolute;
-  cursor: default; /* デフォルトのカーソル */
+  cursor: default;
   border-radius: 1rem;
   line-height: 1.2;
   display: flex;
   flex-wrap: wrap;
-  transition: all 0.2s linear;
-  user-select: none;
 }
+.nocard {
+  width: fit-content;
+  height: auto;
+  min-width: none;
+  min-height: none;
+  max-width: 10.4em;
+  word-break: break-all;
+  padding: 0;
+  color: var(--black);
+  font-size: 3rem;
+  cursor: default; /* デフォルトのカーソル */
+  line-height: 1;
+  padding-top: 16px;
+  display: inline-block;
+  flex-wrap: wrap;
+}
+.follower {
+  width: fit-content;
+  height: auto;
+  min-width: none;
+  min-height: none;
+  max-width: 10.4em;
+  word-break: break-all;
+  padding: 0;
+  font-family: "NuKinakoMochi", "Apple Color Emoji", sans-serif;
+  color: var(--black);
+  font-size: 3rem;
+  cursor: default; /* デフォルトのカーソル */
+  line-height: 0.8;
+  padding-top: 16px;
+  display: inline-block;
+  flex-wrap: wrap;
+  position: absolute;
+}
+
+.nocard:hover {
+  transform: translateY(-2px);
+}
+/*bounceアニメ*/
+@keyframes jello {
+  0% {
+    transform: scale(1.1, 1.1) rotate(0deg);
+  }
+  20% {
+    transform: scale(0.9, 0.9) rotate(-2deg);
+  }
+  40% {
+    transform: scale(1.1, 1.1) rotate(2deg);
+  }
+  60% {
+    transform: scale(0.95, 0.95) rotate(-1deg);
+  }
+  80% {
+    transform: scale(1.05, 1.05) rotate(1deg);
+  }
+  100% {
+    transform: scale(1, 1) rotate(0deg);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(0.8, 0.8);
+  }
+  70% {
+    transform: scale(1.1, 1.1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.popIn {
+  animation: popIn 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+.jello-animation {
+  animation: jello 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+}
+
 .draggable-card {
   cursor: pointer; /* ドラッグ可能なカードのカーソル */
 }
 
-.draggable-card:hover {
-  transform: translateY(-3px);
-}
 .card span {
   white-space: nowrap;
 }
@@ -484,6 +566,14 @@ iframe {
 .moveable-control.moveable-rotation {
   opacity: 0;
 }
+
+.moveable-rotation {
+  height: calc(20px * var(--zoom)) !important;
+}
+.moveable-control.moveable-origin {
+  opacity: 0;
+}
+
 /* Moveableの枠線を消す */
 .moveable-line {
   opacity: 0;
@@ -496,4 +586,10 @@ iframe {
 
 .moveable-direction {
   opacity: 0;
+}
+.card-wrapper:hover .moveable-control-box,
+.card-wrapper:hover .moveable-control.moveable-rotation,
+.card-wrapper:hover .moveable-line,
+.card-wrapper:hover .moveable-direction {
+  opacity: 1;
 }

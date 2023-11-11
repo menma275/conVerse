@@ -26,7 +26,6 @@ const createSpaces = async (data) => {
   data.map((value) => {
     let json = "";
     if (value.info) {
-      //console.log(value.info);
       json = JSON.parse(value.info);
       json.spaceId = value.spaceId;
       newdata.push(json);

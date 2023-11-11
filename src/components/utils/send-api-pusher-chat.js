@@ -1,12 +1,10 @@
-//socketへの送信
-export const sendApiPusherChat = async (msg, spaceId) => {
+// socketへの送信
+export const sendApiPusherChat = async (userId, msg, spaceId, messageType = "new-message") => {
   const requestBody = {
-    message: msg,
+    message: { ...msg, type: messageType },
     spaceId: spaceId,
+    userId: userId,
   };
-  console.log("spaceId", spaceId);
-  console.log("Sending request body:", JSON.stringify(requestBody));
-
   try {
     const response = await fetch("/api/pusher/sendPusherMessage", {
       method: "POST",
@@ -32,4 +30,5 @@ export const sendApiPusherChat = async (msg, spaceId) => {
   } catch (error) {
     console.error("Error sending message:", error);
   }
+  return null;
 };
