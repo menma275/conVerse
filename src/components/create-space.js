@@ -18,12 +18,13 @@ const CreateSpace = () => {
   const [createdSpaceData, setCreatedSpaceData] = useState(null);
   const { userId } = useContext(UserIdContext);
   const { activeSpaceIndex, setActiveSpaceIndex } = useActiveSpaceIndex();
+  const [enableStartTime, setEnableStartTime] = useState(false); // 開始時間設定の有効化
   const [formData, setFormData] = useState({
     userId: userId,
     name: "",
     description: "",
-    spaceType: "1", // デフォルトの選択項目の値
-    sounds: "1", // デフォルトの選択項目の値
+    spaceType: "default", // デフォルトの選択項目の値
+    sounds: true, // デフォルトの選択項目の値
     messageDesign: "card",
     resizable: false,
     genId: "samuelyan", // デフォルトの選択項目の値
@@ -58,19 +59,12 @@ const CreateSpace = () => {
 
   // フォームデータを更新
   const handleInputChange = (event) => {
-    const { name, value, checked } = event.target;
+    const { name, value, checked, type } = event.target;
 
-    if (name === "resizable") {
-      setFormData({
-        ...formData,
-        [name]: checked,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   //BaseURLを設定
@@ -80,14 +74,14 @@ const CreateSpace = () => {
   const saveSpace = async (event) => {
     event.preventDefault();
 
-    const { userId, name, description, spaceType, sounds, messageDesign, resizable, genId } = formData;
+    const { userId, name, description, spaceType, sounds, messageDesign, resizable, genId, startTime, duration } = formData;
     console.log("Data to be sent:", formData); // データをログに出力
 
     // ここでAPIにデータを送信
     try {
       const res = await fetch(`${baseUrl}/api/space`, {
         method: "POST",
-        body: JSON.stringify({ info: { userId, name, description, spaceType, sounds, messageDesign, resizable, genId } }),
+        body: JSON.stringify({ info: { userId, name, description, spaceType, sounds, messageDesign, resizable, genId, startTime, duration } }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -97,7 +91,7 @@ const CreateSpace = () => {
         // リソースの作成が成功した場合
         const responseData = await res.json(); // レスポンスデータをJSONとしてパース
         console.log("Space created successfully!", responseData);
-        setCreatedSpaceData({ userId, name, description, spaceType, sounds, messageDesign, resizable, genId, spaceId: responseData.space.spaceId });
+        setCreatedSpaceData({ userId, name, description, spaceType, sounds, messageDesign, resizable, genId, startTime, duration, spaceId: responseData.space.spaceId });
         console.log("CreateSpace", responseData.space);
         // space コンポーネントを表示
         setSpaceVisible(true);
@@ -111,6 +105,22 @@ const CreateSpace = () => {
       } else {
         console.error("An error occurred:", error);
       }
+    }
+  };
+
+  // チェックボックスの状態変更ハンドラ
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    if (name === "enableStartTime") {
+      setEnableStartTime(checked);
+      if (!checked) {
+        setFormData({ ...formData, startTime: "", duration: "" }); // 開始時間をリセット
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: checked,
+      });
     }
   };
 
@@ -157,11 +167,10 @@ const CreateSpace = () => {
                   <textarea id="description" name="description" rows="6" placeholder="Input Description" value={formData.description} onChange={handleInputChange} className="block w-full" />
                 </div>
                 <select name="spaceType" value={formData.spaceType} onChange={handleInputChange} required className="mb-2">
-                  <option value="1">Emoji Space</option>
-                  <option value="2">Sound Emoji</option>
+                  <option value="default">Emoji Space</option>
                 </select>
                 <label className="block mb-2">
-                  <input type="checkbox" name="sounds" value={formData.sounds} onChange={handleInputChange} className="mr-4" />
+                  <input type="checkbox" name="sounds" checked={formData.sounds} onChange={handleInputChange} className="mr-4" />
                   Sound
                 </label>
                 <select name="messageDesign" value={formData.messageDesign} onChange={handleInputChange} required className="mb-2">
@@ -179,7 +188,33 @@ const CreateSpace = () => {
                   <option value="samuelyan">Samuel YAN</option>
                   <option value="sakamura">sakamura</option>
                 </select>
-                <input id="submit" className="pixel-shadow" type="submit" value="Create" />
+                {/* 'enableStartTime' チェックボックス */}
+                <div className="mb-2">
+                  <label htmlFor="enableStartTime" className="block mb-1">
+                    Enable Start Time:
+                  </label>
+                  <input id="enableStartTime" name="enableStartTime" type="checkbox" checked={enableStartTime} onChange={handleCheckboxChange} />
+                </div>
+
+                {/* 条件付きで開始時間と持続時間の入力フィールドを表示 */}
+                {enableStartTime && (
+                  <>
+                    <div className="mb-2">
+                      <label htmlFor="startTime" className="block mb-1">
+                        Start Time:
+                      </label>
+                      <input id="startTime" type="time" name="startTime" value={formData.startTime} onChange={handleInputChange} required />
+                    </div>
+
+                    <div className="mb-2">
+                      <label htmlFor="duration" className="block mb-1">
+                        Duration (minutes):
+                      </label>
+                      <input id="duration" type="number" name="duration" value={formData.duration} onChange={handleInputChange} min="1" required />
+                    </div>
+                  </>
+                )}
+                <input id="submit" className="pixel-shadow absolute bottom-4 left-1/2 -translate-x-1/2" type="submit" value="Create" />
               </form>
             </div>
           </motion.div>

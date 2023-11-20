@@ -9,10 +9,10 @@ export const placeNewMessage = (e, handleReceiveNewCardData, userId, spaceId, is
   if (!isAddingCard || !message) return null;
 
   const palette = getRandomPalette(CARD_PALETTE);
+  const newColor = palette[Math.floor(Math.random() * palette.length)];
   const containerRect = container.getBoundingClientRect();
   const newX = (e.clientX - containerRect.left) / zoom;
   const newY = (e.clientY - containerRect.top) / zoom;
-  const newColor = palette[Math.floor(Math.random() * palette.length)];
   const yPositionRelativeToCenter = (e.clientY - containerRect.top) / zoom - containerRect.height / (2 * zoom);
 
   const msg = {

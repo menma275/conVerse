@@ -51,6 +51,7 @@ body {
 select {
   display: block;
 }
+
 .emoji-span {
   font-family: "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
@@ -82,7 +83,10 @@ select {
   font-size: normal;
   margin-left: 1.5rem;
 }
-
+h1 img {
+  width: 100px;
+  height: auto;
+}
 .user {
   font-size: x-small;
   display: flex;
@@ -163,6 +167,13 @@ select {
   overflow: auto;
   transition: all 0.2s linear;
 }
+#window-container {
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  overflow: auto;
+  transition: all 0.2s linear;
+}
 #container__wrapper::-webkit-scrollbar {
   display: none;
 }
@@ -176,7 +187,20 @@ select {
   gap: 0.5rem;
   z-index: 10;
 }
-
+.countdown {
+  position: absolute;
+  right: 1rem;
+  top: 3rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.chat-message {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
 .mute-button {
   width: 35px;
   height: 35px;
@@ -285,6 +309,9 @@ em-emoji-picker,
 
 .board-content {
   padding: 40px;
+  padding-bottom: 80px;
+  height: 100%;
+  overflow: auto;
 }
 
 .desc-jp-en {
@@ -386,7 +413,7 @@ button:active {
   padding: 0.25rem 1rem;
   background-color: var(--accent);
   border: 2px solid var(--black);
-  width: 100%;
+  width: 90%;
   cursor: pointer;
 }
 
@@ -451,7 +478,19 @@ button:active {
   flex-wrap: wrap;
   position: absolute;
 }
-
+svg.infinity {
+  vertical-align: middle;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: auto;
+  overflow: visible;
+}
+.infinity path {
+  width: 100%;
+}
 .nocard:hover {
   transform: translateY(-2px);
 }
