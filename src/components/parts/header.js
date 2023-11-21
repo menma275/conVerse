@@ -4,7 +4,9 @@ const Header = () => {
   return (
     <header>
       <div className="header pixel-shadow">
-        <h1>Gundi</h1>
+        <h1>
+          <img src="/gundi-logo.svg" alt="Gundi" />
+        </h1>
         <div className="user">
           <Dropdown />
         </div>

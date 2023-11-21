@@ -26,7 +26,7 @@ const SpaceChat = (props) => {
     props.setActiveSpaceIndex(props.spaceInfo.spaceId);
   };
 
-  const toggleModal = (e) => {
+  const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
