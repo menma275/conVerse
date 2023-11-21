@@ -84,7 +84,7 @@ select {
   margin-left: 1.5rem;
 }
 h1 img {
-  width: 100px;
+  width: 110px;
   height: auto;
 }
 .user {
@@ -257,6 +257,7 @@ em-emoji-picker,
 .chat {
   z-index: 2;
 }
+
 .board-header {
   position: absolute;
   font-size: 0.75rem;

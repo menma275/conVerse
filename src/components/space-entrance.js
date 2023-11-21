@@ -5,8 +5,9 @@ import Moveable from "react-moveable";
 import SpaceChatHeader from "@/components/parts/space-chat-header";
 
 const SpaceEntrance = (props) => {
-  const target = useRef(null);
   const dragTarget = useRef(null);
+  const draggableRef = useRef(null);
+  const moveableRef = useRef(null);
   const [isParticipationTime, setIsParticipationTime] = useState(true);
   const [countdown, setCountdown] = useState("");
 
@@ -65,17 +66,38 @@ const SpaceEntrance = (props) => {
     }
   }, [props.spaceInfo.startTime, props.spaceInfo.duration]);
 
+  const handleDragEnd = (e) => {
+    // ドラッグ終了時の位置を取得してローカルストレージに保存
+    const { left, top } = draggableRef.current.getBoundingClientRect();
+    localStorage.setItem(`spacePosition-${props.spaceInfo.spaceId}`, JSON.stringify({ left, top }));
+  };
+
+  useEffect(() => {
+    // activeSpaceIndexが変更されたときに実行
+    if (props.spaceInfo.spaceId === props.activeSpaceIndex) {
+      // 一時的にactiveSpaceIndexをnullに設定
+      props.setActiveSpaceIndex(null);
+
+      // 次のレンダリングサイクルでactiveSpaceIndexを元の値に戻す
+      setTimeout(() => {
+        props.setActiveSpaceIndex(props.spaceInfo.spaceId);
+      }, 0);
+    }
+  }, []);
+
   return (
     <>
       <Moveable
-        target={target}
+        target={draggableRef}
+        ref={moveableRef}
         draggable={true}
         dragTarget={dragTarget}
         onDrag={(e) => {
-          e.target.style.transform = e.transform;
+          draggableRef.current.style.transform = e.transform;
         }}
+        onDragEnd={handleDragEnd}
       />
-      <div className={`board pixel-shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 space${props.spaceInfo.spaceId}`} style={style} ref={target} onMouseDown={handleMouseDownOrTouchStart}>
+      <div ref={draggableRef} onMouseDown={handleMouseDownOrTouchStart} className="board pixel-shadow absolute" style={style}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <SpaceChatHeader name={props.spaceInfo.name} />
         </div>
@@ -88,7 +110,6 @@ const SpaceEntrance = (props) => {
               id="board-description-button"
               className="pixel-shadow"
               onClick={() => {
-                console.log(props.spaceInfo.spaceId);
                 props.setOpenSpaceId(props.spaceInfo.spaceId);
               }}>
               Join
