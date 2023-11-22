@@ -7,7 +7,7 @@ import { UserIdContext } from "@/context/userid-context";
 import Space from "@/components/space";
 import { useActiveSpaceIndex } from "@/context/active-space-index-context";
 
-const CreateSpace = () => {
+const CreateSpace = (props) => {
   const [resizable, setResizable] = useState(false);
   const resizeTarget = useRef(null);
   const dragTarget = useRef(null);
@@ -123,6 +123,9 @@ const CreateSpace = () => {
       });
     }
   };
+  const closeModal = () => {
+    props.setIsCreateOpen(false);
+  };
 
   return (
     <>
@@ -157,6 +160,9 @@ const CreateSpace = () => {
               <div className="board-header-set">
                 <h1>Create New Space</h1>
               </div>
+              <button onMouseUp={closeModal} onTouchEnd={closeModal}>
+                Close
+              </button>
             </div>
             <div className="board-content">
               <form onSubmit={saveSpace} className="block pt-4">

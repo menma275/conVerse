@@ -13,6 +13,7 @@ import InputMessage from "@/components/parts/input-message";
 import Zoom from "@/components/parts/zoom";
 import { useCardState } from "@/components/hooks/use-card-state";
 import useLocalStorage from "@/components/hooks/use-local-storage";
+import useCountdownTimer from "@/components/hooks/use-countdown-timer";
 
 const EmojiChat = (props) => {
   // ステートとリファレンスの定義
@@ -22,8 +23,10 @@ const EmojiChat = (props) => {
   const { userId } = useContext(UserIdContext); // ユーザーIDを取得
   const [isInitialLoad, setIsInitialLoad] = useState(true); // 初回読み込みかどうかのステート
   const { allCards, loadedData, handleReceiveNewCardData, handleReceiveData } = useCardState();
-  const [isParticipationTime, setIsParticipationTime] = useState(true); // 初期状態を true に設定
-  const [countdown, setCountdown] = useState("");
+  const { isParticipationTime, countdown } = useCountdownTimer(props.spaceInfo.startTime, props.spaceInfo.duration);
+
+  // localStorageにカードデータをセット
+  useLocalStorage("dataList", allCards);
 
   // マウスの動きをハンドルする関数
   const onMouseMoveHandler = useCallback(
@@ -43,9 +46,6 @@ const EmojiChat = (props) => {
     transform: `scale(${props.zoom})`,
   };
 
-  // localStorageにカードデータをセット
-  useLocalStorage("dataList", allCards);
-
   // メッセージの変更を監視してカードの追加ステートを更新
   useEffect(() => {
     if (props.message) {
@@ -54,50 +54,6 @@ const EmojiChat = (props) => {
       setIsAddingCard(false);
     }
   }, [props.message]);
-
-  useEffect(() => {
-    if (props.spaceInfo.startTime) {
-      // 開始時間と終了時間の設定
-      let startTime, endTime;
-      const [startHours, startMinutes] = props.spaceInfo.startTime.split(":").map(Number);
-      startTime = new Date();
-      startTime.setHours(startHours, startMinutes, 0, 0); // 開始時間を設定
-      endTime = new Date(startTime.getTime() + props.spaceInfo.duration * 60000); // 終了時間を計算
-
-      // startTime が定義されている場合のみタイマーを設定
-      const updateCountdown = () => {
-        const now = new Date();
-        const participationPeriod = now >= startTime && now <= endTime;
-        setIsParticipationTime(participationPeriod);
-
-        if (participationPeriod) {
-          const diff = endTime - now;
-          if (diff <= 0) {
-            setCountdown("");
-          } else {
-            const hours = Math.floor(diff / (1000 * 60 * 60))
-              .toString()
-              .padStart(2, "0");
-            const minutes = Math.floor((diff / (1000 * 60)) % 60)
-              .toString()
-              .padStart(2, "0");
-            const seconds = Math.floor((diff / 1000) % 60)
-              .toString()
-              .padStart(2, "0");
-            setCountdown(`${hours}:${minutes}:${seconds}`);
-          }
-        }
-      };
-
-      updateCountdown();
-      const interval = setInterval(updateCountdown, 1000);
-      return () => clearInterval(interval);
-    } else {
-      // startTime が undefined の場合
-      setIsParticipationTime(true);
-      setCountdown("");
-    }
-  }, [props.spaceInfo.startTime]);
 
   return (
     <>

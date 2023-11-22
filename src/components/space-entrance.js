@@ -1,14 +1,14 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Moveable from "react-moveable";
-
 import SpaceChatHeader from "@/components/parts/space-chat-header";
+import useSpaceTime from "@/components/hooks/use-space-time";
 
 const SpaceEntrance = (props) => {
-  const target = useRef(null);
   const dragTarget = useRef(null);
-  const [isParticipationTime, setIsParticipationTime] = useState(true);
-  const [countdown, setCountdown] = useState("");
+  const draggableRef = useRef(null);
+  const moveableRef = useRef(null);
+  const { isParticipationTime, countdown } = useSpaceTime(props.spaceInfo.startTime, props.spaceInfo.duration);
 
   const style = {
     zIndex: props.spaceInfo.spaceId === props.activeSpaceIndex ? 3 : 1, // activeSpaceIndexと現在のSpaceのindexが一致すればz-indexを2に、そうでなければ1に設定
@@ -18,64 +18,39 @@ const SpaceEntrance = (props) => {
     props.setActiveSpaceIndex(props.spaceInfo.spaceId);
   };
 
+  const handleDragEnd = () => {
+    // ドラッグ終了時の位置を取得してローカルストレージに保存
+    const { left, top } = draggableRef.current.getBoundingClientRect();
+    localStorage.setItem(`spacePosition-${props.spaceInfo.spaceId}`, JSON.stringify({ left, top }));
+  };
+
+  //Close機能でMoveableがアンマウントされる問題を解決するために、z-index値を変更してすぐ戻すことで強制的に再描画。問題が解決したら削除したい
   useEffect(() => {
-    if (props.spaceInfo.startTime) {
-      const [startHours, startMinutes] = props.spaceInfo.startTime.split(":").map(Number);
-      let startTime = new Date();
-      startTime.setHours(startHours, startMinutes, 0, 0);
-      let endTime = new Date(startTime.getTime() + props.spaceInfo.duration * 60000);
+    // activeSpaceIndexが変更されたときに実行
+    if (props.spaceInfo.spaceId === props.activeSpaceIndex) {
+      // 一時的にactiveSpaceIndexをnullに設定
+      props.setActiveSpaceIndex(null);
 
-      const updateCountdownAndParticipation = () => {
-        const now = new Date();
-
-        // 現在時刻が終了時間を過ぎている場合、startTime を次の日に更新
-        if (now > endTime) {
-          startTime.setDate(startTime.getDate() + 1);
-          endTime = new Date(startTime.getTime() + props.spaceInfo.duration * 60000);
-        }
-
-        const participationPeriod = now >= startTime && now < endTime;
-        setIsParticipationTime(participationPeriod);
-
-        if (!participationPeriod) {
-          // 次の参加可能時間までのカウントダウンを計算
-          const diff = startTime - now;
-          const hours = Math.floor(diff / (1000 * 60 * 60))
-            .toString()
-            .padStart(2, "0");
-          const minutes = Math.floor((diff / (1000 * 60)) % 60)
-            .toString()
-            .padStart(2, "0");
-          const seconds = Math.floor((diff / 1000) % 60)
-            .toString()
-            .padStart(2, "0");
-          setCountdown(`${hours}:${minutes}:${seconds}`);
-        } else {
-          setCountdown("");
-        }
-      };
-
-      updateCountdownAndParticipation();
-      const interval = setInterval(updateCountdownAndParticipation, 1000);
-
-      return () => clearInterval(interval);
-    } else {
-      setIsParticipationTime(true);
-      setCountdown("");
+      // 次のレンダリングサイクルでactiveSpaceIndexを元の値に戻す
+      setTimeout(() => {
+        props.setActiveSpaceIndex(props.spaceInfo.spaceId);
+      }, 10);
     }
-  }, [props.spaceInfo.startTime, props.spaceInfo.duration]);
+  }, []);
 
   return (
     <>
       <Moveable
-        target={target}
+        target={draggableRef}
+        ref={moveableRef}
         draggable={true}
         dragTarget={dragTarget}
         onDrag={(e) => {
-          e.target.style.transform = e.transform;
+          draggableRef.current.style.transform = e.transform;
         }}
+        onDragEnd={handleDragEnd}
       />
-      <div className={`board pixel-shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 space${props.spaceInfo.spaceId}`} style={style} ref={target} onMouseDown={handleMouseDownOrTouchStart}>
+      <div ref={draggableRef} onMouseDown={handleMouseDownOrTouchStart} className="board pixel-shadow absolute" style={style}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <SpaceChatHeader name={props.spaceInfo.name} />
         </div>
@@ -88,7 +63,6 @@ const SpaceEntrance = (props) => {
               id="board-description-button"
               className="pixel-shadow"
               onClick={() => {
-                console.log(props.spaceInfo.spaceId);
                 props.setOpenSpaceId(props.spaceInfo.spaceId);
               }}>
               Join
