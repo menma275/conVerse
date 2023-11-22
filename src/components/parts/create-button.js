@@ -12,7 +12,7 @@ const CreateButton = () => {
   };
   return (
     <>
-      {isCreateOpen && <CreateSpace />}
+      {isCreateOpen && <CreateSpace setIsCreateOpen={setIsCreateOpen} />}
       <button className="pixel-shadow" id="create-room" onMouseDown={handleMouseDownOrTouchStart} onClick={() => setIsCreateOpen(true)}>
         Create Space
       </button>

@@ -309,6 +309,10 @@ em-emoji-picker,
 }
 
 .board-content {
+  overflow: auto;
+  height: 100%;
+}
+#create-new-space .board-content {
   padding: 40px;
   padding-bottom: 80px;
   height: 100%;

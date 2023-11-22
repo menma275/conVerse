@@ -6,7 +6,6 @@ import { useMediaQuery } from "react-responsive";
 import GenerativeArt from "@/components/parts/genarativeart";
 import SpaceTypeSelector from "@/components/space-type/space-type-selector";
 import SpaceChatHeader from "@/components/parts/space-chat-header";
-
 import { useOpenSpaceId } from "@/context/open-space-id-context";
 
 const SpaceChat = (props) => {
@@ -73,7 +72,6 @@ const SpaceChat = (props) => {
     };
     boardSize = JSON.stringify(boardSize);
     localStorage.setItem("boardSize", boardSize);
-    localStorage.removeItem("dataList");
   };
 
   //アニメーション後にコントロールボックスをリサイズ
