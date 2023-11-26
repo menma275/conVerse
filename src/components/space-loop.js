@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Space from "@/components/space";
+import SpaceChatNormal from "@/components/space-chat-normal";
+import ASCIIArtClock from "@/components/space-type/ascii-art-clock";
 
 const SpaceLoop = ({ spaceList }) => {
   const [spacePositions, setSpacePositions] = useState({});
@@ -17,6 +19,8 @@ const SpaceLoop = ({ spaceList }) => {
 
   return (
     <>
+      <SpaceChatNormal />
+      <ASCIIArtClock />
       {spaceList.map((data, index) => (
         <Space setSpacePositions={setSpacePositions} spaceInfo={data} key={data.spaceId} style={spacePositions[data.spaceId]} delay={index * 0.1} />
       ))}

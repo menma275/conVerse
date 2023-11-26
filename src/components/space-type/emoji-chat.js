@@ -41,6 +41,21 @@ const EmojiChat = (props) => {
     placeNewMessage(e, handleReceiveNewCardData, userId, props.spaceInfo.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
   };
 
+  const handleSubmit = (e) => {
+    // キーボードイベントの場合、Enterキーのチェック
+    if (e.type === "keypress" && e.key !== "Enter") return;
+
+    // クリックイベントの場合、座標を直接使用
+    const x = e.clientX ? e.clientX : window.innerWidth / 2; // 画面の中央を基準にX座標を設定
+    const y = e.clientY ? e.clientY : window.innerHeight / 2; // 画面の中央を基準にY座標を設定
+
+    // 偽のイベントオブジェクトを作成
+    const fakeEvent = { ...e, clientX: x, clientY: y };
+
+    // placeNewMessageを呼び出し
+    placeNewMessage(fakeEvent, handleReceiveNewCardData, userId, props.spaceInfo.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
+  };
+
   // コンテナのスタイルを設定
   const containerStyle = {
     transform: `scale(${props.zoom})`,
@@ -79,7 +94,7 @@ const EmojiChat = (props) => {
       </div>
       {isParticipationTime && <div className="countdown">{countdown}</div>}
       {/* メッセージ入力部分 */}
-      {isParticipationTime ? <InputMessage message={props.message} setMessage={props.setMessage} /> : <div className="chat-message">This chat has ended. See you tomorrow!</div>}
+      {isParticipationTime ? <InputMessage onKeyDown={handleSubmit} message={props.message} setMessage={props.setMessage} /> : <div className="chat-message">This chat has ended. See you tomorrow!</div>}
     </>
   );
 };
