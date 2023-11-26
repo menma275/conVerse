@@ -1,4 +1,5 @@
 import Header from "@/components/parts/header";
+import Footer from "@/components/parts/footer";
 import GetSpacesFromDb from "@/components/get-spaces-from-db";
 import React from "react";
 /**
@@ -9,12 +10,15 @@ const Index = () => {
   return (
     <>
       {/* ヘッダーコンポーネント */}
-      <Header />
+      {/* <Header /> */}
 
       {/* ランドコンテナー: 主要なコンテンツ領域 */}
       <div className="space-container min-h-[calc(100vh-50px)] md:min-h[calc(100vh-50px)]">
         <GetSpacesFromDb max_spaces="1" />
       </div>
+
+      {/* フッターコンポーネント */}
+      <Footer />
     </>
   );
 };
