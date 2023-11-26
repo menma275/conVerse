@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, memo } from "react";
 
 import { getPusherInstance } from "@/components/utils/pusher-config";
 import { UserIdContext } from "@/context/userid-context";
@@ -93,4 +93,4 @@ const ReceiveOtherUserCards = (props) => {
   return null;
 };
 
-export default ReceiveOtherUserCards;
+export default memo(ReceiveOtherUserCards);
