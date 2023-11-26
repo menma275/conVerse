@@ -241,10 +241,8 @@ h1 img {
 }
 .board {
   position: absolute;
-  min-width: 300px;
-  min-height: 300px;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   background: var(--cream);
   overflow: hidden;
   border-radius: 1rem;
