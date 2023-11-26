@@ -1,13 +1,11 @@
 "use client";
 import React, { useRef, useEffect } from "react";
 import Moveable from "react-moveable";
-import { useAnimationControls, motion } from "framer-motion";
 import SpaceChatHeader from "@/components/parts/space-chat-header";
 import useSpaceTime from "@/components/hooks/use-space-time";
-import { useMediaQuery } from "react-responsive";
+import useTypewriter from "@/components/hooks/use-typewriter";
 
 const SpaceEntrance = (props) => {
-  const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
   const dragTarget = useRef(null);
   const draggableRef = useRef(null);
   const moveableRef = useRef(null);
@@ -42,19 +40,7 @@ const SpaceEntrance = (props) => {
     }
   }, []);
 
-  //ボードサイズが変更されたときにコントロールもリサイズ
-  const controls = useAnimationControls();
-
-  //モバイルとデスクトップで異なるアニメーション・サイズで展開
-  useEffect(() => {
-    // アニメーションを開始
-    controls.start({
-      width: isMobile ? "240px" : "300px",
-      height: isMobile ? "240px" : "300px",
-      opacity: 1,
-      transition: { duration: 0.2, type: "spring" },
-    });
-  }, [controls]);
+  const description = useTypewriter(props.spaceInfo.description, 100, 1000);
 
   return (
     <>
@@ -68,13 +54,13 @@ const SpaceEntrance = (props) => {
         }}
         onDragEnd={handleDragEnd}
       />
-      <motion.div initial={{ opacity: 0 }} animate={controls} ref={draggableRef} onMouseDown={handleMouseDownOrTouchStart} className="board pixel-shadow absolute" style={style}>
+      <div ref={draggableRef} onMouseDown={handleMouseDownOrTouchStart} className="board entrance pixel-shadow absolute" style={style}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <SpaceChatHeader name={props.spaceInfo.name} />
         </div>
         <div className="board-description">
           <div className="desc-jp-en">
-            <p className="jp-desc">{props.spaceInfo.description}</p>
+            <p className="jp-desc">{description}</p>
           </div>
           {isParticipationTime ? (
             <button
@@ -89,7 +75,7 @@ const SpaceEntrance = (props) => {
             <div className="board-countdown absolute bottom-4 left-4">{`Starts in：${countdown}`}</div>
           )}
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

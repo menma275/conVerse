@@ -5,6 +5,7 @@ import { useAnimationControls, motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import NormalChat from "@/components/space-type/normal-chat";
 import { useActiveSpaceIndex } from "@/context/active-space-index-context";
+import useTypewriter from "@/components/hooks/use-typewriter";
 
 const SpaceChatNormal = (props) => {
   const [resizable, setResizable] = useState(false);
@@ -41,6 +42,7 @@ const SpaceChatNormal = (props) => {
       transition: { duration: 0.2, type: "spring" },
     });
   }, [controls]);
+  const description = useTypewriter("Chat", 100, 1000);
 
   return (
     <>
@@ -65,7 +67,7 @@ const SpaceChatNormal = (props) => {
       />
       <motion.div initial={{ opacity: 0 }} animate={controls} className={`board chat absolute bottom-10 right-8 pixel-shadow mt-[-40px] sm:mt-0 space-normal`} style={style} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
-          Chat
+          {description}
         </div>
         <motion.div className="board-content" animate={boardContentControls}>
           <NormalChat />

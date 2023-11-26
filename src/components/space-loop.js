@@ -30,7 +30,7 @@ const SpaceLoop = ({ spaceList }) => {
       <SpaceChatNormal />
       <ASCIIArtClock />
       {spaceList.map((data, index) => (
-        <Space setSpacePositions={setSpacePositions} spaceInfo={data} key={data.spaceId} style={spacePositions[data.spaceId]} delay={index * 0.1} />
+        <Space setSpacePositions={setSpacePositions} spaceInfo={data} key={data.spaceId} style={spacePositions[data.spaceId]} delay={index * 0.2} />
       ))}
     </>
   );
