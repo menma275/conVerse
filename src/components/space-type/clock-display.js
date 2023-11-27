@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const ClockDisplay = () => {
+const ClockDisplay = ({ size }) => {
   const [time, setTime] = useState(null);
   const isServer = typeof window === "undefined";
 
@@ -14,15 +14,14 @@ const ClockDisplay = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const clockArt = getClockArt(time);
+  const clockArt = getClockArt(time, size);
 
   return <pre style={{ lineHeight: "70%" }}>{clockArt}</pre>;
 };
 
-const getClockArt = (date) => {
+const getClockArt = (date, size) => {
   if (!date) return "";
 
-  const size = 21; // 正方形のサイズ
   const centerX = Math.floor(size / 2);
   const centerY = Math.floor(size / 2);
   const radius = Math.floor(size / 2) - 1;

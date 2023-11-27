@@ -176,6 +176,7 @@ h1 img {
   overflow: auto;
 }
 .timeline {
+  font-size: small;
   padding: 0 0.5rem;
 }
 #container__wrapper::-webkit-scrollbar {
@@ -241,10 +242,8 @@ h1 img {
 }
 .board {
   position: absolute;
-  min-width: 300px;
-  min-height: 300px;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   background: var(--cream);
   overflow: hidden;
   border-radius: 1rem;
@@ -252,8 +251,11 @@ h1 img {
   box-shadow: 0.5rem 0.5rem 0 0 var(--accent);
   z-index: 1;
 }
-
-em-emoji-picker,
+.board.entrance {
+  width: 300px;
+  height: 300px;
+}
+.em-emoji-picker,
 #root {
   height: 400px;
 }

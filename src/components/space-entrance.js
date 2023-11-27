@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from "react";
 import Moveable from "react-moveable";
 import SpaceChatHeader from "@/components/parts/space-chat-header";
 import useSpaceTime from "@/components/hooks/use-space-time";
+import useTypewriter from "@/components/hooks/use-typewriter";
 
 const SpaceEntrance = (props) => {
   const dragTarget = useRef(null);
@@ -20,6 +21,7 @@ const SpaceEntrance = (props) => {
 
   const handleDragEnd = () => {
     // ドラッグ終了時の位置を取得してローカルストレージに保存
+    console.log(props.spaceInfo.spaceId);
     const { left, top } = draggableRef.current.getBoundingClientRect();
     localStorage.setItem(`spacePosition-${props.spaceInfo.spaceId}`, JSON.stringify({ left, top }));
   };
@@ -38,6 +40,8 @@ const SpaceEntrance = (props) => {
     }
   }, []);
 
+  const description = useTypewriter(props.spaceInfo.description, 100, 1000);
+
   return (
     <>
       <Moveable
@@ -50,13 +54,13 @@ const SpaceEntrance = (props) => {
         }}
         onDragEnd={handleDragEnd}
       />
-      <div ref={draggableRef} onMouseDown={handleMouseDownOrTouchStart} className="board pixel-shadow absolute" style={style}>
+      <div ref={draggableRef} onMouseDown={handleMouseDownOrTouchStart} className="board entrance pixel-shadow absolute" style={style}>
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <SpaceChatHeader name={props.spaceInfo.name} />
         </div>
         <div className="board-description">
           <div className="desc-jp-en">
-            <p className="jp-desc">{props.spaceInfo.description}</p>
+            <p className="jp-desc">{description}</p>
           </div>
           {isParticipationTime ? (
             <button
