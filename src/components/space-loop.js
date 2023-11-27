@@ -9,8 +9,12 @@ const SpaceLoop = ({ spaceList }) => {
     // ローカルストレージから位置情報を読み込む
     const loadedPositions = {};
     spaceList.forEach((space, index) => {
-      const savedPosition = localStorage.getItem(`spacePosition-${space.spaceId}`);
-      loadedPositions[space.spaceId] = savedPosition ? JSON.parse(savedPosition) : { left: `${index * 50 + 50}px`, top: `${index * 50 + 50}px` }; // デフォルトの位置
+      const savedPosition = localStorage.getItem(
+        `spacePosition-${space.spaceId}`
+      );
+      loadedPositions[space.spaceId] = savedPosition
+        ? JSON.parse(savedPosition)
+        : { left: `${index * 50 + 50}px`, top: `${index * 50 + 50}px` }; // デフォルトの位置
     });
     setSpacePositions(loadedPositions);
   }, [spaceList]);
@@ -18,7 +22,13 @@ const SpaceLoop = ({ spaceList }) => {
   return (
     <>
       {spaceList.map((data, index) => (
-        <Space setSpacePositions={setSpacePositions} spaceInfo={data} key={data.spaceId} style={spacePositions[data.spaceId]} delay={index * 0.1} />
+        <Space
+          setSpacePositions={setSpacePositions}
+          spaceInfo={data}
+          key={data.spaceId}
+          style={spacePositions[data.spaceId]}
+          delay={index * 0.1}
+        />
       ))}
     </>
   );

@@ -1,4 +1,5 @@
 import SpaceLoop from "@/components/space-loop";
+import TabManager from "@/components/parts/tab-manager";
 import React from "react";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/loading/loading-spinner";
@@ -16,7 +17,11 @@ const GetSpacesFromDb = async ({ max_spaces }) => {
         const posts = await createSpaces(reversedData);
         return posts;
       } else {
-        console.error("Failed to fetch space data:", res.status, res.statusText);
+        console.error(
+          "Failed to fetch space data:",
+          res.status,
+          res.statusText
+        );
       }
     } catch (error) {
       console.error("エラーが発生しました:", error);
@@ -42,6 +47,7 @@ const GetSpacesFromDb = async ({ max_spaces }) => {
     <>
       <Suspense fallback={<LoadingSpinner />}>
         <SpaceLoop spaceList={spaceList} />
+        <TabManager spaceList={spaceList} />
       </Suspense>
     </>
   );
