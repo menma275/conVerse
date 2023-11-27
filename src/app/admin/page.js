@@ -1,28 +1,32 @@
-import Header from "@/components/parts/header";
 import Footer from "@/components/parts/footer";
-import CreateButton from "@/components/parts/create-button";
-import GetSpacesFromDb from "@/components/get-spaces-from-db";
 import React from "react";
+
+import SpaceLoop from "@/components/space-loop";
+import { Suspense } from "react";
+import { getSpaces } from "@/components/get-spaces-from-db";
+import LoadingSpinner from "@/components/loading/loading-spinner";
+import TabManager from "@/components/parts/tab-manager";
+
 /**
  * Indexコンポーネントはアプリケーションのメインページをレンダリングします。
  * ヘッダー、部屋の開閉、及び作成ボタンの3つの主要なコンポーネントで構成されています。
  */
-const Index = () => {
+
+const Index = async () => {
+  const spaceList = await getSpaces(10);
   return (
     <>
-      {/* ヘッダーコンポーネント */}
-      {/* <Header /> */}
-
       {/* ランドコンテナー: 主要なコンテンツ領域 */}
       <div className="space-container min-h-[calc(100vh-50px)] md:min-h[calc(100vh-50px)]">
-        <GetSpacesFromDb max_spaces="10" />
-
-        {/* 部屋の作成ボタンコンポーネント */}
-        {/* <CreateButton /> */}
+        <Suspense fallback={<LoadingSpinner />}>
+          <SpaceLoop spaceList={spaceList} />
+        </Suspense>
       </div>
 
       {/* フッターコンポーネント */}
-      <Footer />
+      <Footer>
+        <TabManager spaceList={spaceList} />
+      </Footer>
     </>
   );
 };

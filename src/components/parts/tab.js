@@ -16,37 +16,28 @@ const Tab = ({ list }) => {
 
   const openSpace = (spaceId) => {
     setOpenSpaceId(spaceId);
+    setActiveSpaceIndex(spaceId);
+    // console.log(spaceId);
   };
 
   return (
     <>
       {openSpaceId !== list.spaceId ? (
-        <button className="w-fit bg-[var(--accent)] pixel-shadow text-xs text-[var(--cream)] h-full px-3">
-          <p className="opacity-50 truncate">{list.name}</p>
+        <button
+          onClick={() => {
+            openSpace(list.spaceId);
+          }}
+          className="w-fit bg-[var(--accent)] pixel-shadow text-xs text-[var(--cream)] h-full px-3"
+        >
+          <p className="opacity-50">{list.name}</p>
         </button>
       ) : (
-        // <SpaceEntrance
-        //   activeSpaceIndex={activeSpaceIndex}
-        //   onPositionChange={props.onPositionChange}
-        //   delay={props.delay}
-        //   setActiveSpaceIndex={setActiveSpaceIndex}
-        //   spaceInfo={props.spaceInfo}
-        //   style={props.style}
-        //   setOpenSpaceId={setOpenSpaceId}
-        //   openSpaceId={openSpaceId}
-        // />
         <button
           className="w-fit bg-[var(--accent)] pixel-shadow text-xs text-[var(--cream)] h-full px-3"
           onClick={closeSpace}
         >
           <p className="opacity-100">{list.name}</p>
         </button>
-        // <SpaceChat
-        //   setSpacePositions={props.setSpacePositions}
-        //   activeSpaceIndex={activeSpaceIndex}
-        //   setActiveSpaceIndex={setActiveSpaceIndex}
-        //   spaceInfo={props.spaceInfo}
-        // />
       )}
     </>
   );

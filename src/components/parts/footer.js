@@ -9,8 +9,7 @@ const Footer = ({ children }) => {
   return (
     <footer className="fixed bottom-0 left-0 w-full bg-[var(--accent)] h-8 pixel-shadow z-50">
       <div className="h-full flex justify-between">
-        <div>
-          {/* Gundiロゴ */}
+        <div className="flex">
           <button className="h-full flex pixel-shadow px-3 gap-3">
             <img
               className="h-1/3 my-auto"
@@ -21,7 +20,6 @@ const Footer = ({ children }) => {
           </button>
           {children}
         </div>
-
         <div className="flex">
           <CreateButtonFooter />
           <Clock />
