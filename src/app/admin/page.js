@@ -16,6 +16,7 @@ const Index = () => {
       {/* ランドコンテナー: 主要なコンテンツ領域 */}
       <div className="space-container min-h-[calc(100vh-50px)] md:min-h[calc(100vh-50px)]">
         <GetSpacesFromDb max_spaces="10" />
+
         {/* 部屋の作成ボタンコンポーネント */}
         {/* <CreateButton /> */}
       </div>

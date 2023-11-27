@@ -13,11 +13,26 @@ const hexToRgba = (hex, alpha) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
+function lowerBrightness(color, amount) {
+  // HEXをRGBに変換
+  let r = parseInt(color.substring(1, 3), 16);
+  let g = parseInt(color.substring(3, 5), 16);
+  let b = parseInt(color.substring(5, 7), 16);
+
+  // 明度を下げる
+  r = Math.max(0, r - amount);
+  g = Math.max(0, g - amount);
+  b = Math.max(0, b - amount);
+
+  // RGBをHEXに変換して返す
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+}
+
 const Card = (props) => {
   const { data, messageDesign, index, resizable } = props;
   const { userId } = useContext(UserIdContext);
   const { postId, setPostId } = useCardContext();
-  const isDraggable = data.userId === userId;
+  const isDraggable = props.messageDesign === "timeline" ? false : data.userId === userId;
 
   // States and Refs
   const [position, setPosition] = useState({ x: data?.pos?.x || 0, y: data?.pos?.y || 0 });
@@ -63,25 +78,41 @@ const Card = (props) => {
     return isHovered ? `${baseTransform} translateY(-2px)` : baseTransform;
   };
 
-  const cardStyle = {
-    transform: computeTransform(),
-    boxShadow: messageDesign === "card" ? (isCardDragging || (isHovered && isDraggable) ? `0 0 1rem 0.2rem ${data?.color}` : `0 0 0.5rem 0.1rem ${data?.color}`) : "none",
-    textShadow: messageDesign !== "card" ? (isCardDragging || (isHovered && isDraggable) ? `0 0.4rem 0.4rem ${hexToRgba(data?.color, 0.5)}` : `0 0.2rem 0.1rem ${hexToRgba(data?.color, 0.5)}`) : "none",
-    transition: !isCardDragging && "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
-  };
+  const amount = 20; // 明度を下げる量
+  const newColor = lowerBrightness(data?.color, amount);
+
+  const cardStyle =
+    messageDesign == "timeline"
+      ? {
+          color: newColor,
+        }
+      : {
+          transform: computeTransform(),
+          boxShadow: messageDesign === "card" ? (isCardDragging || (isHovered && isDraggable) ? `0 0 1rem 0.2rem ${data?.color}` : `0 0 0.5rem 0.1rem ${data?.color}`) : "none",
+          textShadow: messageDesign !== "card" ? (isCardDragging || (isHovered && isDraggable) ? `0 0.4rem 0.4rem ${hexToRgba(data?.color, 0.5)}` : `0 0.2rem 0.1rem ${hexToRgba(data?.color, 0.5)}`) : "none",
+          transition: !isCardDragging && "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
+        };
 
   // Rendering
   return (
-    <div className="card-wrapper" style={cardWrapperCardStyle} onClick={handleCardClick}>
-      <div className={["hover-overlay", isOpacity ? "opacity-0" : "opacity-100", isInitialRender && "popIn", (isBouncing || isClicked) && "jello-animation"].filter(Boolean).join(" ")} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
-        {data && (
-          <div ref={targetRef} style={cardStyle} className={[messageDesign == "card" ? "card" : "nocard", isDraggable && "draggable-card"].filter(Boolean).join(" ")}>
+    <>
+      {messageDesign && messageDesign !== "timeline" ? (
+        <div className="card-wrapper" style={cardWrapperCardStyle} onClick={handleCardClick}>
+          <div className={["hover-overlay", isOpacity ? "opacity-0" : "opacity-100", isInitialRender && "popIn", (isBouncing || isClicked) && "jello-animation"].filter(Boolean).join(" ")} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => isDraggable && setIsHovered(false)}>
+            <div ref={targetRef} style={cardStyle} className={[messageDesign, isDraggable && "draggable-card"].filter(Boolean).join(" ")}>
+              {data?.text}
+            </div>
+            {resizable && isDraggable && <CardMoveable target={targetRef.current} position={position} setPosition={setPosition} userId={userId} transform={transform} setTransform={setTransform} setIsCardDragging={setIsCardDragging} isCardDragging={isCardDragging} cardData={data} isDraggable={isDraggable} />}
+          </div>
+        </div>
+      ) : (
+        data && (
+          <div ref={targetRef} style={cardStyle} className={[messageDesign, isDraggable && "draggable-card"].filter(Boolean).join(" ")}>
             {data?.text}
           </div>
-        )}
-        {resizable && isDraggable && <CardMoveable target={targetRef.current} position={position} setPosition={setPosition} userId={userId} transform={transform} setTransform={setTransform} setIsCardDragging={setIsCardDragging} isCardDragging={isCardDragging} cardData={data} isDraggable={isDraggable} />}
-      </div>
-    </div>
+        )
+      )}
+    </>
   );
 };
 
