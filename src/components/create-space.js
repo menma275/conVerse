@@ -201,7 +201,7 @@ const CreateSpace = (props) => {
             animate={controls}
             onMouseDown={handleMouseDownOrTouchStart}
             style={style}
-            className="board pixel-shadow fixed -top-[50vh] left-1/2 -translate-x-1/2 -translate-y-1/2"
+            className="board pixel-shadow absolute -top-[50dvh] left-1/2 -translate-x-1/2 -translate-y-1/2"
             id="create-new-space"
             onAnimationComplete={() => updateRect()}
             ref={resizeTarget}

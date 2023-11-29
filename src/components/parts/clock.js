@@ -4,9 +4,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useOpenSpaceId } from "@/context/open-space-id-context";
 
+import ASCIIArtClock from "../space-type/ascii-art-clock";
+
 const Clock = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { openSpaceId, setOpenSpaceId } = useOpenSpaceId();
+  const [isOpen, setIsOpen] = useState(true);
   const [currentTime, setCurrentTime] = useState(
     new Date().toLocaleTimeString([], {
       // year: "numeric",

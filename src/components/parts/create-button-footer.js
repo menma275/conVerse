@@ -18,7 +18,7 @@ const CreateButtonFooter = () => {
       <button
         className="pixel-shadow w-fit h-full bg-[var(--accent)] text-xs px-3 text-[var(--cream)] flex items-center gap-2"
         onMouseDown={handleMouseDownOrTouchStart}
-        onClick={() => setIsCreateOpen(true)}
+        onClick={() => setIsCreateOpen(!isCreateOpen)}
       >
         <FaSpaceAwesome />
         <span className="mt-1 hidden">Create Space</span>
