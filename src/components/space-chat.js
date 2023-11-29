@@ -17,7 +17,10 @@ const SpaceChat = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
-  const [boardSize, setBoardSize] = useState({ width: isMobile ? "90%" : "500px", height: "500px" });
+  const [boardSize, setBoardSize] = useState({
+    width: isMobile ? "90%" : "500px",
+    height: "500px",
+  });
   const { setOpenSpaceId } = useOpenSpaceId();
 
   const style = {
@@ -130,11 +133,23 @@ const SpaceChat = (props) => {
           e.target.style.transform = e.transform;
         }}
       />
-      <motion.div animate={controls} className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow mt-[-40px] sm:mt-0 space${props.spaceInfo.spaceId}`} style={style} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
+      <motion.div
+        animate={controls}
+        className={`board chat absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pixel-shadow mt-[-40px] sm:mt-0 space${props.spaceInfo.spaceId}`}
+        style={style}
+        onAnimationComplete={() => updateRect()}
+        ref={resizeTarget}
+        onMouseDown={handleMouseDownOrTouchStart}
+        onTouchStart={handleMouseDownOrTouchStart}
+      >
         <div className="board-header pixel-shadow" ref={dragTarget}>
           <SpaceChatHeader name={props.spaceInfo.name} />
           <div>
-            <button onMouseUp={toggleModal} onTouchEnd={toggleModal} className="mr-4">
+            <button
+              onMouseUp={toggleModal}
+              onTouchEnd={toggleModal}
+              className="mr-4"
+            >
               Generate
             </button>
             <button onMouseUp={closeModal} onTouchEnd={closeModal}>
@@ -148,7 +163,14 @@ const SpaceChat = (props) => {
             <p>👇 Tap anywhere to post.</p>
           </div>
 
-          <SpaceTypeSelector zoom={zoom} setZoom={setZoom} message={message} targetRef={targetRef} setMessage={setMessage} spaceInfo={props.spaceInfo} />
+          <SpaceTypeSelector
+            zoom={zoom}
+            setZoom={setZoom}
+            message={message}
+            targetRef={targetRef}
+            setMessage={setMessage}
+            spaceInfo={props.spaceInfo}
+          />
         </motion.div>
       </motion.div>
     </>

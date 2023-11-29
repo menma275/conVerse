@@ -9,7 +9,9 @@
   --bg-primary: #f5f5f5;
   --cream: #f9f6ec;
   --accent: #ebb441;
-  --header-height: 50px;
+  /* --accent: #57BE37; */
+  /* --accent: #ED6D7B; */
+    --header-height:50px;
   --element-space: 0.75rem;
   --room-header-height: 40px;
 }
@@ -27,6 +29,10 @@
 @font-face {
   font-family: "NuKinakoMochi";
   src: url(/NuKinakoMochi-Reg.otf);
+}
+
+::-webkit-scrollbar{
+  display: none;
 }
 
 button {

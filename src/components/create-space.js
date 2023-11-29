@@ -201,7 +201,7 @@ const CreateSpace = (props) => {
             animate={controls}
             onMouseDown={handleMouseDownOrTouchStart}
             style={style}
-            className="board pixel-shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            className="board pixel-shadow fixed -top-[50vh] left-1/2 -translate-x-1/2 -translate-y-1/2"
             id="create-new-space"
             onAnimationComplete={() => updateRect()}
             ref={resizeTarget}
@@ -308,7 +308,7 @@ const CreateSpace = (props) => {
                   </select>
                 </div>
                 {/* 'enableStartTime' チェックボックス */}
-                <div className="mt-3 flex justify-between">
+                <div className="my-3 flex justify-between">
                   <label htmlFor="enableStartTime" className="text-xs my-auto">
                     Enable Start Time
                   </label>
@@ -324,11 +324,12 @@ const CreateSpace = (props) => {
                 {/* 条件付きで開始時間と持続時間の入力フィールドを表示 */}
                 {enableStartTime && (
                   <>
-                    <div className="mb-2">
-                      <label htmlFor="startTime" className="block mb-1">
-                        Start Time:
+                    <div className="my-3 flex justify-between">
+                      <label htmlFor="startTime" className="text-xs my-auto">
+                        Start Time
                       </label>
                       <input
+                        className="text-xs p-1 bg-[var(--cream)] border border-[var(--accent)] rounded-lg font-sans"
                         id="startTime"
                         type="time"
                         name="startTime"
@@ -338,11 +339,12 @@ const CreateSpace = (props) => {
                       />
                     </div>
 
-                    <div className="mb-2">
-                      <label htmlFor="duration" className="block mb-1">
-                        Duration (minutes):
+                    <div className="my-3 flex justify-between">
+                      <label htmlFor="duration" className="text-xs my-auto">
+                        Duration (minutes)
                       </label>
                       <input
+                        className="text-xs p-1 bg-[var(--cream)] border border-[var(--accent)] rounded-lg font-sans"
                         id="duration"
                         type="number"
                         name="duration"

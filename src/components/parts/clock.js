@@ -2,8 +2,11 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
+import { useOpenSpaceId } from "@/context/open-space-id-context";
 
 const Clock = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { openSpaceId, setOpenSpaceId } = useOpenSpaceId();
   const [currentTime, setCurrentTime] = useState(
     new Date().toLocaleTimeString([], {
       // year: "numeric",
@@ -29,11 +32,16 @@ const Clock = () => {
     return () => clearInterval(intervalId);
   }, []); // useEffectのクリーンアップ
   return (
-    <div className="flex w-20 justify-center contents-center h-full pixel-shadow">
+    <button
+      className="flex w-20 justify-center contents-center h-full pixel-shadow"
+      onClick={() => {
+        setIsOpen(!isOpen);
+      }}
+    >
       <p className="my-auto contents-center text-xs text-[var(--cream)]">
         {currentTime}
       </p>
-    </div>
+    </button>
   );
 };
 export default Clock;

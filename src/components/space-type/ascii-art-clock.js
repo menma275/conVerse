@@ -80,7 +80,16 @@ const ASCIIArtClock = () => {
           e.target.style.transform = e.transform;
         }}
       />
-      <motion.div initial={{ opacity: 0 }} animate={controls} className={`board chat absolute pixel-shadow mt-[-40px] sm:mt-0 space-normal`} style={style} onAnimationComplete={() => updateRect()} ref={resizeTarget} onMouseDown={handleMouseDownOrTouchStart} onTouchStart={handleMouseDownOrTouchStart}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={controls}
+        className={`board chat absolute pixel-shadow mt-[-40px] sm:mt-0 space-normal`}
+        style={style}
+        onAnimationComplete={() => updateRect()}
+        ref={resizeTarget}
+        onMouseDown={handleMouseDownOrTouchStart}
+        onTouchStart={handleMouseDownOrTouchStart}
+      >
         <div className="board-header pixel-shadow" ref={dragTarget}>
           {description}
         </div>
