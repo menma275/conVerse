@@ -1,7 +1,6 @@
 "use client";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaDiscord } from "react-icons/fa";
 import { IoDocument } from "react-icons/io5";
 import React from "react";
 

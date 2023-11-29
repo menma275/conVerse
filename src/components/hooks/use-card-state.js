@@ -6,6 +6,7 @@ export const useCardState = () => {
   const [loadedData, setLoadedData] = useState(false);
 
   const handleReceiveNewCardData = useCallback((newCard) => {
+    console.log("New Card:", newCard);
     setAllCards((prevCards) => {
       const cardIndex = prevCards.findIndex((card) => card.postId === newCard.postId);
       if (cardIndex === -1) {

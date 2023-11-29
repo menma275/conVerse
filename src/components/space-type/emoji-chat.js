@@ -13,6 +13,7 @@ import InputMessage from "@/components/parts/input-message";
 import Zoom from "@/components/parts/zoom";
 import { useCardState } from "@/components/hooks/use-card-state";
 import useLocalStorage from "@/components/hooks/use-local-storage";
+import useCountdownTimer from "@/components/hooks/use-countdown-timer";
 
 const EmojiChat = (props) => {
   // ステートとリファレンスの定義
@@ -22,6 +23,10 @@ const EmojiChat = (props) => {
   const { userId } = useContext(UserIdContext); // ユーザーIDを取得
   const [isInitialLoad, setIsInitialLoad] = useState(true); // 初回読み込みかどうかのステート
   const { allCards, loadedData, handleReceiveNewCardData, handleReceiveData } = useCardState();
+  const { isParticipationTime, countdown } = useCountdownTimer(props.spaceInfo.startTime, props.spaceInfo.duration);
+
+  // localStorageにカードデータをセット
+  useLocalStorage("dataList", allCards);
 
   // マウスの動きをハンドルする関数
   const onMouseMoveHandler = useCallback(
@@ -36,13 +41,25 @@ const EmojiChat = (props) => {
     placeNewMessage(e, handleReceiveNewCardData, userId, props.spaceInfo.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
   };
 
+  const handleSubmit = (e) => {
+    // キーボードイベントの場合、Enterキーのチェック
+    if (e.type === "keypress" && e.key !== "Enter") return;
+
+    // クリックイベントの場合、座標を直接使用
+    const x = e.clientX ? e.clientX : window.innerWidth / 2; // 画面の中央を基準にX座標を設定
+    const y = e.clientY ? e.clientY : window.innerHeight / 2; // 画面の中央を基準にY座標を設定
+
+    // 偽のイベントオブジェクトを作成
+    const fakeEvent = { ...e, clientX: x, clientY: y };
+
+    // placeNewMessageを呼び出し
+    placeNewMessage(fakeEvent, handleReceiveNewCardData, userId, props.spaceInfo.spaceId, isAddingCard, containerRef.current, props.zoom, props.message, props.setMessage);
+  };
+
   // コンテナのスタイルを設定
   const containerStyle = {
     transform: `scale(${props.zoom})`,
   };
-
-  // localStorageにカードデータをセット
-  useLocalStorage("dataList", allCards);
 
   // メッセージの変更を監視してカードの追加ステートを更新
   useEffect(() => {
@@ -69,14 +86,15 @@ const EmojiChat = (props) => {
           <Follower ref={followerRef} isVisible={!!props.message} message={props.message} />
         </div>
       </div>
-      {/* メッセージ入力部分 */}
-      <InputMessage message={props.message} setMessage={props.setMessage} />
       <div id="manipulate">
         {/* サウンドのミュートボタン */}
         {props.spaceInfo.sounds && <MuteButton />}
         {/* ズームコントロール */}
         <Zoom setZoom={props.setZoom} zoom={props.zoom} />
       </div>
+      {isParticipationTime && <div className="countdown">{countdown}</div>}
+      {/* メッセージ入力部分 */}
+      {isParticipationTime ? <InputMessage onKeyDown={handleSubmit} message={props.message} setMessage={props.setMessage} /> : <div className="chat-message">This chat has ended. See you tomorrow!</div>}
     </>
   );
 };
