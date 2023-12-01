@@ -27,7 +27,7 @@ const Tab = ({ list }) => {
           onClick={() => {
             openSpace(list.spaceId);
           }}
-          className="w-fit bg-[var(--accent)] pixel-shadow text-xs text-[var(--cream)] h-full px-3"
+          className="w-fit bg-[var(--accent)] pixel-shadow text-xs text-[var(--cream)] h-full px-3 whitespace-nowrap overflow-hidden overflow-ellipsis"
         >
           <p className="opacity-50">{list.name}</p>
         </button>

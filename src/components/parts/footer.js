@@ -16,7 +16,7 @@ const Footer = ({ children }) => {
               src="/gundi-logo-g.svg"
               alt="Gundi"
             />
-            <p className="my-auto text-xs text-[var(--cream)]">Welcome</p>
+            <p className="my-auto text-xs text-[var(--cream)]">Start</p>
           </button>
           {children}
         </div>
