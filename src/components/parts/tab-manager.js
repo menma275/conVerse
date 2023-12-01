@@ -39,11 +39,11 @@ const TabManager = ({ spaceList }) => {
       {isMobile ? (
         <div className="">
           <button
-            className="h-full flex pixel-shadow px-3"
+            className="h-full flex pixel-shadow px-3 w-fit"
             onClick={() => setIsModalOpen(!isModalOpen)}
           >
             <p className="text-xs my-auto text-[var(--cream)]">
-              {openSpaceName !== null ? openSpaceName : "open Space"}
+              {openSpaceId !== null ? openSpaceName : "open Space"}
             </p>
           </button>
           {isModalOpen && (
