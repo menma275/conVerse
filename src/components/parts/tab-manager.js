@@ -4,19 +4,13 @@ import React, { use } from "react";
 import { useEffect, useState, useRef } from "react";
 import Tab from "@/components/parts/tab";
 import { useOpenSpaceId } from "@/context/open-space-id-context";
+import { useMediaQuery } from "react-responsive";
 
 const TabManager = ({ spaceList }) => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { openSpaceId, setOpenSpaceId } = useOpenSpaceId();
   const [openSpaceName, setOpenSpaceName] = useState(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-  }, []);
+  const isMobile = useMediaQuery({ query: "(max-width: 720px)" });
 
   useEffect(() => {
     if (openSpaceId !== null) {
@@ -39,8 +33,6 @@ const TabManager = ({ spaceList }) => {
       });
     }
   }, [openSpaceId]);
-
-  const isMobile = windowWidth <= 768;
 
   return (
     <>
