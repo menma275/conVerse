@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Space from "@/components/space";
 import SpaceChatNormal from "@/components/space-chat-normal";
 import ASCIIArtClock from "@/components/space-type/ascii-art-clock";
+import Start from "@/components/space-type/start";
 import { useMediaQuery } from "react-responsive";
 
 const SpaceLoop = ({ spaceList }) => {
