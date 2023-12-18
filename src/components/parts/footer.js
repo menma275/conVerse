@@ -10,7 +10,7 @@ const Footer = ({ children }) => {
   const [isOpenStartMenu, setIsOpenStartMenu] = useState(true);
   return (
     <>
-      {isOpenStartMenu && <Start />}
+      {/* {isOpenStartMenu && <Start />} */}
       <footer className="fixed bottom-0 left-0 w-full bg-[var(--accent)] h-8 pixel-shadow z-50">
         <div className="h-full flex justify-between">
           <div className="flex">
